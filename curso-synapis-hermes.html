@@ -137,15 +137,21 @@
   .sp-modal-body { padding: 24px 36px 32px; }
   .sp-section-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 2.5px; color: var(--teal); margin-bottom: 12px; font-weight: 700; }
 
-  /* Mission cards — 3 in a row */
-  .sp-missions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 6px; }
-  .sp-mission { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 18px 14px; border-radius: 12px; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.06); transition: all 0.3s; cursor: default; }
-  .sp-mission:hover { border-color: rgba(245,158,11,0.2); background: rgba(255,255,255,0.04); transform: translateY(-3px); }
-  .sp-mission-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; flex-shrink: 0; }
-  .sp-mission-icon.free { background: rgba(34,197,94,0.1); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
-  .sp-mission-icon.pro { background: rgba(245,158,11,0.1); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
-  .sp-mission h5 { color: #ffffff; font-size: 0.85rem; margin-bottom: 2px; font-weight: 700; }
-  .sp-mission p { color: #c8c8d0; font-size: 0.75rem; line-height: 1.5; }
+  /* Mission level labels */
+  .sp-level-row { display: flex; align-items: center; gap: 10px; margin: 16px 0 10px; }
+  .sp-level-tag { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; padding: 3px 10px; border-radius: 50px; }
+  .sp-level-tag.beginner { background: rgba(34,197,94,0.1); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+  .sp-level-tag.intermediate { background: rgba(245,158,11,0.1); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+  .sp-level-tag.advanced { background: rgba(124,58,237,0.1); color: var(--purple); border: 1px solid rgba(124,58,237,0.2); }
+  .sp-level-line { flex: 1; height: 1px; background: rgba(255,255,255,0.06); }
+
+  /* Mission cards grid */
+  .sp-missions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 6px; }
+  .sp-mission { display: flex; flex-direction: column; gap: 6px; padding: 14px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); transition: all 0.35s; cursor: default; }
+  .sp-mission:hover { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); transform: translateY(-3px); }
+  .sp-mission h5 { color: #ffffff; font-size: 0.82rem; font-weight: 700; line-height: 1.3; }
+  .sp-mission p { color: #c0c0c8; font-size: 0.72rem; line-height: 1.45; }
+  .sp-mission .sp-mission-reward { font-size: 0.65rem; color: var(--amber); font-weight: 600; margin-top: auto; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.04); }
 
   /* Value ladder — 4 in a row */
   .sp-ladder { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 14px 0; }
@@ -204,14 +210,17 @@
   .sp-close:hover { color: #fff; }
   @media(max-width:900px) { .sp-ladder { grid-template-columns: 1fr 1fr; } }
   @media(max-width:640px) {
-    .sp-overlay { padding: 16px 10px; }
-    .sp-modal { width: 100%; border-radius: 16px; }
-    .sp-modal-header, .sp-modal-body { padding-left: 18px; padding-right: 18px; }
-    .sp-missions-grid { grid-template-columns: 1fr; gap: 8px; }
-    .sp-mission { flex-direction: row; text-align: left; padding: 14px; }
-    .sp-ladder { grid-template-columns: 1fr; gap: 10px; }
+    .sp-overlay { padding: 12px 8px; }
+    .sp-modal { width: 100%; border-radius: 14px; }
+    .sp-modal-header, .sp-modal-body { padding-left: 16px; padding-right: 16px; }
+    .sp-missions-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .sp-ladder { grid-template-columns: 1fr 1fr; gap: 8px; }
     .sp-tier:hover { transform: translateY(-3px) scale(1.01); }
     .sp-modal-header h3 { font-size: 1.15rem; }
+  }
+  @media(max-width:420px) {
+    .sp-missions-grid { grid-template-columns: 1fr; }
+    .sp-ladder { grid-template-columns: 1fr; }
   }
 
   /* ===== BREADCRUMB ===== */
@@ -515,30 +524,66 @@
         <div class="sp-modal-body">
 
           <!-- SUPERMISIONES -->
-          <div class="sp-section-title">Supermisiones gratuitas</div>
-          <p style="color:#c8c8d0;font-size:0.85rem;margin-bottom:12px;line-height:1.6;">Completa una mini-mision para ganar acceso. Cada mision te ensena algo practico en menos de 10 minutos.</p>
+          <div class="sp-section-title">Supermisiones — gana acceso aprendiendo</div>
+          <p style="color:#d0d0d8;font-size:0.85rem;margin-bottom:4px;line-height:1.6;">Completa <strong style="color:#fff">1 mision de cualquier nivel</strong> y recibiras tu clave de superpoderes. Elige la que encaje con tu experiencia.</p>
 
+          <!-- NIVEL 1: PRINCIPIANTE -->
+          <div class="sp-level-row"><span class="sp-level-tag beginner">Principiante</span><span class="sp-level-line"></span></div>
           <div class="sp-missions-grid">
             <div class="sp-mission">
-              <div class="sp-mission-icon free">1</div>
-              <div>
-                <h5>Instala Synapis + Hermes</h5>
-                <p>Lecciones 2 y 4. Cuando ambos funcionen, recibiras tu clave.</p>
-              </div>
+              <h5>Instala Synapis</h5>
+              <p>Clona el repo, ejecuta install.sh y verifica que Synapis carga en Claude Code.</p>
+              <div class="sp-mission-reward">Clave de superpoderes</div>
             </div>
             <div class="sp-mission">
-              <div class="sp-mission-icon free">2</div>
-              <div>
-                <h5>Crea un bridge script</h5>
-                <p>Leccion 9. Conecta ambos agentes y desbloquea acceso total.</p>
-              </div>
+              <h5>Instala Hermes Agent</h5>
+              <p>Instala Hermes, configura Anthropic y ejecuta hermes doctor sin errores.</p>
+              <div class="sp-mission-reward">Clave de superpoderes</div>
             </div>
             <div class="sp-mission">
-              <div class="sp-mission-icon pro">3</div>
-              <div>
-                <h5>Comparte tu setup</h5>
-                <p>Documenta y comparte. Superpoderes permanentes + badge.</p>
-              </div>
+              <h5>Prueba una skill</h5>
+              <p>Activa cualquier skill de Synapis en un proyecto real y completa una tarea con ella.</p>
+              <div class="sp-mission-reward">Clave de superpoderes</div>
+            </div>
+          </div>
+
+          <!-- NIVEL 2: INTERMEDIO -->
+          <div class="sp-level-row"><span class="sp-level-tag intermediate">Intermedio</span><span class="sp-level-line"></span></div>
+          <div class="sp-missions-grid">
+            <div class="sp-mission">
+              <h5>Crea tu bridge script</h5>
+              <p>Conecta Synapis y Hermes con un script que pase datos de uno a otro.</p>
+              <div class="sp-mission-reward">Clave + badge Arquitecto</div>
+            </div>
+            <div class="sp-mission">
+              <h5>Mejora una skill existente</h5>
+              <p>Usa /superskill para mejorar una skill de Synapis: anade funcionalidad o corrige un bug.</p>
+              <div class="sp-mission-reward">Clave + badge Builder</div>
+            </div>
+            <div class="sp-mission">
+              <h5>Configura tu stack dual</h5>
+              <p>Hermes como agente personal + Synapis en tu proyecto principal. Documenta tu setup.</p>
+              <div class="sp-mission-reward">Clave + badge Operador</div>
+            </div>
+          </div>
+
+          <!-- NIVEL 3: AVANZADO -->
+          <div class="sp-level-row"><span class="sp-level-tag advanced">Avanzado</span><span class="sp-level-line"></span></div>
+          <div class="sp-missions-grid">
+            <div class="sp-mission">
+              <h5>Automatiza infografias con NotebookLM</h5>
+              <p>Crea un pipeline que genere infografias automaticas desde los prompts del curso usando /notebooklm.</p>
+              <div class="sp-mission-reward">Clave permanente + badge Creador</div>
+            </div>
+            <div class="sp-mission">
+              <h5>Crea un sistema de automatizacion</h5>
+              <p>Hermes cron + Synapis instincts: que Hermes ejecute acciones basadas en patrones que Synapis detecta.</p>
+              <div class="sp-mission-reward">Clave permanente + badge Ingeniero</div>
+            </div>
+            <div class="sp-mission">
+              <h5>Comparte tu setup con la comunidad</h5>
+              <p>Publica tu configuracion completa (repo, docs, scripts) para que otros la repliquen.</p>
+              <div class="sp-mission-reward">Clave permanente + badge Mentor</div>
             </div>
           </div>
 
