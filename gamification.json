@@ -1,5 +1,5 @@
 {
-  "curso_id": "synapis-hermes-dual-agent",
+  "curso_id": "sinapsis-hermes-dual-agent",
   "xp_config": {
     "xp_por_leccion_teoria": 30,
     "xp_por_leccion_practica": 45,
@@ -17,7 +17,7 @@
       "numero": 2,
       "nombre": "Usuario",
       "xp_min": 100,
-      "descripcion": "Ya tienes Synapis y Hermes instalados y funcionando."
+      "descripcion": "Ya tienes Sinapsis y Hermes instalados y funcionando."
     },
     {
       "numero": 3,
@@ -35,7 +35,7 @@
       "numero": 5,
       "nombre": "Maestro Dual",
       "xp_min": 500,
-      "descripcion": "Dominas el sistema dual completo. Hermes ejecuta, Synapis aprende, tu decides."
+      "descripcion": "Dominas el sistema dual completo. Hermes ejecuta, Sinapsis aprende, tu decides."
     }
   ],
   "badges": [
@@ -90,7 +90,7 @@
     {
       "id": "decision-argumentada",
       "nombre": "Arquitecto de Decisiones",
-      "descripcion": "Has escrito tu argumento de por que NO fusionar Synapis y Hermes",
+      "descripcion": "Has escrito tu argumento de por que NO fusionar Sinapsis y Hermes",
       "tipo": "especial",
       "condicion": "Completar el reto de la leccion 8 (comparativa-cuando-usar)",
       "icono": "🧠"

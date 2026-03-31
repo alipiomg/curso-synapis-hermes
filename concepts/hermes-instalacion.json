@@ -1,6 +1,6 @@
 {
   "id": "hermes-instalacion",
-  "curso_id": "synapis-hermes-dual-agent",
+  "curso_id": "sinapsis-hermes-dual-agent",
   "titulo": "Hermes: instalar tu agente personal",
   "numero": 4,
   "nivel": "basico",
@@ -40,9 +40,9 @@
   "conexiones": {
     "prerequisitos": ["que-son-agentes"],
     "siguiente_recomendado": ["hermes-comandos-esenciales"],
-    "conceptos_relacionados": ["synapis-instalacion"]
+    "conceptos_relacionados": ["sinapsis-instalacion"]
   },
-  "metadata_synapis": {
+  "metadata_sinapsis": {
     "observable_clave": "El estudiante tiene Hermes instalado, configurado con al menos un provider, y hermes doctor pasa todas las verificaciones",
     "instincts_que_aplican": ["install-verify-pattern", "venv-isolation-habit"],
     "confidence_pedagogica": 0.91

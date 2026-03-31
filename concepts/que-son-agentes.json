@@ -1,12 +1,12 @@
 {
   "id": "que-son-agentes",
-  "curso_id": "synapis-hermes-dual-agent",
+  "curso_id": "sinapsis-hermes-dual-agent",
   "titulo": "Que es un agente AI y por que necesitas dos",
   "numero": 1,
   "nivel": "basico",
   "contenido": {
-    "explicacion": "## Que es un agente AI\n\nUn **agente AI** no es solo un chatbot que responde preguntas. Es un sistema que tiene tres superpoderes que lo diferencian:\n\n1. **Tools (herramientas)**: puede ejecutar codigo, leer archivos, navegar la web, llamar APIs. No solo habla — *hace cosas*.\n2. **Memory (memoria)**: recuerda contexto entre sesiones. Sabe quien eres, que proyectos tienes, que errores cometiste antes.\n3. **Autonomy (autonomia)**: puede tomar decisiones sin que le digas cada paso. Le das un objetivo y el decide como lograrlo.\n\nUn chatbot como ChatGPT vanilla es como un libro que te responde. Un agente es como un empleado que puede abrir tu laptop, buscar informacion, escribir codigo y mandarte el resultado.\n\n## Por que necesitas DOS agentes\n\n**Synapis v3.2** es tu cerebro adaptativo dentro de Claude Code. Vive en `~/.claude/skills/`, observa como trabajas, detecta patrones, y evoluciona esos patrones en skills reutilizables. Es el estratega — aprende de ti y se adapta.\n\n**Hermes Agent v0.6** es tu cuerpo autonomo en la terminal. Tiene 40+ tools, 15+ providers de AI, gateway propio, cron jobs, y soporte multi-modelo. Es el ejecutor — hace el trabajo pesado.\n\nJuntos forman un sistema completo: Synapis decide *que* hacer basado en tu historial, y Hermes ejecuta *como* hacerlo con sus herramientas. Uno sin el otro esta incompleto.",
-    "metafora": "Piensa en un **coach de gimnasio** (Synapis) y el **gimnasio** (Hermes). El coach sin gimnasio solo puede hablar de ejercicios — no tienes donde hacerlos. El gimnasio sin coach tiene todas las maquinas, pero no sabe que necesitas ni como progresar. Juntos: el coach observa tu rendimiento, adapta tu rutina, y el gimnasio te da las herramientas para ejecutarla.",
+    "explicacion": "## Que es un agente AI\n\nUn **agente AI** no es solo un chatbot que responde preguntas. Es un sistema que tiene tres superpoderes que lo diferencian:\n\n1. **Tools (herramientas)**: puede ejecutar codigo, leer archivos, navegar la web, llamar APIs. No solo habla — *hace cosas*.\n2. **Memory (memoria)**: recuerda contexto entre sesiones. Sabe quien eres, que proyectos tienes, que errores cometiste antes.\n3. **Autonomy (autonomia)**: puede tomar decisiones sin que le digas cada paso. Le das un objetivo y el decide como lograrlo.\n\nUn chatbot como ChatGPT vanilla es como un libro que te responde. Un agente es como un empleado que puede abrir tu laptop, buscar informacion, escribir codigo y mandarte el resultado.\n\n## Por que necesitas DOS agentes\n\n**Sinapsis v3.2** es tu cerebro adaptativo dentro de Claude Code. Vive en `~/.claude/skills/`, observa como trabajas, detecta patrones, y evoluciona esos patrones en skills reutilizables. Es el estratega — aprende de ti y se adapta.\n\n**Hermes Agent v0.6** es tu cuerpo autonomo en la terminal. Tiene 40+ tools, 15+ providers de AI, gateway propio, cron jobs, y soporte multi-modelo. Es el ejecutor — hace el trabajo pesado.\n\nJuntos forman un sistema completo: Sinapsis decide *que* hacer basado en tu historial, y Hermes ejecuta *como* hacerlo con sus herramientas. Uno sin el otro esta incompleto.",
+    "metafora": "Piensa en un **coach de gimnasio** (Sinapsis) y el **gimnasio** (Hermes). El coach sin gimnasio solo puede hablar de ejercicios — no tienes donde hacerlos. El gimnasio sin coach tiene todas las maquinas, pero no sabe que necesitas ni como progresar. Juntos: el coach observa tu rendimiento, adapta tu rutina, y el gimnasio te da las herramientas para ejecutarla.",
     "ejemplo_codigo": {
       "lenguaje": "bash",
       "titulo": "Dos agentes, dos hogares",
@@ -22,27 +22,27 @@
       "Menciona al menos una limitacion de un agente sin memoria adaptativa",
       "Las 3 frases son claras y demuestran comprension del concepto dual"
     ],
-    "respuesta_esperada": "Un agente que solo observa (como Synapis solo) puede aprender tus patrones pero no puede ejecutar tareas autonomamente en la terminal. Un agente que solo ejecuta (como Hermes solo) tiene herramientas poderosas pero no aprende de ti ni se adapta a tu estilo. Juntos se complementan: uno piensa y el otro hace.",
+    "respuesta_esperada": "Un agente que solo observa (como Sinapsis solo) puede aprender tus patrones pero no puede ejecutar tareas autonomamente en la terminal. Un agente que solo ejecuta (como Hermes solo) tiene herramientas poderosas pero no aprende de ti ni se adapta a tu estilo. Juntos se complementan: uno piensa y el otro hace.",
     "xp_extra": 20
   },
   "glosario": {
     "Agente AI": "Sistema de inteligencia artificial que tiene herramientas, memoria y autonomia. A diferencia de un chatbot, puede ejecutar acciones reales como leer archivos, correr codigo o llamar APIs.",
     "LLM": "Large Language Model. El modelo de lenguaje que le da al agente su capacidad de entender y generar texto. Ejemplos: Claude, GPT-4, Llama.",
-    "Skill": "En Synapis, una habilidad aprendida y reutilizable. Se genera automaticamente cuando un patron de comportamiento alcanza suficiente confianza (confidence > 0.8).",
+    "Skill": "En Sinapsis, una habilidad aprendida y reutilizable. Se genera automaticamente cuando un patron de comportamiento alcanza suficiente confianza (confidence > 0.8).",
     "Provider": "En Hermes, un servicio que proporciona acceso a modelos AI. Ejemplos: Anthropic (Claude), OpenAI (GPT), Google (Gemini), Ollama (modelos locales).",
     "API Key": "Clave secreta que te identifica ante un provider de AI. Sin ella, el provider no sabe quien eres ni te deja usar su modelo."
   },
   "prompt_infografia": {
-    "contenido": "Infografia educativa: 'Que es un Agente AI'. Layout vertical. Arriba: titulo grande. Seccion 1: Chatbot vs Agente — tabla comparativa (chatbot: solo texto, sin memoria, sin tools; agente: tools+memoria+autonomia). Seccion 2: diagrama de dos circulos superpuestos — Synapis (cerebro, skills, observacion) y Hermes (terminal, tools, ejecucion) con zona de interseccion 'Dual Agent System'. Seccion 3: metafora visual coach+gimnasio con iconos. Abajo: glosario de 5 terminos con iconos. Estilo dark mode, glassmorphism, paleta teal+purple+amber.",
+    "contenido": "Infografia educativa: 'Que es un Agente AI'. Layout vertical. Arriba: titulo grande. Seccion 1: Chatbot vs Agente — tabla comparativa (chatbot: solo texto, sin memoria, sin tools; agente: tools+memoria+autonomia). Seccion 2: diagrama de dos circulos superpuestos — Sinapsis (cerebro, skills, observacion) y Hermes (terminal, tools, ejecucion) con zona de interseccion 'Dual Agent System'. Seccion 3: metafora visual coach+gimnasio con iconos. Abajo: glosario de 5 terminos con iconos. Estilo dark mode, glassmorphism, paleta teal+purple+amber.",
     "plataforma_recomendada": "Figma",
     "estilo": "dark mode, glassmorphism, teal+purple+amber"
   },
   "conexiones": {
     "prerequisitos": [],
-    "siguiente_recomendado": ["synapis-instalacion", "hermes-instalacion"],
-    "conceptos_relacionados": ["synapis-aprendizaje-profundo"]
+    "siguiente_recomendado": ["sinapsis-instalacion", "hermes-instalacion"],
+    "conceptos_relacionados": ["sinapsis-aprendizaje-profundo"]
   },
-  "metadata_synapis": {
+  "metadata_sinapsis": {
     "observable_clave": "El estudiante entiende la diferencia entre chatbot y agente, y por que dos agentes complementarios son mas poderosos que uno solo",
     "instincts_que_aplican": ["dual-agent-mental-model", "tool-vs-brain-distinction"],
     "confidence_pedagogica": 0.92

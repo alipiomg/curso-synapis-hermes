@@ -1,4 +1,4 @@
-# Patrones Pedagogicos — Synapis + Hermes: Domina tus dos agentes AI
+# Patrones Pedagogicos — Sinapsis + Hermes: Domina tus dos agentes AI
 
 ## Tesis central del curso
 
@@ -13,11 +13,11 @@ El curso alterna niveles deliberadamente para mantener el engagement:
 | Leccion | Nivel | Justificacion |
 |---------|-------|---------------|
 | 1. Que son agentes | Basico | Establecer vocabulario comun |
-| 2. Instalar Synapis | Basico | Reducir friccion de entrada |
-| 3. Primera sesion Synapis | Basico→Intermedio | Transicion suave |
+| 2. Instalar Sinapsis | Basico | Reducir friccion de entrada |
+| 3. Primera sesion Sinapsis | Basico→Intermedio | Transicion suave |
 | 4. Instalar Hermes | Basico | Reducir friccion (2do tool) |
 | 5. Comandos Hermes | Basico→Intermedio | Transicion suave |
-| 6. Synapis a fondo | Avanzado | Profundizar tras base solida |
+| 6. Sinapsis a fondo | Avanzado | Profundizar tras base solida |
 | 7. Hermes a fondo | Avanzado | Profundizar tras base solida |
 | 8. Comparativa | Intermedio | Sintetizar, decidir |
 | 9. Scripts bridge | Avanzado | Aplicar integracion tecnica |

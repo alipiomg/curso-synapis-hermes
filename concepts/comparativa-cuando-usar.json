@@ -1,12 +1,12 @@
 {
   "id": "comparativa-cuando-usar",
-  "curso_id": "synapis-hermes-dual-agent",
+  "curso_id": "sinapsis-hermes-dual-agent",
   "titulo": "La gran comparativa: cuando usar cada uno",
   "numero": 8,
   "nivel": "intermedio",
   "contenido": {
-    "explicacion": "Esta es la leccion mas importante del curso. Synapis y Hermes son herramientas complementarias, no competidoras. Entender cuando usar cada una es la diferencia entre un setup eficiente y uno frustrante.\n\n**Tabla comparativa:**\n\n| Dimension | Synapis | Hermes |\n|---|---|---|\n| **Memoria** | Instincts JSON, scored 0-1 | USER.md + conversation history |\n| **Aprendizaje** | Automatico (observar → instinct → skill) | Manual (crear skills, configurar) |\n| **Orquestacion** | Dentro de Claude Code sessions | Standalone, multi-sesion, background |\n| **Modelos** | Solo Claude (via Claude Code) | 15+ providers, smart routing |\n| **Extensibilidad** | Skills markdown, commands bash | 40+ tools, plugins Python, Skills Hub |\n| **Integracion** | IDE-native, git-aware | Gateway 9 plataformas, API |\n| **Tokens** | Optimizado (markdown < code) | Variable segun provider |\n\n**Escenarios:**\n- Refactorizar codigo → **Synapis** (contexto IDE, git diff, skills on demand)\n- Investigar API externa → **Hermes** (web tools, multi-modelo)\n- Automatizar deploy check cada 30min → **Hermes** (cron)\n- Aprender patrones de tu codigo → **Synapis** (observaciones automaticas)\n- Bot de Telegram 24/7 → **Hermes** (gateway)\n- Crear PR con convencion del equipo → **Synapis** (instincts de commit patterns)\n\n**5 razones para NO fusionarlos:**\n1. **Dependencia doble**: Dependes de 2 proyectos open source que no controlas. Si uno cambia su API, tu fusion se rompe.\n2. **Synapis funciona MEJOR como markdown**: El razonamiento del LLM con markdown supera cualquier logica Python if/else. Fusionar = degradar.\n3. **Hermes evoluciona rapido**: Su sistema de plugins puede cambiar. Tu fusion quedaria obsoleta en semanas.\n4. **El overlap real es casi cero**: En uso diario, las tareas que haces con uno NUNCA las harias con el otro.\n5. **Coste de reescritura**: 4-5 semanas, ~2,400 lineas de codigo para replicar algo que ya funciona.\n\n**Cuando la fusion SI tiene sentido:**\n1. Abandonas Claude Code completamente y Hermes es tu unico entorno\n2. Quieres crear un producto open source unificado como proyecto propio\n3. Hermes se convierte en tu UNICA herramienta de desarrollo\n\n**La conclusion**: La separacion ES la arquitectura correcta. No es un bug — es una feature.",
-    "metafora": "Fusionar Synapis y Hermes es como soldar una bicicleta a un coche porque los dos tienen ruedas. Si, comparten algunas piezas (modelos de IA, memoria, tools), pero estan disenados para caminos diferentes. La bicicleta (Synapis) es agil en el carril bici del IDE. El coche (Hermes) recorre autopistas de automatizacion y mensajeria. Mantenlos en tu garaje, usa el correcto para cada viaje.",
+    "explicacion": "Esta es la leccion mas importante del curso. Sinapsis y Hermes son herramientas complementarias, no competidoras. Entender cuando usar cada una es la diferencia entre un setup eficiente y uno frustrante.\n\n**Tabla comparativa:**\n\n| Dimension | Sinapsis | Hermes |\n|---|---|---|\n| **Memoria** | Instincts JSON, scored 0-1 | USER.md + conversation history |\n| **Aprendizaje** | Automatico (observar → instinct → skill) | Manual (crear skills, configurar) |\n| **Orquestacion** | Dentro de Claude Code sessions | Standalone, multi-sesion, background |\n| **Modelos** | Solo Claude (via Claude Code) | 15+ providers, smart routing |\n| **Extensibilidad** | Skills markdown, commands bash | 40+ tools, plugins Python, Skills Hub |\n| **Integracion** | IDE-native, git-aware | Gateway 9 plataformas, API |\n| **Tokens** | Optimizado (markdown < code) | Variable segun provider |\n\n**Escenarios:**\n- Refactorizar codigo → **Sinapsis** (contexto IDE, git diff, skills on demand)\n- Investigar API externa → **Hermes** (web tools, multi-modelo)\n- Automatizar deploy check cada 30min → **Hermes** (cron)\n- Aprender patrones de tu codigo → **Sinapsis** (observaciones automaticas)\n- Bot de Telegram 24/7 → **Hermes** (gateway)\n- Crear PR con convencion del equipo → **Sinapsis** (instincts de commit patterns)\n\n**5 razones para NO fusionarlos:**\n1. **Dependencia doble**: Dependes de 2 proyectos open source que no controlas. Si uno cambia su API, tu fusion se rompe.\n2. **Sinapsis funciona MEJOR como markdown**: El razonamiento del LLM con markdown supera cualquier logica Python if/else. Fusionar = degradar.\n3. **Hermes evoluciona rapido**: Su sistema de plugins puede cambiar. Tu fusion quedaria obsoleta en semanas.\n4. **El overlap real es casi cero**: En uso diario, las tareas que haces con uno NUNCA las harias con el otro.\n5. **Coste de reescritura**: 4-5 semanas, ~2,400 lineas de codigo para replicar algo que ya funciona.\n\n**Cuando la fusion SI tiene sentido:**\n1. Abandonas Claude Code completamente y Hermes es tu unico entorno\n2. Quieres crear un producto open source unificado como proyecto propio\n3. Hermes se convierte en tu UNICA herramienta de desarrollo\n\n**La conclusion**: La separacion ES la arquitectura correcta. No es un bug — es una feature.",
+    "metafora": "Fusionar Sinapsis y Hermes es como soldar una bicicleta a un coche porque los dos tienen ruedas. Si, comparten algunas piezas (modelos de IA, memoria, tools), pero estan disenados para caminos diferentes. La bicicleta (Sinapsis) es agil en el carril bici del IDE. El coche (Hermes) recorre autopistas de automatizacion y mensajeria. Mantenlos en tu garaje, usa el correcto para cada viaje.",
     "ejemplo_codigo": {
       "lenguaje": "yaml",
       "titulo": "Coexistencia: cada uno en su directorio, sin conflictos",
@@ -15,7 +15,7 @@
   },
   "mini_reto": {
     "titulo": "Argumenta por que TU setup no debe fusionarlos",
-    "descripcion": "Escribe un parrafo de 100-150 palabras argumentando por que en TU caso especifico (tu stack, tu workflow, tus proyectos) NO deberias fusionar Synapis y Hermes. Usa al menos 3 de las 5 razones explicadas, pero adaptadas a tu situacion real. No copies las razones — reinterpretalas con tus propias palabras y ejemplos.",
+    "descripcion": "Escribe un parrafo de 100-150 palabras argumentando por que en TU caso especifico (tu stack, tu workflow, tus proyectos) NO deberias fusionar Sinapsis y Hermes. Usa al menos 3 de las 5 razones explicadas, pero adaptadas a tu situacion real. No copies las razones — reinterpretalas con tus propias palabras y ejemplos.",
     "tipo": "texto-libre",
     "criterios_exito": [
       "Menciona al menos 3 razones especificas (no genericas)",
@@ -23,27 +23,27 @@
       "Demuestra comprension de que la separacion es una ventaja, no una limitacion",
       "El argumento es coherente y personalizado, no una copia del contenido"
     ],
-    "respuesta_esperada": "Un parrafo personalizado que argumente desde la experiencia del alumno por que mantener Synapis y Hermes separados es la mejor decision para su caso. Ejemplo: 'En mi caso desarrollo con Next.js y uso Claude Code para todo el ciclo de PRs. Synapis me aprende los patrones de commit y naming que uso. Para monitorear mis deploys en Vercel uso Hermes con cron cada 30 min. Si los fusionara, perderia la ventaja del markdown...'",
+    "respuesta_esperada": "Un parrafo personalizado que argumente desde la experiencia del alumno por que mantener Sinapsis y Hermes separados es la mejor decision para su caso. Ejemplo: 'En mi caso desarrollo con Next.js y uso Claude Code para todo el ciclo de PRs. Sinapsis me aprende los patrones de commit y naming que uso. Para monitorear mis deploys en Vercel uso Hermes con cron cada 30 min. Si los fusionara, perderia la ventaja del markdown...'",
     "xp_extra": 20
   },
   "glosario": {
     "Smart Routing": "Capacidad de Hermes de seleccionar automaticamente el modelo de IA mas adecuado segun el tipo de tarea (rapido para queries simples, potente para razonamiento).",
-    "Skills on Demand": "Filosofia de Synapis donde los skills se activan solo cuando son necesarios, sin cargar todo el sistema en memoria permanentemente.",
+    "Skills on Demand": "Filosofia de Sinapsis donde los skills se activan solo cuando son necesarios, sin cargar todo el sistema en memoria permanentemente.",
     "Toolset": "Agrupacion logica de herramientas en Hermes (terminal, web, vision, etc.). Cada toolset se puede habilitar/deshabilitar independientemente.",
-    "Instinct": "Patron detectado por Synapis con un score de confianza 0-1. Cuando el score sube, el instinct puede evolucionar a skill.",
+    "Instinct": "Patron detectado por Sinapsis con un score de confianza 0-1. Cuando el score sube, el instinct puede evolucionar a skill.",
     "Gateway": "Componente de Hermes que conecta con plataformas de mensajeria externas para acceso 24/7."
   },
   "prompt_infografia": {
-    "contenido": "Infografia comparativa dividida en dos columnas: izquierda Synapis (azul teal), derecha Hermes (purple). Centro: linea vertical con texto 'Separacion = Arquitectura correcta'. Cada columna tiene 7 filas comparando: Memoria, Aprendizaje, Orquestacion, Modelos, Extensibilidad, Integracion, Tokens. Abajo: seccion con fondo rojo suave '5 razones para NO fusionar' con iconos de advertencia. Esquina inferior derecha: seccion pequena verde '3 excepciones' en texto pequeno. Footer: metafora visual de bicicleta y coche en garaje. Estilo dark mode, glassmorphism.",
+    "contenido": "Infografia comparativa dividida en dos columnas: izquierda Sinapsis (azul teal), derecha Hermes (purple). Centro: linea vertical con texto 'Separacion = Arquitectura correcta'. Cada columna tiene 7 filas comparando: Memoria, Aprendizaje, Orquestacion, Modelos, Extensibilidad, Integracion, Tokens. Abajo: seccion con fondo rojo suave '5 razones para NO fusionar' con iconos de advertencia. Esquina inferior derecha: seccion pequena verde '3 excepciones' en texto pequeno. Footer: metafora visual de bicicleta y coche en garaje. Estilo dark mode, glassmorphism.",
     "plataforma_recomendada": "Figma",
     "estilo": "dark mode, glassmorphism, teal+purple+amber"
   },
   "conexiones": {
-    "prerequisitos": ["que-es-synapis", "que-es-hermes", "hermes-infraestructura"],
+    "prerequisitos": ["que-es-sinapsis", "que-es-hermes", "hermes-infraestructura"],
     "siguiente_recomendado": ["scripts-bridge"],
     "conceptos_relacionados": ["workflow-diario", "mejoras-futuras"]
   },
-  "metadata_synapis": {
+  "metadata_sinapsis": {
     "observable_clave": "El alumno articula con argumentos propios por que no fusionar y sabe elegir la herramienta correcta para cada escenario",
     "instincts_que_aplican": ["tool-selection-patterns", "architecture-decisions", "separation-of-concerns"],
     "confidence_pedagogica": 0.92

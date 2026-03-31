@@ -1,8 +1,8 @@
-# Prompts de Infografia — Synapis + Hermes: Domina tus dos agentes AI
+# Prompts de Infografia — Sinapsis + Hermes: Domina tus dos agentes AI
 
 > Diseñados como **experto pedagogico en mapas visuales y flujo de datos**.
 > Cada prompt genera una infografia que facilita la comprension visual del concepto.
-> Estilo consistente: dark mode (#0a0a14), glassmorphism, teal (Synapis) + purple (Hermes) + amber (bridge).
+> Estilo consistente: dark mode (#0a0a14), glassmorphism, teal (Sinapsis) + purple (Hermes) + amber (bridge).
 
 ---
 
@@ -41,7 +41,7 @@ Formato: 1920x1080px horizontal.
 
 ---
 
-## Leccion 2: Synapis — instalar tu copiloto de desarrollo
+## Leccion 2: Sinapsis — instalar tu copiloto de desarrollo
 **Tipo de visualizacion**: Diagrama de flujo vertical (instalacion paso a paso)
 
 ```
@@ -49,10 +49,10 @@ PROMPT — Plataforma: Figma
 
 Crea un diagrama de flujo vertical de instalacion sobre fondo oscuro (#0a0a14).
 
-TITULO: "Instalar Synapis en 4 pasos" — teal (#0d9488)
+TITULO: "Instalar Sinapsis en 4 pasos" — teal (#0d9488)
 
 PASO 1 (caja redondeada teal):
-  Input: "git clone https://github.com/Luispitik/synapis"
+  Input: "git clone https://github.com/Luispitik/sinapsis"
   Icono: carpeta con flecha
   Nota al lado: "Descarga el codigo fuente"
 
@@ -68,7 +68,7 @@ FLECHA DESCENDENTE
 PASO 3 (caja redondeada teal):
   Input: "Claude Code lee CLAUDE.md al iniciar"
   Icono: documento con rayo
-  Nota al lado: "Bootstrap automatico — Synapis se activa solo"
+  Nota al lado: "Bootstrap automatico — Sinapsis se activa solo"
 
 FLECHA DESCENDENTE
 
@@ -90,7 +90,7 @@ Formato: 1080x1920px vertical (ideal para stories/movil).
 
 ---
 
-## Leccion 3: Tu primera sesion con Synapis
+## Leccion 3: Tu primera sesion con Sinapsis
 **Tipo de visualizacion**: Diagrama de secuencia (actor → sistema → resultado)
 
 ```
@@ -242,7 +242,7 @@ Formato: 1920x1080px horizontal. Ideal para wallpaper de escritorio.
 
 ---
 
-## Leccion 6: Synapis a fondo — observacion, scoring y evolucion
+## Leccion 6: Sinapsis a fondo — observacion, scoring y evolucion
 **Tipo de visualizacion**: Diagrama de flujo de datos (data flow) multi-nivel
 
 ```
@@ -256,7 +256,7 @@ SECCION SUPERIOR — "Motor de Observacion" (teal)
     [Correcciones] [Repeticiones] [Preferencias]
     [Workarounds] [Tool Chains] [Rechazos]
   Todas las flechas convergen en:
-    → caja grande: "synapis-learning (observer)"
+    → caja grande: "sinapsis-learning (observer)"
     → output: "_observations.json"
 
 SECCION MEDIA — "Scoring Lifecycle" (teal → amber gradiente)
@@ -345,7 +345,7 @@ PROMPT — Plataforma: Canva
 
 Crea una infografia de comparativa split sobre fondo oscuro (#0a0a14).
 
-TITULO: "Synapis vs Hermes: Cuando usar cada uno" (gradiente teal→amber→purple)
+TITULO: "Sinapsis vs Hermes: Cuando usar cada uno" (gradiente teal→amber→purple)
 
 LAYOUT: 2 columnas con separador central amber punteado.
 
@@ -372,7 +372,7 @@ COLUMNA DERECHA — HERMES (fondo purple sutil):
 SECCION INFERIOR — "POR QUE NO FUSIONAR" (fondo amber sutil):
   5 razones en cards horizontales con icono ✗ rojo:
     1. Dependes de 2 proyectos que no controlas
-    2. Synapis funciona MEJOR como markdown (LLM interpreta > Python if/else)
+    2. Sinapsis funciona MEJOR como markdown (LLM interpreta > Python if/else)
     3. Hermes evoluciona rapido — plugins pueden cambiar en v1.0
     4. El overlap real es casi CERO en uso diario
     5. 4-5 semanas / 2400 lineas para reescribir algo que ya funciona
@@ -404,20 +404,20 @@ FLUJO 1 — Izquierda a derecha (teal → amber → purple):
   Hermes → Claude Code: "Ultimas 5 sesiones resumidas"
 
 FLUJO 2 — Derecha a izquierda (purple → amber → teal):
-  "Desde Hermes, leer instincts de Synapis"
+  "Desde Hermes, leer instincts de Sinapsis"
   Hermes → bridge: cat ~/.claude/skills/_instincts.json
-  Bridge → Synapis data: lee JSON
-  Synapis data → Hermes: "Tienes 6 instincts, 2 maduros"
+  Bridge → Sinapsis data: lee JSON
+  Sinapsis data → Hermes: "Tienes 6 instincts, 2 maduros"
 
 FLUJO 3 — Bidireccional (amber central):
   "Compartir API keys sin duplicar"
-  Caja izquierda: "Synapis hereda de Claude Code env"
+  Caja izquierda: "Sinapsis hereda de Claude Code env"
   Caja derecha: "Hermes lee de su propio .env"
   Linea punteada central: "Misma ANTHROPIC_API_KEY, diferentes .env"
 
 SECCION INFERIOR — "3 scripts listos para usar":
   Card 1 (amber): hermes-personal → "Chat personal con Anthropic"
-  Card 2 (amber): synapis-project → "Lanza Claude Code + Synapis"
+  Card 2 (amber): sinapsis-project → "Lanza Claude Code + Sinapsis"
   Card 3 (amber): dual-status → "Estado de ambos lado a lado"
 
 Formato: 1920x1080px horizontal.
@@ -433,7 +433,7 @@ PROMPT — Plataforma: Canva
 
 Crea una timeline horizontal de un dia completo sobre fondo oscuro (#0a0a14).
 
-TITULO: "24 horas con Synapis + Hermes" (gradiente teal→purple)
+TITULO: "24 horas con Sinapsis + Hermes" (gradiente teal→purple)
 
 TIMELINE de izquierda a derecha con hora y actividad:
 
@@ -443,7 +443,7 @@ TIMELINE de izquierda a derecha con hora y actividad:
 
 09:00-12:00 (teal, icono codigo):
   "SYNAPIS + CLAUDE CODE: Desarrollo"
-  "Escribir codigo → Synapis observa → Skills on demand"
+  "Escribir codigo → Sinapsis observa → Skills on demand"
   Barra ancha para indicar duracion larga
 
 12:00 (teal, icono cerebro):
@@ -452,11 +452,11 @@ TIMELINE de izquierda a derecha con hora y actividad:
 
 14:00-17:00 (teal, icono codigo):
   "SYNAPIS + CLAUDE CODE: Mas desarrollo"
-  "Code review, PRs, commits → Synapis sigue aprendiendo"
+  "Code review, PRs, commits → Sinapsis sigue aprendiendo"
 
 17:00 (amber, icono engranaje):
   "BRIDGE: Sincronizar"
-  "hermes chat -q 'lee mis instincts de synapis'"
+  "hermes chat -q 'lee mis instincts de sinapsis'"
 
 18:00 (purple, icono reloj):
   "HERMES CRON: Automatizacion"
@@ -471,7 +471,7 @@ TIMELINE de izquierda a derecha con hora y actividad:
   "Patterns maduros → Skills nuevas → Tu Claude Code mejora"
 
 Codigo de colores en leyenda inferior:
-  Teal = Synapis/Claude Code | Purple = Hermes | Amber = Bridge
+  Teal = Sinapsis/Claude Code | Purple = Hermes | Amber = Bridge
 
 Formato: 1920x600px panoramico (ideal para header de web).
 ```
@@ -488,23 +488,23 @@ Crea un diagrama de arquitectura futura sobre fondo oscuro (#0a0a14).
 Estilo: nodos existentes solidos + nodos futuros con borde punteado.
 
 CAPA SUPERIOR — "HOY" (nodos solidos):
-  Caja teal: "Synapis v3.2" con sub-items: skills, instincts, /evolve
+  Caja teal: "Sinapsis v3.2" con sub-items: skills, instincts, /evolve
   Caja purple: "Hermes v0.6" con sub-items: tools, gateway, cron
   Conexion amber solida: "Bridge scripts"
 
 CAPA MEDIA — "EXTENSIONES POSIBLES" (nodos con borde punteado):
   Nodo 1 (teal punteado): "Skills de Hermes que delegan a Claude Code"
     Ejemplo: "hermes ejecuta → claude --print 'refactoriza X'"
-  Nodo 2 (purple punteado): "Skills de Synapis que consultan Hermes"
+  Nodo 2 (purple punteado): "Skills de Sinapsis que consultan Hermes"
     Ejemplo: "Desde Claude Code → hermes sessions list --json"
   Nodo 3 (amber punteado): "MCP Server compartido"
     Ejemplo: "Base de datos o API custom accesible desde ambos"
-  Nodo 4 (green punteado): "Pipeline: Synapis detecta → Hermes ejecuta"
+  Nodo 4 (green punteado): "Pipeline: Sinapsis detecta → Hermes ejecuta"
     Ejemplo: "Instinct maduro → cron job automatico"
 
 CAPA INFERIOR — "FUTURO LEJANO" (nodos fantasma, opacidad 30%):
   Nodo: "Sincronizacion de memorias bidireccional"
-  Nodo: "Hermes como plugin runtime para Synapis skills"
+  Nodo: "Hermes como plugin runtime para Sinapsis skills"
   Nodo: "Fusion como producto open source (si tuviera sentido)"
 
 NOTA en esquina: "Cada capa es opcional. La arquitectura dual funciona perfectamente sin ninguna extension."
@@ -530,14 +530,14 @@ SUBTITULO: "5 entregables para graduarte como Maestro Dual"
 CARD 1 (teal, icono verificacion):
   "Verificar instalacion"
   - hermes doctor → todo verde
-  - Claude Code + Synapis cargando
+  - Claude Code + Sinapsis cargando
   - Provider: Anthropic en ambos
   XP: 15 | Nivel: Basico
 
 CARD 2 (amber, icono scripts):
   "3 Bridge Scripts"
   - hermes-research (Hermes investiga → archivo para Claude Code)
-  - synapis-export (exporta instincts → formato Hermes)
+  - sinapsis-export (exporta instincts → formato Hermes)
   - dual-status (estado de ambos lado a lado)
   XP: 25 | Nivel: Intermedio
 
@@ -549,7 +549,7 @@ CARD 3 (purple, icono reloj):
   XP: 20 | Nivel: Avanzado
 
 CARD 4 (teal, icono estrella):
-  "1 Skill Custom en Synapis"
+  "1 Skill Custom en Sinapsis"
   - Resuelve un problema real de tu workflow
   - Formato SKILL.md con frontmatter
   - Registrada en _catalog.json
@@ -575,7 +575,7 @@ Formato: 1080x1920px vertical (ideal para poster imprimible).
 ### Paleta de colores consistente
 | Elemento | Color | Hex |
 |----------|-------|-----|
-| Synapis | Teal | #0d9488 |
+| Sinapsis | Teal | #0d9488 |
 | Hermes | Purple | #7c3aed |
 | Bridge/Fusion | Amber | #f59e0b |
 | Fondo | Dark | #0a0a14 |

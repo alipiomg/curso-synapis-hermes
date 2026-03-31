@@ -1,41 +1,41 @@
 {
-  "curso_id": "synapis-hermes-dual-agent",
-  "synapis_version": "3.2",
+  "curso_id": "sinapsis-hermes-dual-agent",
+  "sinapsis_version": "3.2",
   "observables": [
     {
       "evento": "leccion_completada",
       "campos": ["curso_id", "concepto_id", "usuario_id", "tiempo_lectura_seg", "nivel_leccion", "timestamp"],
-      "trigger_synapis": "Si tiempo_lectura < 60s en leccion avanzada → instinct: leccion demasiado corta o alumno muy experimentado"
+      "trigger_sinapsis": "Si tiempo_lectura < 60s en leccion avanzada → instinct: leccion demasiado corta o alumno muy experimentado"
     },
     {
       "evento": "reto_intentado",
       "campos": ["curso_id", "concepto_id", "usuario_id", "intento_num", "resultado", "respuesta", "timestamp"],
-      "trigger_synapis": "Reto fallido 3+ veces → instinct: reto demasiado dificil, necesita pistas adicionales"
+      "trigger_sinapsis": "Reto fallido 3+ veces → instinct: reto demasiado dificil, necesita pistas adicionales"
     },
     {
       "evento": "concepto_omitido",
       "campos": ["curso_id", "concepto_id", "usuario_id", "concepto_anterior", "nivel_leccion", "timestamp"],
-      "trigger_synapis": "Concepto omitido por 60%+ alumnos → instinct: prereq insuficiente o contenido no atractivo"
+      "trigger_sinapsis": "Concepto omitido por 60%+ alumnos → instinct: prereq insuficiente o contenido no atractivo"
     },
     {
       "evento": "ruta_elegida",
       "campos": ["curso_id", "usuario_id", "ruta_nombre", "timestamp"],
-      "trigger_synapis": "Ruta 'Dev experimentado (skip basics)' elegida por 70%+ → instinct: el publico es mayoritariamente avanzado"
+      "trigger_sinapsis": "Ruta 'Dev experimentado (skip basics)' elegida por 70%+ → instinct: el publico es mayoritariamente avanzado"
     },
     {
       "evento": "glosario_consultado",
       "campos": ["curso_id", "concepto_id", "termino", "usuario_id", "timestamp"],
-      "trigger_synapis": "Termino consultado 5+ veces globalmente → instinct: necesita mejor explicacion en el texto principal"
+      "trigger_sinapsis": "Termino consultado 5+ veces globalmente → instinct: necesita mejor explicacion en el texto principal"
     },
     {
       "evento": "nivel_alcanzado",
       "campos": ["curso_id", "usuario_id", "nivel_numero", "nivel_nombre", "xp_total", "timestamp"],
-      "trigger_synapis": "Si 80%+ alumnos se estancan en nivel 2 (Usuario) → instinct: gap de dificultad entre instalacion y uso avanzado"
+      "trigger_sinapsis": "Si 80%+ alumnos se estancan en nivel 2 (Usuario) → instinct: gap de dificultad entre instalacion y uso avanzado"
     },
     {
       "evento": "bridge_script_creado",
       "campos": ["curso_id", "usuario_id", "script_tipo", "herramienta_origen", "herramienta_destino", "timestamp"],
-      "trigger_synapis": "Si alumnos crean bridges no previstos → instinct: documentar nuevo patron de integracion"
+      "trigger_sinapsis": "Si alumnos crean bridges no previstos → instinct: documentar nuevo patron de integracion"
     }
   ]
 }

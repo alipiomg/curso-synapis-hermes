@@ -1,47 +1,47 @@
 {
-  "id": "synapis-primera-sesion",
-  "curso_id": "synapis-hermes-dual-agent",
-  "titulo": "Tu primera sesion con Synapis",
+  "id": "sinapsis-primera-sesion",
+  "curso_id": "sinapsis-hermes-dual-agent",
+  "titulo": "Tu primera sesion con Sinapsis",
   "numero": 3,
   "nivel": "basico-intermedio",
   "contenido": {
-    "explicacion": "## Como arranca Synapis\n\nCuando abres Claude Code, lo primero que pasa es que lee `~/.claude/CLAUDE.md`. Este archivo contiene las instrucciones de bootstrap de Synapis. La primera accion **obligatoria** es leer `_operator-state.json` — tu perfil persistente. Si es tu primera vez, Synapis lanza el **onboarding**: te pregunta quien eres, que haces, y configura tu estado.\n\n## El Skill Router\n\nDespues del onboarding (o si ya tienes estado), Synapis presenta el **Skill Router** con 3 opciones:\n\n1. **Skills on Demand** — Launcher inteligente que detecta tu proyecto y sugiere skills relevantes\n2. **Skill Picker** — Elige skills manualmente del catalogo\n3. **Freestyle** — Claude vanilla, sin sistema de skills\n\nPuedes invocar el router en cualquier momento diciendo \"launcher\", \"skills\" o \"picker\".\n\n## El motor de aprendizaje silencioso\n\nMientras trabajas, Synapis **observa en silencio**. No interrumpe. Detecta 6 tipos de senales:\n\n- **Corrections**: cuando corriges algo que Claude hizo mal\n- **Repetitions**: cuando pides lo mismo varias veces\n- **Preferences**: cuando eliges un patron sobre otro\n- **Workarounds**: cuando haces algo raro para evitar un problema\n- **Tool chains**: secuencias de herramientas que repites\n- **Rejections**: cuando rechazas una sugerencia de Claude\n\nCada senal se guarda como una **observacion** con timestamp y contexto. Con el tiempo, las observaciones que se repiten se convierten en **instincts** — patrones confirmados que Synapis usa para adaptarse a ti.\n\n## Verificar que funciona\n\nDespues de tu primera sesion, puedes revisar que capturo Synapis con `/instinct-status`. Tambien puedes mirar directamente el archivo `_observations.json` para ver las senales crudas.",
+    "explicacion": "## Como arranca Sinapsis\n\nCuando abres Claude Code, lo primero que pasa es que lee `~/.claude/CLAUDE.md`. Este archivo contiene las instrucciones de bootstrap de Sinapsis. La primera accion **obligatoria** es leer `_operator-state.json` — tu perfil persistente. Si es tu primera vez, Sinapsis lanza el **onboarding**: te pregunta quien eres, que haces, y configura tu estado.\n\n## El Skill Router\n\nDespues del onboarding (o si ya tienes estado), Sinapsis presenta el **Skill Router** con 3 opciones:\n\n1. **Skills on Demand** — Launcher inteligente que detecta tu proyecto y sugiere skills relevantes\n2. **Skill Picker** — Elige skills manualmente del catalogo\n3. **Freestyle** — Claude vanilla, sin sistema de skills\n\nPuedes invocar el router en cualquier momento diciendo \"launcher\", \"skills\" o \"picker\".\n\n## El motor de aprendizaje silencioso\n\nMientras trabajas, Sinapsis **observa en silencio**. No interrumpe. Detecta 6 tipos de senales:\n\n- **Corrections**: cuando corriges algo que Claude hizo mal\n- **Repetitions**: cuando pides lo mismo varias veces\n- **Preferences**: cuando eliges un patron sobre otro\n- **Workarounds**: cuando haces algo raro para evitar un problema\n- **Tool chains**: secuencias de herramientas que repites\n- **Rejections**: cuando rechazas una sugerencia de Claude\n\nCada senal se guarda como una **observacion** con timestamp y contexto. Con el tiempo, las observaciones que se repiten se convierten en **instincts** — patrones confirmados que Sinapsis usa para adaptarse a ti.\n\n## Verificar que funciona\n\nDespues de tu primera sesion, puedes revisar que capturo Sinapsis con `/instinct-status`. Tambien puedes mirar directamente el archivo `_observations.json` para ver las senales crudas.",
     "metafora": "Tu primera sesion es como el primer dia de un empleado nuevo. Llega a la oficina (Claude Code), lee tu expediente (operator-state), y empieza a observar como trabajas. No interrumpe, no sugiere nada — solo toma notas. Apunta cuando corriges algo (corrections), cuando repites una tarea (repetitions), cuando rechazas una idea (rejections). Con el tiempo, esas notas se convierten en experiencia real.",
     "ejemplo_codigo": {
       "lenguaje": "bash",
       "titulo": "Flujo tipico de primera sesion",
-      "codigo": "# 1. Abrir Claude Code (Synapis se carga automaticamente)\nclaude\n\n# 2. Synapis muestra el Skill Router:\n# ┌─────────────────────────────────────┐\n# │ [1] Skills on Demand — Launcher     │\n# │ [2] Skill Picker — Elige manual     │\n# │ [3] Freestyle — Sin skills          │\n# └─────────────────────────────────────┘\n\n# 3. Trabaja normalmente durante la sesion\n# Synapis observa en silencio...\n\n# 4. En cualquier momento, revisa el estado:\n/instinct-status\n# Muestra:\n# - Total observations: 12\n# - Active instincts: 3\n# - Top instinct: \"prefers-typescript\" (confidence: 0.45)\n\n# 5. Despues de la sesion, revisa observaciones:\ncat ~/.claude/skills/_observations.json | python -m json.tool | head -30\n\n# 6. Invocar el router en cualquier momento:\n# Escribe: \"launcher\" o \"skills\" o \"picker\""
+      "codigo": "# 1. Abrir Claude Code (Sinapsis se carga automaticamente)\nclaude\n\n# 2. Sinapsis muestra el Skill Router:\n# ┌─────────────────────────────────────┐\n# │ [1] Skills on Demand — Launcher     │\n# │ [2] Skill Picker — Elige manual     │\n# │ [3] Freestyle — Sin skills          │\n# └─────────────────────────────────────┘\n\n# 3. Trabaja normalmente durante la sesion\n# Sinapsis observa en silencio...\n\n# 4. En cualquier momento, revisa el estado:\n/instinct-status\n# Muestra:\n# - Total observations: 12\n# - Active instincts: 3\n# - Top instinct: \"prefers-typescript\" (confidence: 0.45)\n\n# 5. Despues de la sesion, revisa observaciones:\ncat ~/.claude/skills/_observations.json | python -m json.tool | head -30\n\n# 6. Invocar el router en cualquier momento:\n# Escribe: \"launcher\" o \"skills\" o \"picker\""
     }
   },
   "mini_reto": {
     "titulo": "Tu primera sesion real",
-    "descripcion": "Completa una sesion de al menos 10 minutos trabajando en cualquier proyecto con Synapis activo. Luego revisa _observations.json y reporta cuantas observaciones capturo y de que tipo son.",
+    "descripcion": "Completa una sesion de al menos 10 minutos trabajando en cualquier proyecto con Sinapsis activo. Luego revisa _observations.json y reporta cuantas observaciones capturo y de que tipo son.",
     "tipo": "texto-libre",
     "criterios_exito": [
-      "El estudiante completo una sesion real con Synapis activo",
+      "El estudiante completo una sesion real con Sinapsis activo",
       "Puede reportar el numero de observaciones capturadas",
       "Identifica al menos 2 tipos de senal diferentes (corrections, repetitions, preferences, etc.)"
     ],
-    "respuesta_esperada": "Complete una sesion de 15 minutos trabajando en un proyecto Next.js. Synapis capturo 8 observaciones: 3 de tipo preferences (uso de TypeScript sobre JavaScript), 2 repetitions (pedir formateo con Prettier), y 3 tool_chains (siempre hago grep -> read -> edit en secuencia).",
+    "respuesta_esperada": "Complete una sesion de 15 minutos trabajando en un proyecto Next.js. Sinapsis capturo 8 observaciones: 3 de tipo preferences (uso de TypeScript sobre JavaScript), 2 repetitions (pedir formateo con Prettier), y 3 tool_chains (siempre hago grep -> read -> edit en secuencia).",
     "xp_extra": 20
   },
   "glosario": {
-    "Skill Router": "Componente de Synapis que presenta las opciones de trabajo al inicio de cada sesion. Permite elegir entre Skills on Demand, Skill Picker, o Freestyle.",
+    "Skill Router": "Componente de Sinapsis que presenta las opciones de trabajo al inicio de cada sesion. Permite elegir entre Skills on Demand, Skill Picker, o Freestyle.",
     "Slash Command": "Comando que empieza con / y ejecuta una accion especifica dentro de Claude Code. Ejemplo: /instinct-status muestra el estado de los instincts.",
-    "Context Window": "La cantidad de texto que un LLM puede procesar a la vez. Claude tiene ~200K tokens. Synapis optimiza el uso del context window cargando solo las skills necesarias.",
-    "Observation": "Senal cruda capturada por Synapis cuando detecta un patron en tu comportamiento. Tiene timestamp, tipo (correction, repetition, etc.), y contexto."
+    "Context Window": "La cantidad de texto que un LLM puede procesar a la vez. Claude tiene ~200K tokens. Sinapsis optimiza el uso del context window cargando solo las skills necesarias.",
+    "Observation": "Senal cruda capturada por Sinapsis cuando detecta un patron en tu comportamiento. Tiene timestamp, tipo (correction, repetition, etc.), y contexto."
   },
   "prompt_infografia": {
-    "contenido": "Infografia educativa: 'Tu Primera Sesion con Synapis'. Layout vertical. Seccion 1: Flujo de arranque — diagrama de 4 pasos (abrir Claude Code -> leer CLAUDE.md -> leer operator-state -> Skill Router). Seccion 2: Skill Router con 3 opciones visualizadas como 3 puertas/caminos con iconos. Seccion 3: Motor de aprendizaje — circulo central 'Observer Engine' con 6 flechas saliendo hacia cada tipo de senal (corrections, repetitions, preferences, workarounds, tool_chains, rejections) cada una con icono y color unico. Seccion 4: timeline mostrando observacion -> instinct -> skill. Estilo dark mode, glassmorphism, paleta teal+purple+amber.",
+    "contenido": "Infografia educativa: 'Tu Primera Sesion con Sinapsis'. Layout vertical. Seccion 1: Flujo de arranque — diagrama de 4 pasos (abrir Claude Code -> leer CLAUDE.md -> leer operator-state -> Skill Router). Seccion 2: Skill Router con 3 opciones visualizadas como 3 puertas/caminos con iconos. Seccion 3: Motor de aprendizaje — circulo central 'Observer Engine' con 6 flechas saliendo hacia cada tipo de senal (corrections, repetitions, preferences, workarounds, tool_chains, rejections) cada una con icono y color unico. Seccion 4: timeline mostrando observacion -> instinct -> skill. Estilo dark mode, glassmorphism, paleta teal+purple+amber.",
     "plataforma_recomendada": "Figma",
     "estilo": "dark mode, glassmorphism, teal+purple+amber"
   },
   "conexiones": {
-    "prerequisitos": ["synapis-instalacion"],
-    "siguiente_recomendado": ["hermes-instalacion", "synapis-aprendizaje-profundo"],
+    "prerequisitos": ["sinapsis-instalacion"],
+    "siguiente_recomendado": ["hermes-instalacion", "sinapsis-aprendizaje-profundo"],
     "conceptos_relacionados": ["hermes-comandos-esenciales"]
   },
-  "metadata_synapis": {
+  "metadata_sinapsis": {
     "observable_clave": "El estudiante entiende el flujo de sesion, los 6 tipos de senal, y puede verificar observaciones capturadas",
     "instincts_que_aplican": ["session-flow-understanding", "observation-types-awareness"],
     "confidence_pedagogica": 0.88

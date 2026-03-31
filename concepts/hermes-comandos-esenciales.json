@@ -1,6 +1,6 @@
 {
   "id": "hermes-comandos-esenciales",
-  "curso_id": "synapis-hermes-dual-agent",
+  "curso_id": "sinapsis-hermes-dual-agent",
   "titulo": "Hermes: comandos que vas a usar cada dia",
   "numero": 5,
   "nivel": "basico-intermedio",
@@ -37,10 +37,10 @@
   },
   "conexiones": {
     "prerequisitos": ["hermes-instalacion"],
-    "siguiente_recomendado": ["synapis-aprendizaje-profundo"],
-    "conceptos_relacionados": ["synapis-primera-sesion"]
+    "siguiente_recomendado": ["sinapsis-aprendizaje-profundo"],
+    "conceptos_relacionados": ["sinapsis-primera-sesion"]
   },
-  "metadata_synapis": {
+  "metadata_sinapsis": {
     "observable_clave": "El estudiante maneja con fluidez los comandos basicos de Hermes y puede cambiar modelos en vivo segun la tarea",
     "instincts_que_aplican": ["model-selection-by-task", "session-management-flow"],
     "confidence_pedagogica": 0.89

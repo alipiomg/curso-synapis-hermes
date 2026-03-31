@@ -1,6 +1,6 @@
 {
   "id": "hermes-infraestructura",
-  "curso_id": "synapis-hermes-dual-agent",
+  "curso_id": "sinapsis-hermes-dual-agent",
   "titulo": "Hermes a fondo: tools, gateway, cron y multi-modelo",
   "numero": 7,
   "nivel": "avanzado",
@@ -43,7 +43,7 @@
     "siguiente_recomendado": ["comparativa-cuando-usar"],
     "conceptos_relacionados": ["scripts-bridge", "mejoras-futuras"]
   },
-  "metadata_synapis": {
+  "metadata_sinapsis": {
     "observable_clave": "El alumno comprende la amplitud de toolsets y puede configurar gateway + cron",
     "instincts_que_aplican": ["config-yaml-patterns", "multi-model-routing", "gateway-setup"],
     "confidence_pedagogica": 0.82

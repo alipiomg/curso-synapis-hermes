@@ -1,49 +1,49 @@
 {
-  "id": "synapis-instalacion",
-  "curso_id": "synapis-hermes-dual-agent",
-  "titulo": "Synapis: instalar tu copiloto de desarrollo",
+  "id": "sinapsis-instalacion",
+  "curso_id": "sinapsis-hermes-dual-agent",
+  "titulo": "Sinapsis: instalar tu copiloto de desarrollo",
   "numero": 2,
   "nivel": "basico",
   "contenido": {
-    "explicacion": "## Que es Claude Code\n\n**Claude Code** es la CLI oficial de Anthropic para trabajar con Claude directamente desde tu terminal. No es una app web — es un agente que vive en tu linea de comandos, lee tu codigo, edita archivos, y ejecuta comandos. Es como tener a Claude sentado a tu lado viendo tu pantalla.\n\n## Que es Synapis y que instala\n\n**Synapis v3.2** es un sistema de skills que se monta *encima* de Claude Code. Cuando lo instalas, crea una estructura de archivos dentro de `~/.claude/` que convierte a Claude Code de un asistente generico en un copiloto personalizado que aprende de ti.\n\nLo que se instala:\n- **`~/.claude/skills/`** — Carpeta raiz con todas las skills (dormidas en `_library/`, activas cuando se cargan)\n- **`~/.claude/skills/_operator-state.json`** — El cerebro persistente: tu nombre, rol, stack, preferencias, decisiones estrategicas\n- **`~/.claude/skills/_catalog.json`** — Indice de todas las skills disponibles\n- **`~/.claude/skills/_passive-rules.json`** — Reglas que se activan automaticamente por regex\n- **`~/.claude/CLAUDE.md`** — El archivo que Claude Code lee al inicio de cada sesion. Aqui vive el bootstrap de Synapis\n\n## El concepto de Operator State\n\nEl **operator-state** es el archivo mas importante. Es la memoria persistente entre sesiones. Contiene quien eres, tu stack tecnologico, tus preferencias de trabajo, y decisiones que has tomado. Cada vez que abres Claude Code, Synapis lee este archivo PRIMERO — antes de hacer cualquier otra cosa. Asi nunca empiezas de cero.",
-    "metafora": "Instalar Synapis es como montar la oficina de un asistente personal dentro de tu casa. El script de instalacion amuebla la habitacion (crea los archivos de skills), y el operator-state es la libreta donde tu asistente anota todo lo que sabe de ti: tu nombre, que haces, como te gusta trabajar. Cada manana, lo primero que hace es abrir esa libreta.",
+    "explicacion": "## Que es Claude Code\n\n**Claude Code** es la CLI oficial de Anthropic para trabajar con Claude directamente desde tu terminal. No es una app web — es un agente que vive en tu linea de comandos, lee tu codigo, edita archivos, y ejecuta comandos. Es como tener a Claude sentado a tu lado viendo tu pantalla.\n\n## Que es Sinapsis y que instala\n\n**Sinapsis v3.2** es un sistema de skills que se monta *encima* de Claude Code. Cuando lo instalas, crea una estructura de archivos dentro de `~/.claude/` que convierte a Claude Code de un asistente generico en un copiloto personalizado que aprende de ti.\n\nLo que se instala:\n- **`~/.claude/skills/`** — Carpeta raiz con todas las skills (dormidas en `_library/`, activas cuando se cargan)\n- **`~/.claude/skills/_operator-state.json`** — El cerebro persistente: tu nombre, rol, stack, preferencias, decisiones estrategicas\n- **`~/.claude/skills/_catalog.json`** — Indice de todas las skills disponibles\n- **`~/.claude/skills/_passive-rules.json`** — Reglas que se activan automaticamente por regex\n- **`~/.claude/CLAUDE.md`** — El archivo que Claude Code lee al inicio de cada sesion. Aqui vive el bootstrap de Sinapsis\n\n## El concepto de Operator State\n\nEl **operator-state** es el archivo mas importante. Es la memoria persistente entre sesiones. Contiene quien eres, tu stack tecnologico, tus preferencias de trabajo, y decisiones que has tomado. Cada vez que abres Claude Code, Sinapsis lee este archivo PRIMERO — antes de hacer cualquier otra cosa. Asi nunca empiezas de cero.",
+    "metafora": "Instalar Sinapsis es como montar la oficina de un asistente personal dentro de tu casa. El script de instalacion amuebla la habitacion (crea los archivos de skills), y el operator-state es la libreta donde tu asistente anota todo lo que sabe de ti: tu nombre, que haces, como te gusta trabajar. Cada manana, lo primero que hace es abrir esa libreta.",
     "ejemplo_codigo": {
       "lenguaje": "bash",
-      "titulo": "Instalacion completa de Synapis",
-      "codigo": "# 1. Clonar el repositorio de Synapis\ngit clone https://github.com/tu-usuario/synapis.git ~/synapis-install\ncd ~/synapis-install\n\n# 2. Ejecutar el instalador\n# Linux/Mac:\nchmod +x install.sh\n./install.sh\n\n# Windows (PowerShell):\n.\\install.bat\n\n# 3. Verificar la instalacion\nls ~/.claude/skills/\n# Deberias ver:\n# _library/         -> Skills dormidas\n# _catalog.json     -> Catalogo\n# _operator-state.json -> Tu estado\n# _passive-rules.json  -> Reglas pasivas\n\n# 4. Verificar que CLAUDE.md existe\ncat ~/.claude/CLAUDE.md | head -5\n# Deberia mostrar: \"# Synapis v3.2 ...\"\n\n# 5. Abrir Claude Code para activar Synapis\nclaude\n# Synapis se cargara automaticamente\n# y te pedira onboarding si es la primera vez"
+      "titulo": "Instalacion completa de Sinapsis",
+      "codigo": "# 1. Clonar el repositorio de Sinapsis\ngit clone https://github.com/tu-usuario/sinapsis.git ~/sinapsis-install\ncd ~/sinapsis-install\n\n# 2. Ejecutar el instalador\n# Linux/Mac:\nchmod +x install.sh\n./install.sh\n\n# Windows (PowerShell):\n.\\install.bat\n\n# 3. Verificar la instalacion\nls ~/.claude/skills/\n# Deberias ver:\n# _library/         -> Skills dormidas\n# _catalog.json     -> Catalogo\n# _operator-state.json -> Tu estado\n# _passive-rules.json  -> Reglas pasivas\n\n# 4. Verificar que CLAUDE.md existe\ncat ~/.claude/CLAUDE.md | head -5\n# Deberia mostrar: \"# Sinapsis v3.2 ...\"\n\n# 5. Abrir Claude Code para activar Sinapsis\nclaude\n# Sinapsis se cargara automaticamente\n# y te pedira onboarding si es la primera vez"
     }
   },
   "mini_reto": {
     "titulo": "Verifica tu instalacion",
-    "descripcion": "Instala Synapis siguiendo los pasos del ejemplo y verifica que el archivo _operator-state.json existe y tiene contenido. Pega el resultado de tu verificacion.",
+    "descripcion": "Instala Sinapsis siguiendo los pasos del ejemplo y verifica que el archivo _operator-state.json existe y tiene contenido. Pega el resultado de tu verificacion.",
     "tipo": "texto-libre",
     "criterios_exito": [
       "El archivo _operator-state.json existe en ~/.claude/skills/",
       "El archivo tiene contenido JSON valido (no esta vacio)",
-      "El estudiante puede confirmar que CLAUDE.md referencia a Synapis"
+      "El estudiante puede confirmar que CLAUDE.md referencia a Sinapsis"
     ],
-    "respuesta_esperada": "Ejecute ls ~/.claude/skills/ y vi los archivos _operator-state.json, _catalog.json, _passive-rules.json y la carpeta _library. Abri _operator-state.json y contiene un JSON con campos como needsOnboarding. CLAUDE.md tiene el header de Synapis v3.2.",
+    "respuesta_esperada": "Ejecute ls ~/.claude/skills/ y vi los archivos _operator-state.json, _catalog.json, _passive-rules.json y la carpeta _library. Abri _operator-state.json y contiene un JSON con campos como needsOnboarding. CLAUDE.md tiene el header de Sinapsis v3.2.",
     "xp_extra": 20
   },
   "glosario": {
     "Claude Code": "CLI oficial de Anthropic para interactuar con Claude desde la terminal. Lee archivos, ejecuta codigo, y edita tu proyecto directamente.",
-    "Operator State": "Archivo JSON persistente que guarda tu identidad, stack tecnologico, preferencias y decisiones. Synapis lo lee al inicio de cada sesion para no empezar de cero.",
+    "Operator State": "Archivo JSON persistente que guarda tu identidad, stack tecnologico, preferencias y decisiones. Sinapsis lo lee al inicio de cada sesion para no empezar de cero.",
     ".env": "Archivo de variables de entorno. Contiene API keys y configuraciones sensibles. Nunca se sube a git.",
     "PATH": "Variable de entorno del sistema operativo que indica donde buscar ejecutables. Si un comando no se encuentra, probablemente no esta en el PATH.",
-    "install script": "Script (install.sh o install.bat) que automatiza la creacion de archivos y carpetas necesarios para que Synapis funcione dentro de Claude Code."
+    "install script": "Script (install.sh o install.bat) que automatiza la creacion de archivos y carpetas necesarios para que Sinapsis funcione dentro de Claude Code."
   },
   "prompt_infografia": {
-    "contenido": "Infografia educativa: 'Instalar Synapis'. Layout vertical en 4 secciones. Seccion 1: 'Que es Claude Code' con icono de terminal y flecha hacia Synapis. Seccion 2: Diagrama de arbol de archivos mostrando ~/.claude/skills/ con sus archivos clave, cada uno con un icono y una descripcion de 1 linea. Seccion 3: Flujo de instalacion en 5 pasos (clone -> install -> verify -> CLAUDE.md -> abrir Claude Code) con flechas. Seccion 4: Zoom en operator-state.json mostrando campos clave (nombre, stack, preferences). Estilo dark mode, glassmorphism, paleta teal+purple+amber.",
+    "contenido": "Infografia educativa: 'Instalar Sinapsis'. Layout vertical en 4 secciones. Seccion 1: 'Que es Claude Code' con icono de terminal y flecha hacia Sinapsis. Seccion 2: Diagrama de arbol de archivos mostrando ~/.claude/skills/ con sus archivos clave, cada uno con un icono y una descripcion de 1 linea. Seccion 3: Flujo de instalacion en 5 pasos (clone -> install -> verify -> CLAUDE.md -> abrir Claude Code) con flechas. Seccion 4: Zoom en operator-state.json mostrando campos clave (nombre, stack, preferences). Estilo dark mode, glassmorphism, paleta teal+purple+amber.",
     "plataforma_recomendada": "Figma",
     "estilo": "dark mode, glassmorphism, teal+purple+amber"
   },
   "conexiones": {
     "prerequisitos": ["que-son-agentes"],
-    "siguiente_recomendado": ["synapis-primera-sesion"],
+    "siguiente_recomendado": ["sinapsis-primera-sesion"],
     "conceptos_relacionados": ["hermes-instalacion"]
   },
-  "metadata_synapis": {
-    "observable_clave": "El estudiante tiene Synapis instalado y funcionando con operator-state inicializado",
+  "metadata_sinapsis": {
+    "observable_clave": "El estudiante tiene Sinapsis instalado y funcionando con operator-state inicializado",
     "instincts_que_aplican": ["install-verify-pattern", "operator-state-first-read"],
     "confidence_pedagogica": 0.90
   }
