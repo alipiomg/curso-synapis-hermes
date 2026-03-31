@@ -172,6 +172,41 @@
   .sp-mission p { color: #c0c0c8; font-size: 0.72rem; line-height: 1.45; }
   .sp-mission .sp-mission-reward { font-size: 0.65rem; color: var(--amber); font-weight: 600; margin-top: auto; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.04); }
 
+  /* Quick install section */
+  .quick-install { margin-bottom: 28px; border-radius: 16px; border: 1px solid rgba(13,148,136,0.2); background: linear-gradient(135deg, rgba(13,148,136,0.04), rgba(124,58,237,0.03)); overflow: hidden; }
+  .qi-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; cursor: pointer; transition: background 0.3s; }
+  .qi-header:hover { background: rgba(255,255,255,0.02); }
+  .qi-header h3 { color: #fff; font-size: 1.05rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+  .qi-header h3 .qi-icon { color: var(--teal); font-size: 1.2rem; }
+  .qi-header .qi-chevron { color: #a1a1aa; font-size: 0.9rem; transition: transform 0.35s; }
+  .quick-install.open .qi-chevron { transform: rotate(180deg); }
+  .qi-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1); }
+  .quick-install.open .qi-body { max-height: 3000px; }
+  .qi-content { padding: 0 24px 24px; }
+  .qi-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+  .qi-tab { padding: 8px 18px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color: #a1a1aa; transition: all 0.3s; }
+  .qi-tab.active { border-color: rgba(13,148,136,0.4); color: var(--teal); background: rgba(13,148,136,0.08); }
+  .qi-tab:hover:not(.active) { border-color: rgba(255,255,255,0.12); color: #d0d0d8; }
+  .qi-panel { display: none; }
+  .qi-panel.active { display: block; }
+  .qi-reqs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .qi-req { padding: 12px 14px; border-radius: 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); }
+  .qi-req h5 { color: #e0e0e6; font-size: 0.82rem; margin-bottom: 3px; }
+  .qi-req p { color: #b0b0ba; font-size: 0.75rem; line-height: 1.4; }
+  .qi-code { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 16px 18px; margin: 10px 0; overflow-x: auto; position: relative; }
+  .qi-code pre { color: #d4d4dc; font-size: 0.82rem; line-height: 1.7; font-family: 'Cascadia Code', 'Fira Code', monospace; white-space: pre; margin: 0; }
+  .qi-code .comment { color: #6b7280; }
+  .qi-code .cmd { color: var(--teal); }
+  .qi-code .cmd2 { color: var(--purple); }
+  .qi-code .flag { color: var(--amber); }
+  .qi-copy { position: absolute; top: 10px; right: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #a1a1aa; padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+  .qi-copy:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .qi-tip { display: flex; align-items: start; gap: 10px; padding: 12px 14px; border-radius: 10px; background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.12); margin-top: 12px; }
+  .qi-tip .tip-icon { color: var(--amber); font-weight: 700; flex-shrink: 0; font-size: 0.9rem; }
+  .qi-tip p { color: #d0d0d8; font-size: 0.8rem; line-height: 1.5; }
+  .qi-tip strong { color: #fff; }
+  @media(max-width:640px) { .qi-reqs { grid-template-columns: 1fr; } }
+
   /* More missions toggle */
   .sp-more-missions { display: none; }
   .sp-more-missions.show { display: block; }
@@ -698,6 +733,112 @@
         </div>
       </div>
     </div>
+    <!-- QUICK INSTALL -->
+    <div class="quick-install open" id="quickInstall">
+      <div class="qi-header" onclick="document.getElementById('quickInstall').classList.toggle('open')">
+        <h3><span class="qi-icon">&#9881;</span> Instalacion rapida</h3>
+        <span class="qi-chevron">&#9660;</span>
+      </div>
+      <div class="qi-body">
+        <div class="qi-content">
+
+          <div class="qi-tabs">
+            <button class="qi-tab active" onclick="switchQiTab('synapis',this)">Synapis</button>
+            <button class="qi-tab" onclick="switchQiTab('hermes',this)">Hermes Agent</button>
+            <button class="qi-tab" onclick="switchQiTab('ambos',this)">Ambos a la vez</button>
+          </div>
+
+          <!-- SYNAPIS TAB -->
+          <div class="qi-panel active" id="qi-synapis">
+            <div class="qi-reqs">
+              <div class="qi-req"><h5>Requisitos</h5><p>Claude Code instalado y funcionando. Git disponible en terminal.</p></div>
+              <div class="qi-req"><h5>Donde se instala</h5><p>~/.claude/skills/ (se integra dentro de Claude Code, no es un proceso aparte)</p></div>
+            </div>
+            <div class="qi-code">
+              <button class="qi-copy" onclick="copyQi(this,'qiSynCode')">Copiar</button>
+              <pre id="qiSynCode"><span class="comment"># 1. Clonar el repositorio</span>
+<span class="cmd">git clone</span> https://github.com/Luispitik/synapis.git
+
+<span class="comment"># 2. Ejecutar el instalador</span>
+<span class="cmd">cd</span> synapis
+<span class="cmd">./install.sh</span>          <span class="comment"># Linux/Mac</span>
+<span class="cmd">install.bat</span>           <span class="comment"># Windows</span>
+
+<span class="comment"># 3. Verificar (abre Claude Code en cualquier proyecto)</span>
+<span class="comment"># Synapis se cargara automaticamente y mostrara el launcher</span></pre>
+            </div>
+            <div class="qi-tip">
+              <span class="tip-icon">!</span>
+              <p>Synapis se carga <strong>automaticamente</strong> al iniciar Claude Code. No necesitas ejecutar nada extra. Si ves el launcher con opciones [1] Skills on Demand [2] Skill Picker [3] Freestyle, esta funcionando.</p>
+            </div>
+          </div>
+
+          <!-- HERMES TAB -->
+          <div class="qi-panel" id="qi-hermes">
+            <div class="qi-reqs">
+              <div class="qi-req"><h5>Requisitos</h5><p>Python 3.10+ y Git. Node.js recomendado para browser tools.</p></div>
+              <div class="qi-req"><h5>Donde se instala</h5><p>Windows: %LOCALAPPDATA%\hermes\ | Linux/Mac: ~/.hermes/</p></div>
+            </div>
+            <div class="qi-code">
+              <button class="qi-copy" onclick="copyQi(this,'qiHerCode')">Copiar</button>
+              <pre id="qiHerCode"><span class="comment"># LINUX / MAC (instalador oficial)</span>
+<span class="cmd">curl</span> <span class="flag">-fsSL</span> https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | <span class="cmd">bash</span>
+
+<span class="comment"># WINDOWS PowerShell</span>
+<span class="cmd2">irm</span> https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.ps1 | <span class="cmd2">iex</span>
+
+<span class="comment"># WINDOWS Git Bash (manual)</span>
+<span class="cmd">cd</span> $LOCALAPPDATA && <span class="cmd">mkdir</span> hermes && <span class="cmd">cd</span> hermes
+<span class="cmd">git clone</span> <span class="flag">--depth 1</span> https://github.com/NousResearch/hermes-agent.git
+<span class="cmd">cd</span> hermes-agent && <span class="cmd">python</span> <span class="flag">-m</span> venv venv
+<span class="cmd">source</span> venv/Scripts/activate   <span class="comment"># o venv/bin/activate en Linux</span>
+<span class="cmd">pip install</span> <span class="flag">-e</span> ".[cron,cli,pty,mcp,messaging]"
+
+<span class="comment"># Configurar provider Anthropic</span>
+<span class="comment"># Edita config.yaml: provider: "anthropic"</span>
+<span class="comment"># Edita .env: ANTHROPIC_API_KEY=tu-clave-aqui</span>
+
+<span class="comment"># Verificar</span>
+<span class="cmd">hermes</span> doctor</pre>
+            </div>
+            <div class="qi-tip">
+              <span class="tip-icon">!</span>
+              <p>Necesitas una <strong>ANTHROPIC_API_KEY</strong> para usar Hermes con Claude. Consiguela en <strong>console.anthropic.com/settings/keys</strong>. Hermes funciona independiente de Claude Code — son procesos separados.</p>
+            </div>
+          </div>
+
+          <!-- AMBOS TAB -->
+          <div class="qi-panel" id="qi-ambos">
+            <div class="qi-reqs">
+              <div class="qi-req"><h5>Conflictos?</h5><p>Cero. Synapis vive en ~/.claude/, Hermes en su propio directorio. No comparten puertos, procesos ni configuracion.</p></div>
+              <div class="qi-req"><h5>API Keys</h5><p>Synapis hereda la key de Claude Code. Hermes usa su propio .env. Misma key, dos sitios.</p></div>
+            </div>
+            <div class="qi-code">
+              <button class="qi-copy" onclick="copyQi(this,'qiBothCode')">Copiar</button>
+              <pre id="qiBothCode"><span class="comment"># === PASO 1: Instalar Synapis ===</span>
+<span class="cmd">git clone</span> https://github.com/Luispitik/synapis.git && <span class="cmd">cd</span> synapis && <span class="cmd">./install.sh</span>
+
+<span class="comment"># === PASO 2: Instalar Hermes ===</span>
+<span class="cmd">curl</span> <span class="flag">-fsSL</span> https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | <span class="cmd">bash</span>
+
+<span class="comment"># === PASO 3: Verificar ambos ===</span>
+<span class="cmd">hermes</span> doctor                    <span class="comment"># Hermes OK?</span>
+<span class="comment"># Abre Claude Code → Synapis carga solo</span>
+
+<span class="comment"># === PASO 4: Scripts bridge (opcional) ===</span>
+<span class="comment"># ~/bin/hermes-personal  → chat con Hermes</span>
+<span class="comment"># ~/bin/synapis-project  → Claude Code + Synapis</span></pre>
+            </div>
+            <div class="qi-tip">
+              <span class="tip-icon">!</span>
+              <p><strong>Orden recomendado:</strong> Instala Synapis primero (mas rapido, no necesita API key propia). Luego Hermes. Luego conectalos con bridge scripts si quieres (leccion 9 del curso).</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
     <div id="lessonsContainer"></div>
   </div>
 
@@ -948,6 +1089,24 @@ async function sha256(text) {
   var enc = new TextEncoder();
   var hash = await crypto.subtle.digest('SHA-256', enc.encode(text));
   return Array.from(new Uint8Array(hash)).map(function(b){return b.toString(16).padStart(2,'0')}).join('');
+}
+
+// ===== QUICK INSTALL TABS =====
+function switchQiTab(tab, btn) {
+  document.querySelectorAll('.qi-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.qi-panel').forEach(function(p){ p.classList.remove('active'); });
+  btn.classList.add('active');
+  var panel = document.getElementById('qi-' + tab);
+  if (panel) panel.classList.add('active');
+}
+function copyQi(btn, preId) {
+  var el = document.getElementById(preId);
+  if (!el) return;
+  var text = el.textContent;
+  navigator.clipboard.writeText(text).then(function(){
+    btn.textContent = 'Copiado!';
+    setTimeout(function(){ btn.textContent = 'Copiar'; }, 1500);
+  });
 }
 
 function toggleMoreMissions() {
