@@ -127,27 +127,28 @@
   .superpower-btn .bolt { margin-right: 4px; }
 
   /* SUPERPOWER MODAL */
-  .sp-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(10px); z-index: 9000; align-items: center; justify-content: center; overflow-y: auto; padding: 20px; }
+  .sp-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(10px); z-index: 9000; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 40px 20px; }
   .sp-overlay.show { display: flex; }
-  .sp-modal { background: #0e0e1a; border: 1px solid rgba(245,158,11,0.2); border-radius: 20px; padding: 0; max-width: 560px; width: 95%; position: relative; box-shadow: 0 24px 80px rgba(0,0,0,0.6); overflow: hidden; }
-  .sp-modal-header { background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(124,58,237,0.05)); padding: 32px 32px 20px; border-bottom: 1px solid rgba(255,255,255,0.04); }
-  .sp-modal-header h3 { color: var(--amber); font-size: 1.35rem; margin-bottom: 6px; font-weight: 800; letter-spacing: -0.5px; }
+  .sp-modal { background: #0e0e1a; border: 1px solid rgba(245,158,11,0.2); border-radius: 20px; padding: 0; max-width: 900px; width: 95%; position: relative; box-shadow: 0 24px 80px rgba(0,0,0,0.6); overflow: hidden; margin: auto; }
+  .sp-modal-header { background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(124,58,237,0.05)); padding: 28px 36px 20px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .sp-modal-header h3 { color: var(--amber); font-size: 1.4rem; margin-bottom: 6px; font-weight: 800; letter-spacing: -0.5px; }
   .sp-modal-header .sp-tagline { color: #d0d0d8; font-size: 0.92rem; line-height: 1.6; }
   .sp-modal-header .sp-tagline strong { color: #ffffff; }
-  .sp-modal-body { padding: 24px 32px 32px; }
+  .sp-modal-body { padding: 24px 36px 32px; }
   .sp-section-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 2.5px; color: var(--teal); margin-bottom: 12px; font-weight: 700; }
 
-  /* Mission cards */
-  .sp-mission { display: flex; align-items: start; gap: 14px; padding: 14px 16px; border-radius: 12px; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 10px; transition: all 0.3s; cursor: default; }
-  .sp-mission:hover { border-color: rgba(245,158,11,0.2); background: rgba(255,255,255,0.04); }
-  .sp-mission-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+  /* Mission cards — 3 in a row */
+  .sp-missions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 6px; }
+  .sp-mission { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 18px 14px; border-radius: 12px; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.06); transition: all 0.3s; cursor: default; }
+  .sp-mission:hover { border-color: rgba(245,158,11,0.2); background: rgba(255,255,255,0.04); transform: translateY(-3px); }
+  .sp-mission-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; flex-shrink: 0; }
   .sp-mission-icon.free { background: rgba(34,197,94,0.1); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
   .sp-mission-icon.pro { background: rgba(245,158,11,0.1); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
-  .sp-mission h5 { color: #ffffff; font-size: 0.88rem; margin-bottom: 2px; font-weight: 600; }
-  .sp-mission p { color: #c8c8d0; font-size: 0.78rem; line-height: 1.5; }
+  .sp-mission h5 { color: #ffffff; font-size: 0.85rem; margin-bottom: 2px; font-weight: 700; }
+  .sp-mission p { color: #c8c8d0; font-size: 0.75rem; line-height: 1.5; }
 
-  /* Value ladder */
-  .sp-ladder { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+  /* Value ladder — 4 in a row */
+  .sp-ladder { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 14px 0; }
   .sp-tier { padding: 18px; border-radius: 14px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); transition: all 0.45s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden; cursor: default; }
   .sp-tier::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; opacity: 0; transition: opacity 0.4s; }
   .sp-tier::after { content: ''; position: absolute; inset: 0; border-radius: 14px; opacity: 0; transition: opacity 0.5s; pointer-events: none; }
@@ -201,7 +202,17 @@
   .sp-contact a { color: var(--amber); font-weight: 500; }
   .sp-close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: #b0b0ba; font-size: 1.4rem; cursor: pointer; transition: color 0.2s; z-index: 1; }
   .sp-close:hover { color: #fff; }
-  @media(max-width:560px) { .sp-ladder { grid-template-columns: 1fr; } .sp-modal-body,.sp-modal-header { padding-left: 20px; padding-right: 20px; } }
+  @media(max-width:900px) { .sp-ladder { grid-template-columns: 1fr 1fr; } }
+  @media(max-width:640px) {
+    .sp-overlay { padding: 16px 10px; }
+    .sp-modal { width: 100%; border-radius: 16px; }
+    .sp-modal-header, .sp-modal-body { padding-left: 18px; padding-right: 18px; }
+    .sp-missions-grid { grid-template-columns: 1fr; gap: 8px; }
+    .sp-mission { flex-direction: row; text-align: left; padding: 14px; }
+    .sp-ladder { grid-template-columns: 1fr; gap: 10px; }
+    .sp-tier:hover { transform: translateY(-3px) scale(1.01); }
+    .sp-modal-header h3 { font-size: 1.15rem; }
+  }
 
   /* ===== BREADCRUMB ===== */
   .breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 0.78rem; color: #b0b0ba; }
@@ -507,25 +518,27 @@
           <div class="sp-section-title">Supermisiones gratuitas</div>
           <p style="color:#c8c8d0;font-size:0.85rem;margin-bottom:12px;line-height:1.6;">Completa una mini-mision para ganar acceso. Cada mision te ensena algo practico en menos de 10 minutos.</p>
 
-          <div class="sp-mission">
-            <div class="sp-mission-icon free">1</div>
-            <div>
-              <h5>Instala Synapis + Hermes</h5>
-              <p>Sigue las lecciones 2 y 4 del curso. Cuando ambos funcionen, recibiras tu clave de superpoderes.</p>
+          <div class="sp-missions-grid">
+            <div class="sp-mission">
+              <div class="sp-mission-icon free">1</div>
+              <div>
+                <h5>Instala Synapis + Hermes</h5>
+                <p>Lecciones 2 y 4. Cuando ambos funcionen, recibiras tu clave.</p>
+              </div>
             </div>
-          </div>
-          <div class="sp-mission">
-            <div class="sp-mission-icon free">2</div>
-            <div>
-              <h5>Crea tu primer bridge script</h5>
-              <p>Conecta Synapis y Hermes con un script. Leccion 9. Al completarlo, desbloqueas acceso total.</p>
+            <div class="sp-mission">
+              <div class="sp-mission-icon free">2</div>
+              <div>
+                <h5>Crea un bridge script</h5>
+                <p>Leccion 9. Conecta ambos agentes y desbloquea acceso total.</p>
+              </div>
             </div>
-          </div>
-          <div class="sp-mission">
-            <div class="sp-mission-icon pro">3</div>
-            <div>
-              <h5>Comparte tu setup con la comunidad</h5>
-              <p>Documenta tu configuracion y compartela. Recibes superpoderes permanentes + badge exclusivo.</p>
+            <div class="sp-mission">
+              <div class="sp-mission-icon pro">3</div>
+              <div>
+                <h5>Comparte tu setup</h5>
+                <p>Documenta y comparte. Superpoderes permanentes + badge.</p>
+              </div>
             </div>
           </div>
 
