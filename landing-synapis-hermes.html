@@ -6,230 +6,300 @@
 <title>Synapis + Hermes — Domina tus dos agentes AI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0a0a14; color: #d4d4d8; font-family: 'Outfit', 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.7; }
-  code, .code-box pre { font-family: 'Space Mono', 'Cascadia Code', 'Fira Code', monospace; }
-  a { color: #0d9488; text-decoration: none; }
-  a:hover { text-decoration: underline; }
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#06060e;--bg2:#0a0a16;--bg3:#0e0e1a;
+  --surface:rgba(255,255,255,0.025);--surface2:rgba(255,255,255,0.04);--surface3:rgba(255,255,255,0.06);
+  --glass:rgba(255,255,255,0.035);--glass-border:rgba(255,255,255,0.08);--glass-hover:rgba(255,255,255,0.06);
+  --teal:#14b8a6;--teal-dim:#0d9488;--teal-glow:rgba(20,184,166,0.15);--teal-border:rgba(20,184,166,0.2);
+  --purple:#8b5cf6;--purple-dim:#7c3aed;--purple-glow:rgba(139,92,246,0.15);--purple-border:rgba(139,92,246,0.2);
+  --amber:#f59e0b;--amber-dim:#d97706;--amber-glow:rgba(245,158,11,0.15);--amber-border:rgba(245,158,11,0.2);
+  --red:#ef4444;--red-dim:rgba(239,68,68,0.08);--red-border:rgba(239,68,68,0.15);
+  --green:#22c55e;
+  --text:#f0f0f5;--text2:#a1a1aa;--text3:#52525b;
+  --radius:16px;--radius-sm:10px;--radius-xs:6px;
+  --font:'Outfit',system-ui,-apple-system,sans-serif;--mono:'Space Mono',monospace;
+}
+body{background:var(--bg);color:var(--text2);font-family:var(--font);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:var(--teal);text-decoration:none;transition:color .2s}
+a:hover{color:var(--text)}
 
-  /* Nav */
-  .nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,20,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0 24px; }
-  .nav-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
-  .nav-logo { font-weight: 700; color: #fff; font-size: 1.1rem; text-decoration: none; }
-  .nav-logo .teal { color: #0d9488; }
-  .nav-logo .purple { color: #7c3aed; }
-  .nav-links { display: flex; gap: 24px; align-items: center; }
-  .nav-links a { color: #71717a; font-size: 0.9rem; }
-  .nav-links a:hover { color: #fff; text-decoration: none; }
-  .nav-links a.active { color: #0d9488; }
-  .nav-cta { background: rgba(245,158,11,0.12); color: #f59e0b !important; padding: 6px 16px; border-radius: 8px; border: 1px solid rgba(245,158,11,0.25); font-weight: 600; }
-  .nav-cta:hover { background: rgba(245,158,11,0.2); }
+/* Grain overlay */
+.grain{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;opacity:.018;
+background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
-  /* Hero */
-  .hero { padding: 100px 20px 80px; text-align: center; background: radial-gradient(ellipse at 30% 0%, rgba(13,148,136,0.12) 0%, transparent 50%), radial-gradient(ellipse at 70% 0%, rgba(124,58,237,0.12) 0%, transparent 50%), linear-gradient(180deg, #0f1629 0%, #0a0a14 100%); }
-  .hero .badge { display: inline-block; background: rgba(245,158,11,0.12); color: #f59e0b; padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; border: 1px solid rgba(245,158,11,0.25); margin-bottom: 24px; font-weight: 500; letter-spacing: 0.5px; }
-  .hero h1 { font-size: 3.2rem; color: #fff; margin-bottom: 16px; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.15; font-weight: 800; }
-  .hero h1 .gradient { background: linear-gradient(135deg, #0d9488, #f59e0b, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .hero .sub { font-size: 1.25rem; color: #a0a0a0; max-width: 650px; margin: 0 auto 40px; }
-  .hero .cta-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-  .btn { display: inline-block; padding: 14px 32px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; font-family: 'Outfit', sans-serif; }
-  .btn-amber { background: linear-gradient(135deg, #f59e0b, #d97706); color: #0a0a14; }
-  .btn-amber:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245,158,11,0.3); text-decoration: none; color: #0a0a14; }
-  .btn-ghost { background: transparent; color: #a0a0a0; border: 1px solid rgba(255,255,255,0.1); }
-  .btn-ghost:hover { border-color: rgba(255,255,255,0.3); color: #fff; text-decoration: none; }
-  .btn-teal { background: linear-gradient(135deg, #0d9488, #0f766e); color: #fff; }
-  .btn-teal:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(13,148,136,0.3); text-decoration: none; }
-  .btn-purple { background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; }
-  .btn-purple:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,58,237,0.3); text-decoration: none; }
+/* Glass card mixin */
+.glass{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:all .35s cubic-bezier(.4,0,.2,1)}
+.glass:hover{background:var(--glass-hover);border-color:rgba(255,255,255,0.12);transform:translateY(-3px);box-shadow:0 20px 60px rgba(0,0,0,0.4)}
 
-  .wrap { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+/* ====== NAV ====== */
+.nav{position:sticky;top:0;z-index:100;background:rgba(6,6,14,0.85);backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);border-bottom:1px solid rgba(255,255,255,0.04);padding:0 32px}
+.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-weight:800;font-size:1.15rem;letter-spacing:-.5px;display:flex;align-items:center;gap:6px}
+.nav-logo .s{color:var(--teal)}.nav-logo .x{color:var(--text3);font-weight:300;font-size:.9rem}.nav-logo .h{color:var(--purple)}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{color:var(--text3);font-size:.88rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{background:linear-gradient(135deg,var(--amber),var(--amber-dim));color:var(--bg)!important;padding:8px 20px;border-radius:var(--radius-xs);font-weight:700;font-size:.85rem;letter-spacing:.3px;box-shadow:0 0 20px var(--amber-glow);transition:all .3s}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 30px rgba(245,158,11,0.4);color:var(--bg)!important}
 
-  /* Sections */
-  .section { padding: 80px 0; }
-  .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px; color: #0d9488; margin-bottom: 8px; font-family: 'Space Mono', monospace; }
-  .section h2 { font-size: 2rem; color: #fff; margin-bottom: 12px; font-weight: 700; }
-  .section .lead { color: #71717a; font-size: 1.05rem; margin-bottom: 40px; }
+/* ====== HERO ====== */
+.hero{position:relative;padding:120px 32px 100px;text-align:center;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 600px 400px at 30% 20%,var(--teal-glow),transparent),
+  radial-gradient(ellipse 600px 400px at 70% 30%,var(--purple-glow),transparent),
+  radial-gradient(ellipse 800px 300px at 50% 80%,var(--amber-glow),transparent);
+  animation:heroDrift 25s ease-in-out infinite alternate;opacity:.7}
+@keyframes heroDrift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(-2%,1%) scale(1.02)}100%{transform:translate(1%,-1%) scale(1)}}
+.hero>*{position:relative;z-index:1}
+.hero .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,158,11,0.08);color:var(--amber);padding:8px 22px;border-radius:50px;font-size:.78rem;border:1px solid var(--amber-border);margin-bottom:32px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;font-family:var(--mono)}
+.hero .badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--amber);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.hero h1{font-size:clamp(2.4rem,6vw,4rem);color:var(--text);margin-bottom:20px;max-width:850px;margin-left:auto;margin-right:auto;line-height:1.08;font-weight:900;letter-spacing:-2px}
+.hero h1 .grad{background:linear-gradient(135deg,var(--teal) 0%,var(--amber) 45%,var(--purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .sub{font-size:1.2rem;color:var(--text2);max-width:600px;margin:0 auto 48px;font-weight:300;line-height:1.8}
+.hero .sub strong{color:var(--text);font-weight:500}
+.cta-group{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 36px;border-radius:var(--radius-sm);font-size:1rem;font-weight:700;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);border:none;font-family:var(--font);letter-spacing:.3px;text-decoration:none!important}
+.btn-amber{background:linear-gradient(135deg,var(--amber),#e08a00);color:var(--bg);box-shadow:0 0 30px var(--amber-glow),inset 0 1px 0 rgba(255,255,255,0.2)}
+.btn-amber:hover{transform:translateY(-3px);box-shadow:0 8px 40px rgba(245,158,11,0.35),inset 0 1px 0 rgba(255,255,255,0.2);color:var(--bg)}
+.btn-ghost{background:var(--glass);color:var(--text2);border:1px solid var(--glass-border);backdrop-filter:blur(12px)}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.2);color:var(--text);background:var(--glass-hover)}
 
-  /* Pain */
-  .pain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .pain-card { padding: 24px; border-radius: 12px; background: rgba(239,68,68,0.04); border: 1px solid rgba(239,68,68,0.15); }
-  .pain-card h4 { color: #ef4444; font-size: 1rem; margin-bottom: 8px; }
-  .pain-card p { font-size: 0.9rem; color: #71717a; }
+.wrap{max-width:1100px;margin:0 auto;padding:0 32px}
 
-  /* Metrics */
-  .metrics { display: flex; gap: 20px; padding: 40px 0; flex-wrap: wrap; justify-content: center; }
-  .metric { text-align: center; padding: 24px 20px; flex: 1; min-width: 160px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); backdrop-filter: blur(12px); }
-  .metric .num { font-size: 2.5rem; font-weight: 700; font-family: 'Space Mono', monospace; }
-  .metric .label { font-size: 0.8rem; color: #71717a; margin-top: 4px; }
-  .m-teal .num { color: #0d9488; }
-  .m-amber .num { color: #f59e0b; }
-  .m-purple .num { color: #7c3aed; }
-  .m-green .num { color: #22c55e; }
+/* ====== SECTIONS ====== */
+.section{padding:100px 0}
+.section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:3px;color:var(--teal);margin-bottom:10px;font-family:var(--mono);font-weight:700}
+.section h2{font-size:clamp(1.6rem,3.5vw,2.4rem);color:var(--text);margin-bottom:14px;font-weight:800;letter-spacing:-1px;line-height:1.15}
+.section .lead{color:var(--text3);font-size:1.05rem;margin-bottom:48px;max-width:600px;font-weight:300}
 
-  /* Solution */
-  .sol-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
-  .sol-card { padding: 28px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); transition: border-color 0.3s, background 0.3s; backdrop-filter: blur(12px); }
-  .sol-card:hover { border-color: rgba(245,158,11,0.3); background: rgba(255,255,255,0.03); }
-  .sol-card .sol-tag { display: inline-block; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 4px; margin-bottom: 12px; font-weight: 600; font-family: 'Space Mono', monospace; }
-  .sol-tag-teal { background: rgba(13,148,136,0.12); color: #0d9488; border: 1px solid rgba(13,148,136,0.25); }
-  .sol-tag-purple { background: rgba(124,58,237,0.12); color: #7c3aed; border: 1px solid rgba(124,58,237,0.25); }
-  .sol-tag-amber { background: rgba(245,158,11,0.12); color: #f59e0b; border: 1px solid rgba(245,158,11,0.25); }
-  .sol-card h4 { color: #fff; font-size: 1rem; margin-bottom: 8px; }
-  .sol-card p { font-size: 0.88rem; color: #71717a; }
+/* ====== PAIN POINTS ====== */
+.pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pain-card{padding:28px;border-radius:var(--radius);background:var(--red-dim);border:1px solid var(--red-border);transition:all .3s}
+.pain-card:hover{border-color:rgba(239,68,68,0.3);transform:translateY(-2px)}
+.pain-card h4{color:var(--red);font-size:.95rem;margin-bottom:8px;font-weight:700}
+.pain-card p{font-size:.88rem;color:var(--text3);line-height:1.65}
 
-  /* Compare */
-  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 40px 0; }
-  .compare-col { padding: 32px; border-radius: 12px; backdrop-filter: blur(12px); }
-  .compare-before { background: rgba(239,68,68,0.04); border: 1px solid rgba(239,68,68,0.2); }
-  .compare-after { background: rgba(13,148,136,0.04); border: 1px solid rgba(13,148,136,0.2); }
-  .compare-col h3 { font-size: 1.2rem; margin-bottom: 16px; }
-  .compare-before h3 { color: #ef4444; }
-  .compare-after h3 { color: #0d9488; }
-  .compare-col li { padding: 6px 0; font-size: 0.9rem; color: #a0a0a0; list-style: none; }
-  .compare-before li::before { content: "\2717 "; color: #ef4444; }
-  .compare-after li::before { content: "\2713 "; color: #0d9488; }
+/* ====== METRICS ====== */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:48px 0}
+.metric{text-align:center;padding:32px 20px;border-radius:var(--radius);position:relative;overflow:hidden}
+.metric::before{content:'';position:absolute;inset:0;border-radius:var(--radius);padding:1px;
+  background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02));
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude}
+.metric{background:var(--surface);backdrop-filter:blur(20px)}
+.metric .num{font-size:2.8rem;font-weight:800;font-family:var(--mono);line-height:1}
+.metric .label{font-size:.78rem;color:var(--text3);margin-top:8px;font-weight:500}
+.m-teal .num{color:var(--teal);text-shadow:0 0 30px var(--teal-glow)}
+.m-amber .num{color:var(--amber);text-shadow:0 0 30px var(--amber-glow)}
+.m-purple .num{color:var(--purple);text-shadow:0 0 30px var(--purple-glow)}
+.m-green .num{color:var(--green);text-shadow:0 0 30px rgba(34,197,94,0.15)}
 
-  /* Steps */
-  .step { display: grid; grid-template-columns: 60px 1fr; gap: 20px; margin: 24px 0; align-items: start; }
-  .step-num { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 700; background: rgba(245,158,11,0.12); color: #f59e0b; border: 1px solid rgba(245,158,11,0.25); font-family: 'Space Mono', monospace; }
-  .step h4 { color: #fff; margin-bottom: 4px; }
-  .step p { font-size: 0.9rem; color: #71717a; }
+/* ====== SOLUTION GRID ====== */
+.sol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.sol-card{padding:32px;position:relative;overflow:hidden}
+.sol-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .3s}
+.sol-card:hover::after{opacity:1}
+.sol-card.zone-teal::after{background:linear-gradient(90deg,var(--teal),transparent)}
+.sol-card.zone-purple::after{background:linear-gradient(90deg,var(--purple),transparent)}
+.sol-card.zone-amber::after{background:linear-gradient(90deg,var(--amber),transparent)}
+.sol-tag{display:inline-block;font-size:.62rem;text-transform:uppercase;letter-spacing:2px;padding:4px 12px;border-radius:50px;margin-bottom:14px;font-weight:700;font-family:var(--mono)}
+.sol-tag-teal{background:rgba(20,184,166,0.08);color:var(--teal);border:1px solid var(--teal-border)}
+.sol-tag-purple{background:rgba(139,92,246,0.08);color:var(--purple);border:1px solid var(--purple-border)}
+.sol-tag-amber{background:rgba(245,158,11,0.08);color:var(--amber);border:1px solid var(--amber-border)}
+.sol-card h4{color:var(--text);font-size:1.05rem;margin-bottom:8px;font-weight:700}
+.sol-card p{font-size:.88rem;color:var(--text3);line-height:1.65}
 
-  /* Quote */
-  .quote { text-align: center; padding: 60px 40px; margin: 40px 0; border-radius: 16px; background: rgba(245,158,11,0.04); border: 1px solid rgba(245,158,11,0.1); backdrop-filter: blur(12px); }
-  .quote blockquote { font-size: 1.3rem; color: #fff; font-style: italic; max-width: 700px; margin: 0 auto 16px; line-height: 1.6; }
-  .quote cite { color: #71717a; font-size: 0.9rem; }
+/* ====== COMPARE ====== */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:48px 0}
+.compare-col{padding:36px;border-radius:var(--radius);backdrop-filter:blur(20px)}
+.compare-before{background:var(--red-dim);border:1px solid var(--red-border)}
+.compare-after{background:rgba(20,184,166,0.05);border:1px solid var(--teal-border)}
+.compare-col h3{font-size:1.15rem;margin-bottom:20px;font-weight:700;letter-spacing:-.5px}
+.compare-before h3{color:var(--red)}.compare-after h3{color:var(--teal)}
+.compare-col ul{list-style:none}
+.compare-col li{padding:8px 0;font-size:.9rem;color:var(--text2);display:flex;align-items:start;gap:10px;line-height:1.5}
+.compare-before li::before{content:"\2717";color:var(--red);font-weight:700;flex-shrink:0;margin-top:2px}
+.compare-after li::before{content:"\2713";color:var(--teal);font-weight:700;flex-shrink:0;margin-top:2px}
 
-  /* Course Card */
-  .course-card { max-width: 640px; margin: 40px auto; padding: 36px; border-radius: 16px; background: rgba(245,158,11,0.04); border: 1px solid rgba(245,158,11,0.2); text-align: left; backdrop-filter: blur(12px); }
-  .course-card h3 { color: #f59e0b; margin-bottom: 8px; font-size: 1.3rem; }
-  .course-card .stats { display: flex; gap: 12px; margin: 16px 0; flex-wrap: wrap; }
-  .course-card .stat { font-size: 0.85rem; color: #a0a0a0; background: rgba(255,255,255,0.04); padding: 6px 14px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); }
+/* ====== STEPS ====== */
+.steps{max-width:700px}
+.step{display:grid;grid-template-columns:56px 1fr;gap:24px;margin:28px 0;align-items:start}
+.step-num{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;font-family:var(--mono);
+  background:rgba(245,158,11,0.06);color:var(--amber);border:1px solid var(--amber-border);
+  box-shadow:0 0 20px var(--amber-glow)}
+.step h4{color:var(--text);margin-bottom:4px;font-weight:700;font-size:1rem}
+.step p{font-size:.9rem;color:var(--text3);line-height:1.6}
 
-  /* CTA Final */
-  .cta-section { text-align: center; padding: 80px 20px; background: radial-gradient(ellipse at 30% 100%, rgba(13,148,136,0.08) 0%, transparent 50%), radial-gradient(ellipse at 70% 100%, rgba(124,58,237,0.08) 0%, transparent 50%); }
-  .cta-section h2 { font-size: 2.2rem; color: #fff; margin-bottom: 16px; }
-  .cta-section p { color: #71717a; font-size: 1.1rem; max-width: 600px; margin: 0 auto 32px; }
+/* ====== QUOTE ====== */
+.quote-wrap{padding:0 32px}
+.quote{text-align:center;padding:64px 48px;margin:48px auto;max-width:1100px;border-radius:var(--radius);position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(245,158,11,0.04),rgba(139,92,246,0.04));border:1px solid rgba(245,158,11,0.08)}
+.quote::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal),var(--amber),var(--purple))}
+.quote blockquote{font-size:1.35rem;color:var(--text);font-style:italic;max-width:700px;margin:0 auto 16px;line-height:1.65;font-weight:300}
+.quote blockquote strong{font-weight:600;color:var(--amber)}
+.quote cite{color:var(--text3);font-size:.85rem;font-family:var(--mono)}
 
-  .footer { padding: 40px 20px; text-align: center; color: #3f3f46; font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.04); }
-  .footer a { color: #71717a; }
+/* ====== COURSE CARD ====== */
+.course-card{max-width:700px;margin:48px auto;padding:40px;border-radius:var(--radius);position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(245,158,11,0.04),rgba(245,158,11,0.01));border:1px solid var(--amber-border);
+  backdrop-filter:blur(20px)}
+.course-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal),var(--amber),var(--purple))}
+.course-card h3{color:var(--amber);margin-bottom:10px;font-size:1.35rem;font-weight:800;letter-spacing:-.5px}
+.course-card .desc{color:var(--text2);margin-bottom:16px;font-size:.95rem;line-height:1.7}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.stat{font-size:.8rem;color:var(--text2);background:var(--surface);padding:7px 16px;border-radius:50px;border:1px solid var(--glass-border);font-weight:500;font-family:var(--mono)}
+.course-card .note{color:var(--text3);font-size:.82rem;margin-top:16px;font-style:italic}
 
-  @media (max-width: 768px) {
-    .hero h1 { font-size: 2rem; }
-    .pain-grid, .sol-grid, .compare { grid-template-columns: 1fr; }
-    .metrics { flex-direction: column; }
-    .nav-links { gap: 12px; }
-    .nav-links a:not(.nav-cta) { display: none; }
-  }
+/* ====== CTA FINAL ====== */
+.cta-section{text-align:center;padding:100px 32px;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 500px 300px at 30% 80%,var(--teal-glow),transparent),
+  radial-gradient(ellipse 500px 300px at 70% 80%,var(--purple-glow),transparent);opacity:.5}
+.cta-section>*{position:relative;z-index:1}
+.cta-section h2{font-size:clamp(1.8rem,4vw,2.6rem);color:var(--text);margin-bottom:16px;font-weight:900;letter-spacing:-1px}
+.cta-section p{color:var(--text3);font-size:1.1rem;max-width:550px;margin:0 auto 40px;font-weight:300;line-height:1.8}
+
+/* ====== FOOTER ====== */
+.footer{padding:48px 32px;text-align:center;color:var(--text3);font-size:.8rem;border-top:1px solid rgba(255,255,255,0.04)}
+.footer a{color:var(--text3);transition:color .2s}.footer a:hover{color:var(--text)}
+
+/* ====== RESPONSIVE ====== */
+@media(max-width:900px){.sol-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){
+  .hero{padding:80px 20px 60px}
+  .hero h1{font-size:2.2rem;letter-spacing:-1px}
+  .pain-grid,.compare{grid-template-columns:1fr}
+  .sol-grid{grid-template-columns:1fr}
+  .metrics{grid-template-columns:1fr 1fr}
+  .nav-links a:not(.nav-cta){display:none}
+  .quote{padding:40px 24px}
+  .quote blockquote{font-size:1.1rem}
+}
+@media(max-width:480px){.metrics{grid-template-columns:1fr}.hero .sub{font-size:1rem}}
+
+/* ====== SCROLL REVEAL ====== */
+.reveal{opacity:0;transform:translateY(24px);transition:all .7s cubic-bezier(.4,0,.2,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  .hero::before{animation:none}
+  .glass:hover{transform:none}
+  .btn:hover{transform:none}
+}
 </style>
 </head>
 <body>
+<div class="grain"></div>
 
 <!-- NAV -->
 <nav class="nav">
   <div class="nav-inner">
-    <a href="#" class="nav-logo"><span class="teal">Synapis</span> <span style="color:#71717a;font-weight:400;">x</span> <span class="purple">Hermes</span></a>
+    <a href="#" class="nav-logo"><span class="s">Synapis</span><span class="x">x</span><span class="h">Hermes</span></a>
     <div class="nav-links">
-      <a href="#" class="active">Inicio</a>
       <a href="#comparativa">Comparativa</a>
-      <a href="curso-synapis-hermes.html" class="nav-cta">Curso Gratis</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="curso-synapis-hermes.html" class="nav-cta">Empezar gratis</a>
     </div>
   </div>
 </nav>
 
 <!-- HERO -->
-<div class="hero">
-  <div class="badge">CURSO GRATUITO -- 12 LECCIONES -- 8 HORAS</div>
-  <h1><span class="gradient">Domina tus dos agentes AI</span></h1>
-  <p class="sub">Synapis aprende como trabajas. Hermes ejecuta lo que necesitas. Juntos, sin fusionarse.</p>
+<header class="hero">
+  <div class="badge">Curso gratuito &middot; 12 lecciones &middot; 8 horas</div>
+  <h1><span class="grad">Domina tus dos agentes AI</span></h1>
+  <p class="sub"><strong>Synapis</strong> aprende como trabajas. <strong>Hermes</strong> ejecuta lo que necesitas. Juntos, sin fusionarse.</p>
   <div class="cta-group">
     <a href="curso-synapis-hermes.html" class="btn btn-amber">Empezar el curso</a>
     <a href="#comparativa" class="btn btn-ghost">Ver comparativa</a>
   </div>
-</div>
+</header>
 
 <!-- PAIN POINTS -->
-<div class="section"><div class="wrap">
+<section class="section"><div class="wrap">
   <div class="section-label">El problema</div>
-  <h2>Por que necesitas dos agentes (y por que no fusionarlos)</h2>
+  <h2>Por que necesitas dos agentes<br>(y por que no fusionarlos)</h2>
   <p class="lead">Cada enfoque tiene sus limites. La solucion no es uno mejor, sino dos complementarios.</p>
   <div class="pain-grid">
-    <div class="pain-card">
+    <div class="pain-card glass reveal">
       <h4>Un agente no basta</h4>
       <p>Claude Code es genial para codigo pero no tiene cron, gateway ni multi-modelo. Te falta la mitad del puzzle.</p>
     </div>
-    <div class="pain-card">
+    <div class="pain-card glass reveal">
       <h4>Hermes es potente pero no aprende</h4>
       <p>Background review cada 10 turnos, sin scoring, sin lifecycle. Ejecuta perfecto, pero no evoluciona contigo.</p>
     </div>
-    <div class="pain-card">
+    <div class="pain-card glass reveal">
       <h4>Fusionar parece la solucion</h4>
       <p>Pero son 4-5 semanas de trabajo para reescribir algo que ya funciona. Y pierdes las actualizaciones de ambos.</p>
     </div>
-    <div class="pain-card">
+    <div class="pain-card glass reveal">
       <h4>Necesitas arquitectura, no fusion</h4>
       <p>Dos herramientas especializadas conectadas por scripts bridge. Cada una en su zona, comunicadas cuando importa.</p>
     </div>
   </div>
-</div></div>
+</div></section>
 
 <!-- METRICS -->
-<div class="section" style="padding-top:0;"><div class="wrap">
+<section class="section" style="padding-top:0"><div class="wrap">
   <div class="metrics">
-    <div class="metric m-teal"><div class="num">2</div><div class="label">Agentes complementarios</div></div>
-    <div class="metric m-amber"><div class="num">12</div><div class="label">Lecciones</div></div>
-    <div class="metric m-purple"><div class="num">40+</div><div class="label">Tools en Hermes</div></div>
-    <div class="metric m-green"><div class="num">0</div><div class="label">Conflictos entre ambos</div></div>
+    <div class="metric glass reveal m-teal"><div class="num">2</div><div class="label">Agentes complementarios</div></div>
+    <div class="metric glass reveal m-amber"><div class="num">12</div><div class="label">Lecciones gamificadas</div></div>
+    <div class="metric glass reveal m-purple"><div class="num">40+</div><div class="label">Tools en Hermes</div></div>
+    <div class="metric glass reveal m-green"><div class="num">0</div><div class="label">Conflictos entre ambos</div></div>
   </div>
-</div></div>
+</div></section>
 
 <!-- SOLUTION / COURSE MODULES -->
-<div class="section" id="comparativa"><div class="wrap">
+<section class="section" id="comparativa"><div class="wrap">
   <div class="section-label">El curso</div>
   <h2>6 modulos: de fundamentos a integracion</h2>
   <p class="lead">Aprende cada sistema por separado, compararlos con criterio, y conectarlos sin romper nada.</p>
   <div class="sol-grid">
-    <div class="sol-card">
-      <div class="sol-tag sol-tag-amber">Modulo 1</div>
-      <h4>Fundamentos</h4>
-      <p>Que es un agente AI y por que dos son mejor que uno cuando cada uno tiene su especialidad.</p>
+    <div class="sol-card glass reveal zone-amber">
+      <div class="sol-tag sol-tag-amber">Fundamentos</div>
+      <h4>Que es un agente AI</h4>
+      <p>Y por que dos son mejor que uno cuando cada uno tiene su especialidad.</p>
     </div>
-    <div class="sol-card">
-      <div class="sol-tag sol-tag-teal">Modulo 2</div>
-      <h4>Synapis Basics</h4>
-      <p>Instalar y usar tu copiloto de desarrollo. Skills on demand, memoria persistente, aprendizaje continuo.</p>
+    <div class="sol-card glass reveal zone-teal">
+      <div class="sol-tag sol-tag-teal">Synapis</div>
+      <h4>Tu copiloto de desarrollo</h4>
+      <p>Skills on demand, memoria persistente, aprendizaje continuo. Todo dentro de Claude Code.</p>
     </div>
-    <div class="sol-card">
-      <div class="sol-tag sol-tag-purple">Modulo 3</div>
-      <h4>Hermes Basics</h4>
-      <p>Instalar y dominar tu agente personal. Gateway, cron, multi-modelo, 40+ tools integrados.</p>
+    <div class="sol-card glass reveal zone-purple">
+      <div class="sol-tag sol-tag-purple">Hermes</div>
+      <h4>Tu agente personal</h4>
+      <p>Gateway, cron, multi-modelo, 40+ tools. Tu asistente autonomo en terminal.</p>
     </div>
-    <div class="sol-card">
-      <div class="sol-tag sol-tag-amber">Modulo 4</div>
-      <h4>Deep Dive</h4>
-      <p>Arquitectura completa de ambos sistemas. Como funcionan por dentro y donde se complementan.</p>
+    <div class="sol-card glass reveal zone-amber">
+      <div class="sol-tag sol-tag-amber">Deep Dive</div>
+      <h4>Arquitectura completa</h4>
+      <p>Como funcionan por dentro ambos sistemas y donde se complementan.</p>
     </div>
-    <div class="sol-card">
-      <div class="sol-tag sol-tag-amber">Modulo 5</div>
-      <h4>La Decision</h4>
-      <p>Comparativa directa: cuando usar cada uno y por que NO fusionar. La tabla definitiva.</p>
+    <div class="sol-card glass reveal zone-amber">
+      <div class="sol-tag sol-tag-amber">La Decision</div>
+      <h4>Cuando usar cada uno</h4>
+      <p>Comparativa directa. Por que NO fusionar. La tabla definitiva.</p>
     </div>
-    <div class="sol-card">
-      <div class="sol-tag sol-tag-amber">Modulo 6</div>
-      <h4>Integracion</h4>
-      <p>Scripts bridge, workflow diario, extensiones futuras. Conectar sin fusionar.</p>
+    <div class="sol-card glass reveal zone-amber">
+      <div class="sol-tag sol-tag-amber">Integracion</div>
+      <h4>Conectar sin fusionar</h4>
+      <p>Scripts bridge, workflow diario, extensiones futuras.</p>
     </div>
   </div>
-</div></div>
+</div></section>
 
 <!-- BEFORE vs AFTER -->
-<div class="section"><div class="wrap">
-  <div class="section-label">Comparacion</div>
-  <h2>Sin sistema dual vs Con Synapis + Hermes</h2>
+<section class="section"><div class="wrap">
+  <div class="section-label reveal">Comparacion</div>
+  <h2 class="reveal">Sin sistema dual vs Con Synapis + Hermes</h2>
   <div class="compare">
-    <div class="compare-col compare-before">
+    <div class="compare-col compare-before glass reveal">
       <h3>Sin sistema dual</h3>
       <ul>
         <li>Un solo agente para todo = compromises</li>
@@ -240,7 +310,7 @@
         <li>Frustracion: "por que no puede hacer todo?"</li>
       </ul>
     </div>
-    <div class="compare-col compare-after">
+    <div class="compare-col compare-after glass reveal">
       <h3>Con Synapis + Hermes</h3>
       <ul>
         <li>Cada herramienta en su contexto ideal</li>
@@ -252,53 +322,38 @@
       </ul>
     </div>
   </div>
-</div></div>
+</div></section>
 
 <!-- HOW IT WORKS -->
-<div class="section" id="como-funciona"><div class="wrap">
-  <div class="section-label">Como funciona</div>
-  <h2>5 pasos para dominar tu workflow dual</h2>
-  <p class="lead">No necesitas elegir uno. Necesitas saber cuando usar cada uno.</p>
+<section class="section" id="como-funciona"><div class="wrap">
+  <div class="section-label reveal">Como funciona</div>
+  <h2 class="reveal">5 pasos para dominar tu workflow dual</h2>
+  <p class="lead reveal">No necesitas elegir uno. Necesitas saber cuando usar cada uno.</p>
   <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div><h4>Instala ambos (sin conflictos)</h4><p>Synapis en ~/.claude/, Hermes en su propio directorio. Cero interferencia, cero duplicacion.</p></div>
-    </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <div><h4>Configura Anthropic como provider</h4><p>Ambos usan la API de Anthropic. Una sola key, dos agentes especializados.</p></div>
-    </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div><h4>Aprende que hace cada uno</h4><p>Synapis: desarrollo, skills, aprendizaje. Hermes: ejecucion, gateway, automatizacion. Sin solapamiento.</p></div>
-    </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <div><h4>Conectalos con bridge scripts</h4><p>Scripts ligeros que pasan contexto de uno a otro. Synapis detecta, Hermes ejecuta. O al reves.</p></div>
-    </div>
-    <div class="step">
-      <div class="step-num">5</div>
-      <div><h4>Domina tu workflow dual</h4><p>En una semana ya no piensas en "cual uso". Cada tarea va a su agente naturalmente.</p></div>
-    </div>
+    <div class="step reveal"><div class="step-num">1</div><div><h4>Instala ambos sin conflictos</h4><p>Synapis en ~/.claude/, Hermes en su propio directorio. Cero interferencia.</p></div></div>
+    <div class="step reveal"><div class="step-num">2</div><div><h4>Configura Anthropic como provider</h4><p>Ambos usan la API de Anthropic. Una key, dos agentes especializados.</p></div></div>
+    <div class="step reveal"><div class="step-num">3</div><div><h4>Aprende que hace cada uno</h4><p>Synapis: desarrollo, skills, aprendizaje. Hermes: ejecucion, gateway, cron.</p></div></div>
+    <div class="step reveal"><div class="step-num">4</div><div><h4>Conectalos con bridge scripts</h4><p>Scripts ligeros que pasan contexto. Synapis detecta, Hermes ejecuta.</p></div></div>
+    <div class="step reveal"><div class="step-num">5</div><div><h4>Domina tu workflow dual</h4><p>En una semana, cada tarea va a su agente naturalmente.</p></div></div>
   </div>
-</div></div>
+</div></section>
 
 <!-- QUOTE -->
-<div class="wrap">
-  <div class="quote">
-    <blockquote>"La separacion ES la arquitectura correcta. El cerebro sin el cuerpo solo piensa. El cuerpo sin el cerebro no sabe que hacer."</blockquote>
-    <cite>-- Filosofia Synapis + Hermes</cite>
+<div class="quote-wrap">
+  <div class="quote reveal">
+    <blockquote>"La separacion <strong>ES</strong> la arquitectura correcta. El cerebro sin el cuerpo solo piensa. El cuerpo sin el cerebro no sabe que hacer."</blockquote>
+    <cite>-- Filosofia del sistema dual</cite>
   </div>
 </div>
 
 <!-- COURSE CARD -->
-<div class="section"><div class="wrap">
-  <div class="section-label">El curso completo</div>
-  <h2>Todo lo que necesitas para dominar ambos</h2>
-  <p class="lead">12 lecciones gamificadas, 3 rutas de aprendizaje, 5 niveles de maestria.</p>
-  <div class="course-card">
+<section class="section"><div class="wrap">
+  <div class="section-label reveal">El curso completo</div>
+  <h2 class="reveal">Todo lo que necesitas para dominar ambos</h2>
+  <p class="lead reveal">12 lecciones gamificadas, 3 rutas de aprendizaje, 5 niveles de maestria.</p>
+  <div class="course-card glass reveal">
     <h3>Synapis + Hermes: Curso completo</h3>
-    <p style="color:#a0a0a0; margin-bottom:12px;">De cero a workflow dual profesional. Aprende cada agente por separado, compararlos con criterio, y conectarlos con scripts bridge.</p>
+    <p class="desc">De cero a workflow dual profesional. Aprende cada agente por separado, compararlos con criterio, y conectarlos con scripts bridge.</p>
     <div class="stats">
       <span class="stat">12 lecciones</span>
       <span class="stat">~8 horas</span>
@@ -307,25 +362,34 @@
       <span class="stat">3 rutas</span>
       <span class="stat">5 niveles</span>
     </div>
-    <p style="color:#71717a; font-size:0.85rem; margin-top:12px;">Creado con Synapis Course Architect -- aprendizaje gamificado con mapa de conceptos y retos practicos.</p>
-    <a href="curso-synapis-hermes.html" class="btn btn-amber" style="margin-top:16px; display:inline-block;">Empezar gratis</a>
+    <p class="note">Creado con Synapis Course Architect -- aprendizaje gamificado con mapa de conceptos y retos practicos.</p>
+    <a href="curso-synapis-hermes.html" class="btn btn-amber" style="margin-top:20px">Empezar gratis</a>
   </div>
-</div></div>
+</div></section>
 
 <!-- FINAL CTA -->
-<div class="cta-section">
+<section class="cta-section">
   <h2>Empieza hoy</h2>
   <p>Dos agentes, cero conflictos. Aprende cuando usar cada uno y como conectarlos en un workflow que escala.</p>
   <div class="cta-group">
     <a href="curso-synapis-hermes.html" class="btn btn-amber">Abrir el curso</a>
-    <a href="https://github.com/Luispitik/hermes" class="btn btn-ghost" target="_blank">Documentacion Hermes</a>
+    <a href="https://github.com/alipiomg/curso-synapis-hermes" class="btn btn-ghost" target="_blank">Ver en GitHub</a>
   </div>
-</div>
+</section>
 
-<div class="footer">
-  Curso creado por Alipio / Ecoalternative -- 2026<br>
-  <a href="https://github.com/Luispitik/synapis">Synapis</a> &middot; <a href="https://github.com/Luispitik/hermes">Hermes</a>
-</div>
+<footer class="footer">
+  Curso creado por Alipio / Ecoalternative &middot; 2026<br>
+  <a href="https://github.com/Luispitik/synapis">Synapis</a> &middot; <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a>
+</footer>
 
+<!-- Scroll Reveal -->
+<script>
+(function(){
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})
+  },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+})();
+</script>
 </body>
 </html>
