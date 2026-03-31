@@ -1,0 +1,48 @@
+{
+  "id": "hermes-comandos-esenciales",
+  "curso_id": "synapis-hermes-dual-agent",
+  "titulo": "Hermes: comandos que vas a usar cada dia",
+  "numero": 5,
+  "nivel": "basico-intermedio",
+  "contenido": {
+    "explicacion": "## Comandos de terminal (CLI)\n\nEstos son los comandos que ejecutas *antes* de entrar al chat:\n\n- **`hermes chat`** — Abre el chat interactivo (TUI). Es el comando principal, el que mas vas a usar.\n- **`hermes model`** — Muestra o cambia el modelo activo. Puedes cambiar entre Claude Sonnet, Haiku, GPT-4, Llama, etc.\n- **`hermes status`** — Panel de estado: modelo activo, provider, sesion actual, tools disponibles.\n- **`hermes doctor`** — Diagnostico completo. Verifica Python, dependencias, config, providers, conectividad.\n- **`hermes --continue`** — Retoma la ultima sesion en vez de empezar una nueva.\n- **`hermes sessions list`** — Lista todas tus sesiones anteriores con fecha y resumen.\n- **`hermes config set KEY VALUE`** — Cambia configuracion sin editar archivos manualmente.\n- **`hermes tools`** — Lista las 40+ herramientas disponibles (web search, file ops, code exec, etc.).\n\n## Comandos dentro del chat (in-chat)\n\nEstos funcionan *durante* una conversacion activa:\n\n- **`/new`** — Inicia una conversacion nueva (limpia contexto)\n- **`/retry`** — Reintenta el ultimo mensaje con el mismo prompt\n- **`/compress`** — Comprime el historial para liberar context window\n- **`/model nombre`** — Cambia modelo mid-conversation sin salir\n- **`/save nombre`** — Guarda la sesion actual con un nombre descriptivo\n\n## Provider switching\n\nHermes soporta 15+ providers. Puedes cambiar de modelo en cualquier momento sin perder la conversacion. Esto es poderoso: usa Haiku para tareas rapidas y baratas, Sonnet para analisis, Opus para razonamiento complejo, GPT-4 para segunda opinion, Llama local para privacidad.",
+    "metafora": "Los comandos de Hermes son como el tablero de un coche. `status` es el panel de instrumentos — te dice velocidad, combustible, temperatura. `doctor` es la revision mecanica — verifica que todo funciona antes de arrancar. `model` es elegir el tipo de combustible — diesel (Haiku, barato), gasolina (Sonnet, equilibrado), o premium (Opus, potente). `chat` es pisar el acelerador — empezar a moverse.",
+    "ejemplo_codigo": {
+      "lenguaje": "bash",
+      "titulo": "Cheatsheet de comandos diarios",
+      "codigo": "# ========== COMANDOS DE TERMINAL ==========\n\nhermes chat                    # Abrir chat interactivo\nhermes chat \"resumeme este archivo\"  # Chat con prompt directo\nhermes model                   # Ver modelo activo\nhermes model claude-haiku      # Cambiar a Haiku\nhermes model claude-sonnet     # Cambiar a Sonnet\nhermes status                  # Panel de estado completo\nhermes doctor                  # Diagnostico del sistema\nhermes --continue              # Retomar ultima sesion\nhermes sessions list           # Ver sesiones anteriores\nhermes sessions show <id>      # Ver detalle de una sesion\nhermes config set provider anthropic  # Cambiar provider\nhermes config set temperature 0.7     # Ajustar temperatura\nhermes tools                   # Listar herramientas\nhermes tools search \"web\"      # Buscar tool especifica\n\n# ========== COMANDOS DENTRO DEL CHAT ==========\n\n/new                           # Nueva conversacion\n/retry                         # Reintentar ultimo mensaje\n/compress                      # Comprimir historial\n/model claude-opus             # Cambiar modelo en vivo\n/save \"analisis-proyecto-x\"    # Guardar sesion con nombre\n\n# ========== FLUJO TIPICO DIARIO ==========\n\nhermes doctor                  # Verificar todo OK\nhermes model claude-sonnet     # Elegir modelo\nhermes chat                    # Empezar a trabajar\n# ... trabajar ...\n# /compress si el contexto se llena\n# /model claude-haiku para tarea rapida\n# /save al terminar"
+    }
+  },
+  "mini_reto": {
+    "titulo": "Cambio de modelo en vivo",
+    "descripcion": "Cambia el modelo a claude-haiku, inicia un chat rapido pidiendo que te explique que es un API, luego cambia a claude-sonnet (con /model dentro del chat) y pide que expanda la explicacion. Reporta la diferencia de velocidad y detalle.",
+    "tipo": "texto-libre",
+    "criterios_exito": [
+      "El estudiante cambio de modelo exitosamente desde la terminal",
+      "Cambio de modelo dentro del chat con /model sin perder contexto",
+      "Reporta diferencias observables entre los dos modelos (velocidad, detalle, estilo)"
+    ],
+    "respuesta_esperada": "Cambie a Haiku con hermes model claude-haiku, inicie chat, y la respuesta fue rapida (2 segundos) pero breve. Luego use /model claude-sonnet dentro del chat y pedi expansion — la respuesta tardo mas (5 segundos) pero fue mucho mas detallada y estructurada. Haiku para rapido, Sonnet para profundo.",
+    "xp_extra": 20
+  },
+  "glosario": {
+    "Session": "Una conversacion completa con Hermes. Tiene un ID unico, fecha, modelo usado, y el historial de mensajes. Se puede retomar con --continue o listar con sessions list.",
+    "Provider switching": "La capacidad de cambiar entre diferentes servicios de AI (Anthropic, OpenAI, Google, Ollama) sin perder la conversacion. Hermes traduce automaticamente entre formatos.",
+    "Doctor diagnostic": "Comando hermes doctor que verifica todos los componentes del sistema: version de Python, dependencias instaladas, configuracion valida, providers conectados, y herramientas disponibles."
+  },
+  "prompt_infografia": {
+    "contenido": "Infografia educativa: 'Comandos Esenciales de Hermes'. Layout horizontal dividido en dos columnas. Columna izquierda: 'Terminal Commands' — lista de 8 comandos con icono, nombre, y descripcion de 1 linea, agrupados por categoria (status, model, session). Columna derecha: 'In-Chat Commands' — lista de 5 comandos slash con iconos. Centro inferior: diagrama de flujo diario tipico (doctor -> model -> chat -> compress -> save). Sidebar: metafora del tablero de coche con los 4 comandos principales mapeados a elementos del dashboard. Estilo dark mode, glassmorphism, paleta teal+purple+amber.",
+    "plataforma_recomendada": "Figma",
+    "estilo": "dark mode, glassmorphism, teal+purple+amber"
+  },
+  "conexiones": {
+    "prerequisitos": ["hermes-instalacion"],
+    "siguiente_recomendado": ["synapis-aprendizaje-profundo"],
+    "conceptos_relacionados": ["synapis-primera-sesion"]
+  },
+  "metadata_synapis": {
+    "observable_clave": "El estudiante maneja con fluidez los comandos basicos de Hermes y puede cambiar modelos en vivo segun la tarea",
+    "instincts_que_aplican": ["model-selection-by-task", "session-management-flow"],
+    "confidence_pedagogica": 0.89
+  }
+}

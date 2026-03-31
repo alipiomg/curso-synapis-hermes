@@ -1,0 +1,107 @@
+{
+  "curso_id": "synapis-hermes-dual-agent",
+  "xp_config": {
+    "xp_por_leccion_teoria": 30,
+    "xp_por_leccion_practica": 45,
+    "xp_por_reto": 25,
+    "xp_bonus_primer_intento": 10
+  },
+  "niveles": [
+    {
+      "numero": 1,
+      "nombre": "Novato",
+      "xp_min": 0,
+      "descripcion": "Acabas de descubrir que existen agentes AI. Todo es nuevo."
+    },
+    {
+      "numero": 2,
+      "nombre": "Usuario",
+      "xp_min": 100,
+      "descripcion": "Ya tienes Synapis y Hermes instalados y funcionando."
+    },
+    {
+      "numero": 3,
+      "nombre": "Operador",
+      "xp_min": 250,
+      "descripcion": "Usas cada herramienta para lo que sirve. Sabes cuando elegir una u otra."
+    },
+    {
+      "numero": 4,
+      "nombre": "Arquitecto",
+      "xp_min": 400,
+      "descripcion": "Has conectado ambos agentes con bridge scripts. El sistema dual funciona."
+    },
+    {
+      "numero": 5,
+      "nombre": "Maestro Dual",
+      "xp_min": 500,
+      "descripcion": "Dominas el sistema dual completo. Hermes ejecuta, Synapis aprende, tu decides."
+    }
+  ],
+  "badges": [
+    {
+      "id": "primera-leccion",
+      "nombre": "Primer Contacto",
+      "descripcion": "Completa tu primera leccion del curso",
+      "tipo": "progreso",
+      "condicion": "Completar 1 leccion cualquiera",
+      "icono": "🚀"
+    },
+    {
+      "id": "mitad-curso",
+      "nombre": "Punto Medio",
+      "descripcion": "Has completado la mitad del curso",
+      "tipo": "progreso",
+      "condicion": "Completar 6 lecciones",
+      "icono": "⚡"
+    },
+    {
+      "id": "primer-reto",
+      "nombre": "Manos a la Obra",
+      "descripcion": "Completa tu primer reto practico",
+      "tipo": "reto",
+      "condicion": "Completar 1 mini-reto",
+      "icono": "🔧"
+    },
+    {
+      "id": "todos-retos",
+      "nombre": "Retador Imparable",
+      "descripcion": "Has completado todos los retos del curso",
+      "tipo": "reto",
+      "condicion": "Completar los 12 mini-retos",
+      "icono": "🏆"
+    },
+    {
+      "id": "glosario-curioso",
+      "nombre": "Curioso Incansable",
+      "descripcion": "Has consultado el glosario 10 o mas veces",
+      "tipo": "exploracion",
+      "condicion": "Consultar el glosario 10+ veces",
+      "icono": "📖"
+    },
+    {
+      "id": "explorador-rutas",
+      "nombre": "Explorador de Rutas",
+      "descripcion": "Has probado las 3 rutas pedagogicas",
+      "tipo": "exploracion",
+      "condicion": "Seleccionar las 3 rutas al menos una vez",
+      "icono": "🗺️"
+    },
+    {
+      "id": "decision-argumentada",
+      "nombre": "Arquitecto de Decisiones",
+      "descripcion": "Has escrito tu argumento de por que NO fusionar Synapis y Hermes",
+      "tipo": "especial",
+      "condicion": "Completar el reto de la leccion 8 (comparativa-cuando-usar)",
+      "icono": "🧠"
+    },
+    {
+      "id": "proyecto-final",
+      "nombre": "Maestro Dual",
+      "descripcion": "Has completado el proyecto final con los 5 entregables",
+      "tipo": "especial",
+      "condicion": "Completar la leccion 12 (proyecto-final) con todos los criterios de exito",
+      "icono": "👑"
+    }
+  ]
+}

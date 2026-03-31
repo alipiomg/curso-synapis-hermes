@@ -1,0 +1,50 @@
+{
+  "id": "hermes-instalacion",
+  "curso_id": "synapis-hermes-dual-agent",
+  "titulo": "Hermes: instalar tu agente personal",
+  "numero": 4,
+  "nivel": "basico",
+  "contenido": {
+    "explicacion": "## Que es una terminal\n\nLa **terminal** es una ventana donde escribes comandos de texto para controlar tu computadora. En Windows se llama PowerShell o CMD, en Mac/Linux se llama Terminal o shell. Todo lo que haces con clicks (crear carpetas, mover archivos, instalar programas) se puede hacer mas rapido con comandos.\n\n## CLI vs TUI\n\n- **CLI** (Command Line Interface): escribes un comando, recibes texto de vuelta. Ejemplo: `hermes status` te imprime el estado.\n- **TUI** (Text User Interface): una interfaz visual dentro de la terminal con menus, colores, paneles. Hermes usa TUI para el chat interactivo.\n\n## Instalacion paso a paso\n\nHermes es un agente Python que se instala desde su repositorio. El proceso tiene 5 fases:\n\n1. **Clonar el repositorio** — Descargar el codigo fuente de Hermes\n2. **Crear virtual environment** — Un espacio aislado de Python para que Hermes no interfiera con otros programas\n3. **Instalar dependencias** — pip install descarga las 40+ herramientas y librerias\n4. **Configurar providers** — Decirle a Hermes que modelos AI puede usar y con que API keys\n5. **Crear wrapper script** — Un atajo para que puedas escribir solo `hermes` en vez de la ruta completa\n\n## Verificacion\n\nDespues de instalar, ejecuta `hermes doctor`. Este comando verifica que todo esta correcto: Python version, dependencias, config, providers, y conectividad. Todo debe aparecer en verde. Si algo esta en rojo, el doctor te dice exactamente que falta.",
+    "metafora": "Instalar Hermes es como ensamblar un robot. Primero descargas el cuerpo (clone del repo). Luego le pones el cerebro (Python virtual environment — un espacio limpio donde pensar). Despues le conectas los sentidos (config.yaml: que providers de AI puede ver y hablar). Finalmente le das voz (wrapper script para que responda cuando dices su nombre). Sin alguna pieza, el robot no funciona completo.",
+    "ejemplo_codigo": {
+      "lenguaje": "bash",
+      "titulo": "Instalacion completa en Windows",
+      "codigo": "# === PASO 1: Clonar el repositorio ===\ngit clone https://github.com/NousResearch/hermes-agent.git\ncd hermes-agent\n\n# === PASO 2: Crear virtual environment ===\npython -m venv .venv\n# Activar (Windows PowerShell):\n.venv\\Scripts\\Activate.ps1\n# Activar (Linux/Mac):\n# source .venv/bin/activate\n\n# === PASO 3: Instalar dependencias ===\npip install -e \".[all]\"\n# Esto instala Hermes + todas las herramientas\n\n# === PASO 4: Configurar providers ===\n# Copiar config de ejemplo:\ncp config.example.yaml config.yaml\n# Editar con tu API key:\n# providers:\n#   anthropic:\n#     api_key: \"sk-ant-...\"\n#   openai:\n#     api_key: \"sk-...\"\n\n# === PASO 5: Crear wrapper (Windows) ===\n# Crear hermes.bat en una carpeta del PATH:\n# @echo off\n# cd /d C:\\ruta\\hermes-agent\n# .venv\\Scripts\\python.exe -m hermes %*\n\n# === VERIFICAR ===\nhermes doctor\n# Resultado esperado:\n# [OK] Python 3.11+\n# [OK] Dependencies installed\n# [OK] Config loaded\n# [OK] Provider: anthropic (connected)\n# [OK] All checks passed"
+    }
+  },
+  "mini_reto": {
+    "titulo": "Doctor en verde",
+    "descripcion": "Instala Hermes siguiendo los 5 pasos y ejecuta 'hermes doctor'. Todo debe estar en verde. Si algo falla, investiga y corrigelo antes de continuar.",
+    "tipo": "texto-libre",
+    "criterios_exito": [
+      "hermes doctor se ejecuta sin errores",
+      "Al menos un provider esta configurado y conectado",
+      "El estudiante puede ejecutar 'hermes' desde cualquier directorio (wrapper funciona)"
+    ],
+    "respuesta_esperada": "Instale Hermes, cree el venv, instale dependencias, configure Anthropic como provider con mi API key, y cree el wrapper. hermes doctor muestra todo en verde: Python 3.11, dependencias OK, config cargada, provider anthropic conectado.",
+    "xp_extra": 20
+  },
+  "glosario": {
+    "Terminal": "Aplicacion donde escribes comandos de texto para interactuar con tu sistema operativo. PowerShell en Windows, Terminal en Mac/Linux.",
+    "CLI": "Command Line Interface. Interfaz basada en texto donde escribes un comando y recibes una respuesta en texto plano.",
+    "TUI": "Text User Interface. Interfaz visual dentro de la terminal con menus, paneles y colores. Mas amigable que CLI puro.",
+    "venv": "Virtual environment de Python. Un espacio aislado que tiene su propia copia de Python y librerias, evitando conflictos con otros proyectos.",
+    "pip": "El gestor de paquetes de Python. Descarga e instala librerias desde PyPI (el repositorio central de paquetes Python)."
+  },
+  "prompt_infografia": {
+    "contenido": "Infografia educativa: 'Instalar Hermes Agent'. Layout vertical en 5 secciones con progreso. Arriba: titulo + icono de robot. Seccion 1-5: Cada paso de instalacion como una tarjeta numerada con icono (1-cuerpo/clone, 2-cerebro/venv, 3-sentidos/pip, 4-config/providers, 5-voz/wrapper). Cada tarjeta tiene el comando principal resaltado. Abajo: seccion 'hermes doctor' mostrando checklist verde. Sidebar derecho: CLI vs TUI comparativa visual. Estilo dark mode, glassmorphism, paleta teal+purple+amber.",
+    "plataforma_recomendada": "Figma",
+    "estilo": "dark mode, glassmorphism, teal+purple+amber"
+  },
+  "conexiones": {
+    "prerequisitos": ["que-son-agentes"],
+    "siguiente_recomendado": ["hermes-comandos-esenciales"],
+    "conceptos_relacionados": ["synapis-instalacion"]
+  },
+  "metadata_synapis": {
+    "observable_clave": "El estudiante tiene Hermes instalado, configurado con al menos un provider, y hermes doctor pasa todas las verificaciones",
+    "instincts_que_aplican": ["install-verify-pattern", "venv-isolation-habit"],
+    "confidence_pedagogica": 0.91
+  }
+}

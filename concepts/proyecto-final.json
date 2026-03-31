@@ -1,0 +1,52 @@
+{
+  "id": "proyecto-final",
+  "curso_id": "synapis-hermes-dual-agent",
+  "titulo": "Proyecto final: tu setup personalizado",
+  "numero": 12,
+  "nivel": "todos",
+  "contenido": {
+    "explicacion": "El proyecto final tiene 5 entregables que cubren todos los niveles del curso. Cada uno demuestra una competencia diferente — desde verificar que las herramientas funcionan hasta automatizar workflows completos.\n\n**Entregable 1 (BASICO): Verificacion de instalacion**\nEjecuta `hermes doctor` y confirma que todo esta en verde. Abre Claude Code y verifica que Synapis carga correctamente (ejecuta `/system-status` o `/instinct-status`). Captura evidencia de ambos funcionando.\n\n**Entregable 2 (INTERMEDIO): 3 scripts bridge personalizados**\nCrea 3 scripts adaptados a TU workflow:\n- `hermes-research`: wrapper que usa Hermes para investigar un tema y guarda el resultado en un archivo markdown\n- `synapis-export`: exporta instincts maduros de Synapis en un formato legible para compartir con tu equipo\n- `dual-status`: dashboard unificado que muestra el estado de ambos agentes en una sola vista\n\n**Entregable 3 (AVANZADO): 1 cron job de Hermes**\nConfigura un cron job real que se ejecute diariamente. Sugerencia: resumen automatico de git log de las ultimas 24h en tus repos principales. Debe incluir schedule, prompt descriptivo y output a archivo de log.\n\n**Entregable 4 (INTERMEDIO): 1 skill custom de Synapis**\nCrea un skill en formato SKILL.md que resuelva una necesidad real de tu workflow. Registralo en _catalog.json para que se active automaticamente. El skill debe tener: nombre, descripcion, trigger conditions, e instrucciones claras.\n\n**Entregable 5 (BASICO): Documentacion de tu setup**\nDocumenta tu setup dual-agent en markdown: que herramientas usas, como las configuraste, tu workflow diario, y que bridge scripts creaste. Este documento es tu referencia personal y puede servir para onboardear a otros.\n\nCada entregable se puede completar independientemente. No necesitas terminar uno para empezar otro.",
+    "metafora": "El proyecto final es tu ceremonia de graduacion. Cada entregable es un diploma: el basico demuestra que sabes usar las herramientas, el intermedio que sabes conectarlas, y el avanzado que sabes automatizarlas. La documentacion es tu defensa de tesis — si puedes explicar tu setup claramente, realmente lo entiendes.",
+    "ejemplo_codigo": {
+      "lenguaje": "bash",
+      "titulo": "Templates para los 5 entregables",
+      "codigo": "# =============================================\n# ENTREGABLE 1: Verificacion de instalacion\n# =============================================\n# Ejecuta estos comandos y guarda el output:\n\n# Hermes:\nhermes doctor\nhermes --version\nhermes model list\n\n# Synapis (dentro de Claude Code):\n# /system-status\n# /instinct-status\n# Verifica que ~/.claude/skills/_catalog.json existe\n\n# =============================================\n# ENTREGABLE 2: Script hermes-research\n# =============================================\n#!/bin/bash\n# ~/bin/hermes-research\n# Uso: hermes-research \"tema\" [output-file]\n\nTOPIC=\"$1\"\nOUTPUT=\"${2:-~/research/$(date +%Y%m%d)-research.md}\"\n\nmkdir -p \"$(dirname \"$OUTPUT\")\"\n\necho \"# Research: $TOPIC\" > \"$OUTPUT\"\necho \"Fecha: $(date)\" >> \"$OUTPUT\"\necho \"---\" >> \"$OUTPUT\"\necho \"\" >> \"$OUTPUT\"\n\nhermes chat -q \"Investiga sobre: $TOPIC. \\\n  Incluye: 1) Resumen ejecutivo, 2) Puntos clave, \\\n  3) Links relevantes, 4) Siguiente paso recomendado. \\\n  Formato: markdown.\" \\\n  --model claude-sonnet-4-20250514 >> \"$OUTPUT\" 2>/dev/null\n\necho \"Research guardado en: $OUTPUT\"\n\n# =============================================\n# ENTREGABLE 2: Script synapis-export\n# =============================================\n#!/bin/bash\n# ~/bin/synapis-export\n# Exporta instincts maduros en formato legible\n\nINSTINCTS=\"$HOME/.claude/skills/_instincts.json\"\nOUTPUT=\"$HOME/exports/instincts-$(date +%Y%m%d).md\"\n\nmkdir -p \"$(dirname \"$OUTPUT\")\"\n\necho \"# Synapis Instincts Export\" > \"$OUTPUT\"\necho \"Fecha: $(date)\" >> \"$OUTPUT\"\necho \"\" >> \"$OUTPUT\"\n\nif [ -f \"$INSTINCTS\" ]; then\n  python3 -c \"\nimport json\nwith open('$INSTINCTS') as f:\n  data = json.load(f)\n  active = sorted([i for i in data if i.get('confidence',0) >= 0.7],\n                  key=lambda x: x.get('confidence',0), reverse=True)\n  print(f'## Active Instincts ({len(active)})')\n  print()\n  for i in active:\n    print(f'### {i.get(\\\"id\\\", \\\"unknown\\\")}')\n    print(f'- Confidence: {i.get(\\\"confidence\\\", 0):.2f}')\n    print(f'- Description: {i.get(\\\"description\\\", \\\"N/A\\\")}')\n    print(f'- Scope: {i.get(\\\"scope\\\", \\\"local\\\")}')\n    print()\n\" >> \"$OUTPUT\"\n  echo \"Exported to: $OUTPUT\"\nelse\n  echo \"No instincts file found at $INSTINCTS\"\nfi\n\n# =============================================\n# ENTREGABLE 2: Script dual-status (ver leccion 9)\n# =============================================\n\n# =============================================\n# ENTREGABLE 3: Cron job — git log diario\n# =============================================\n# Anadir a crontab (crontab -e):\n# 0 18 * * 1-5 ~/bin/daily-git-summary.sh\n\n#!/bin/bash\n# ~/bin/daily-git-summary.sh\nLOG_DIR=\"$HOME/logs/git-summaries\"\nmkdir -p \"$LOG_DIR\"\nOUTPUT=\"$LOG_DIR/$(date +%Y%m%d).md\"\n\necho \"# Git Summary — $(date '+%A %d %B %Y')\" > \"$OUTPUT\"\necho \"\" >> \"$OUTPUT\"\n\nfor repo in ~/projects/*/; do\n  if [ -d \"$repo/.git\" ]; then\n    REPO_NAME=$(basename \"$repo\")\n    COMMITS=$(cd \"$repo\" && git log --oneline --since='24 hours ago' 2>/dev/null)\n    if [ -n \"$COMMITS\" ]; then\n      echo \"## $REPO_NAME\" >> \"$OUTPUT\"\n      echo '```' >> \"$OUTPUT\"\n      echo \"$COMMITS\" >> \"$OUTPUT\"\n      echo '```' >> \"$OUTPUT\"\n      echo \"\" >> \"$OUTPUT\"\n    fi\n  fi\ndone\n\necho \"Summary saved: $OUTPUT\"\n\n# =============================================\n# ENTREGABLE 4: Synapis SKILL.md template\n# =============================================\n# ~/.claude/skills/_library/my-custom-skill/SKILL.md\n# ---\n# name: my-custom-skill\n# description: Describe que hace tu skill en una linea\n# trigger: cuando el usuario diga X, Y, o Z\n# ---\n#\n# ## Contexto\n# Este skill se activa cuando [trigger condition].\n#\n# ## Instrucciones\n# 1. Paso uno\n# 2. Paso dos\n# 3. Paso tres\n#\n# ## Output esperado\n# Describe el formato de salida\n\n# Registrar en _catalog.json:\n# { \"skills\": [{ \"id\": \"my-custom-skill\", \"path\": \"_library/my-custom-skill\" }] }\n\n# =============================================\n# ENTREGABLE 5: Template de documentacion\n# =============================================\n# ~/docs/my-dual-agent-setup.md\n# # Mi Setup Dual-Agent\n# ## Herramientas\n# - Synapis v3.2 en Claude Code\n# - Hermes Agent v0.6\n# ## Configuracion\n# [como las configuraste]\n# ## Workflow diario\n# [tabla de bloques horarios]\n# ## Bridge scripts\n# [lista de scripts creados]\n# ## Lecciones aprendidas\n# [que aprendiste en el proceso]"
+    }
+  },
+  "mini_reto": {
+    "titulo": "Completa los 5 entregables",
+    "descripcion": "Completa los 5 entregables del proyecto final y comparte tu documentacion (Entregable 5). No necesitas completarlos en orden — empieza por el que te resulte mas natural. El objetivo es tener un setup dual-agent funcional y documentado que puedas usar en tu dia a dia real.",
+    "tipo": "texto-libre",
+    "criterios_exito": [
+      "Entregable 1: hermes doctor muestra todo verde Y Synapis carga en Claude Code",
+      "Entregable 2: Al menos 2 de los 3 scripts bridge funcionan correctamente",
+      "Entregable 3: Un cron job configurado con schedule valido y prompt descriptivo",
+      "Entregable 4: Un SKILL.md creado y registrado en _catalog.json",
+      "Entregable 5: Documento markdown con al menos 4 secciones (herramientas, config, workflow, scripts)"
+    ],
+    "respuesta_esperada": "Los 5 entregables completados con evidencia: screenshots de hermes doctor y /system-status, scripts funcionales en ~/bin/, crontab configurado, SKILL.md en _library/, y documento markdown de setup completo.",
+    "xp_extra": 20
+  },
+  "glosario": {
+    "hermes doctor": "Comando de diagnostico que verifica instalacion, configuracion de providers, estado de servicios y conectividad. Output ideal: todo en verde.",
+    "/system-status": "Comando de Synapis que muestra el estado general del ecosistema: instincts, skills, passive rules, operator state y proyectos registrados.",
+    "SKILL.md": "Formato estandar para definir skills tanto en Synapis como en Hermes. Frontmatter YAML para metadata + markdown para instrucciones.",
+    "_catalog.json": "Registro central de Synapis que lista todos los skills disponibles con su id, path y metadata. Los skills deben registrarse aqui para activarse.",
+    "Entregable": "Pieza concreta y verificable del proyecto final. Cada entregable demuestra competencia en un nivel especifico (basico, intermedio, avanzado)."
+  },
+  "prompt_infografia": {
+    "contenido": "Infografia de proyecto final con layout de checklist gamificado. 5 filas, cada una un entregable con: numero, titulo, nivel (badge de color: verde=basico, amber=intermedio, red=avanzado), checkbox grande, y breve descripcion. Entregable 1 y 5 con badge verde 'BASICO'. Entregable 2 y 4 con badge amber 'INTERMEDIO'. Entregable 3 con badge red 'AVANZADO'. Barra de progreso al fondo (0-100%). Esquina superior: medalla de graduacion con texto 'Dual-Agent Master'. Footer: 'Completa al menos 4 de 5 para graduarte'. Estilo dark mode, glassmorphism en cada fila, checkboxes con glow teal al completar.",
+    "plataforma_recomendada": "Figma",
+    "estilo": "dark mode, glassmorphism, teal+purple+amber"
+  },
+  "conexiones": {
+    "prerequisitos": ["comparativa-cuando-usar", "scripts-bridge", "workflow-diario", "mejoras-futuras"],
+    "siguiente_recomendado": [],
+    "conceptos_relacionados": ["hermes-infraestructura"]
+  },
+  "metadata_synapis": {
+    "observable_clave": "El alumno completa al menos 4 de 5 entregables con evidencia funcional y documentacion clara",
+    "instincts_que_aplican": ["project-completion", "documentation-patterns", "setup-verification"],
+    "confidence_pedagogica": 0.90
+  }
+}

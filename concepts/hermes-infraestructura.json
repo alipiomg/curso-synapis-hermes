@@ -1,0 +1,51 @@
+{
+  "id": "hermes-infraestructura",
+  "curso_id": "synapis-hermes-dual-agent",
+  "titulo": "Hermes a fondo: tools, gateway, cron y multi-modelo",
+  "numero": 7,
+  "nivel": "avanzado",
+  "contenido": {
+    "explicacion": "Hermes no es un simple chatbot CLI — es una plataforma modular con mas de 40 tools organizados en toolsets especializados. Cada toolset agrupa funcionalidades relacionadas: **terminal** (ejecutar comandos en local, Docker, SSH, Daytona, Modal o Singularity), **web** (buscar, scraping, fetch), **vision** (analizar imagenes, screenshots), **browser** (automatizar navegadores), **file** (leer, escribir, manipular archivos), **skills** (crear y ejecutar skills del marketplace), **tts** (text-to-speech), **todo** (gestion de tareas), y **delegation** (delegar sub-tareas a otros agentes).\n\n**Multi-modelo** es una de las capacidades mas potentes: Hermes soporta 15+ providers (OpenAI, Anthropic, Google, Ollama, OpenRouter, Together, Groq, etc.) y permite cambiar de modelo con `hermes model`. El smart routing selecciona automaticamente el mejor modelo segun la tarea — modelos rapidos para queries simples, modelos potentes para razonamiento complejo.\n\nEl **Gateway** conecta Hermes con 9 plataformas de mensajeria: Telegram, Discord, Slack, WhatsApp, Signal, Email, SMS, DingTalk y Feishu. Esto convierte a Hermes en un bot 24/7 accesible desde cualquier plataforma.\n\n**Cron** (`hermes cron`) permite programar sesiones de agente en horarios especificos — ideal para reportes diarios, monitoreo de deploys, backups automaticos.\n\nEl **Skills Hub** es un marketplace donde puedes publicar y descargar skills, con security scanning integrado. Los **Profiles** permiten multiples identidades (personal, trabajo, cliente).\n\nFinalmente, Hermes soporta **MCP** (Model Context Protocol) y **ACP** (Agent Communication Protocol), los estandares emergentes para comunicacion entre agentes y herramientas.",
+    "metafora": "Hermes es una navaja suiza. Cada herramienta (cuchilla, destornillador, tijeras) es un toolset especializado. El gateway es el llavero que la conecta a tu bolsillo — siempre accesible desde cualquier plataforma de mensajeria. El cron es el despertador que la activa automaticamente en el horario que tu programes, sin necesidad de que estes presente.",
+    "ejemplo_codigo": {
+      "lenguaje": "yaml",
+      "titulo": "config.yaml con gateway, cron y multi-modelo",
+      "codigo": "# ~/.hermes/config.yaml\n\n# Multi-modelo: providers configurados\nmodels:\n  default: claude-sonnet-4-20250514\n  fast: gpt-4o-mini\n  reasoning: o1-preview\n  local: ollama/llama3\n  providers:\n    - anthropic\n    - openai\n    - ollama\n    - openrouter\n\n# Gateway: plataformas de mensajeria\ngateway:\n  telegram:\n    enabled: true\n    bot_token: ${TELEGRAM_BOT_TOKEN}\n    allowed_users:\n      - \"tu_telegram_id\"\n  discord:\n    enabled: true\n    bot_token: ${DISCORD_BOT_TOKEN}\n    allowed_channels:\n      - \"hermes-bot\"\n\n# Cron: tareas programadas\ncron:\n  daily_summary:\n    schedule: \"0 9 * * *\"  # Cada dia a las 9am\n    prompt: \"Resume los commits de ayer en todos mis repos\"\n  deploy_check:\n    schedule: \"*/30 * * * *\"  # Cada 30 min\n    prompt: \"Verifica que produccion responde OK\"\n\n# Terminal backends\nterminal:\n  default: local\n  backends:\n    - local\n    - docker: { image: \"node:20\" }\n    - ssh: { host: \"server.example.com\" }\n\n# MCP servers compartidos\nmcp:\n  servers:\n    - name: filesystem\n      command: npx @modelcontextprotocol/server-filesystem\n    - name: github\n      command: npx @modelcontextprotocol/server-github"
+    }
+  },
+  "mini_reto": {
+    "titulo": "Configura un gateway de Telegram",
+    "descripcion": "Crea un archivo .env con las variables necesarias para configurar un gateway de Telegram en Hermes. Incluye TELEGRAM_BOT_TOKEN (usa un placeholder), tu user ID, y al menos una tarea cron que se ejecute diariamente. No necesitas deployar — solo la configuracion correcta.",
+    "tipo": "texto-libre",
+    "criterios_exito": [
+      "El .env contiene TELEGRAM_BOT_TOKEN con un valor placeholder",
+      "Se define al menos un allowed_user con un ID numerico",
+      "Incluye al menos una entrada cron con schedule valido",
+      "Las variables sensibles usan ${} o placeholders, nunca valores reales"
+    ],
+    "respuesta_esperada": "Un archivo .env con TELEGRAM_BOT_TOKEN=your_token_here, TELEGRAM_ALLOWED_USERS=123456789, y una seccion de cron con schedule tipo '0 9 * * *' y un prompt descriptivo.",
+    "xp_extra": 20
+  },
+  "glosario": {
+    "Gateway": "Componente que conecta Hermes con plataformas de mensajeria externas (Telegram, Discord, Slack, etc.), permitiendo interactuar con el agente desde cualquier chat.",
+    "Cron": "Sistema de programacion de tareas basado en expresiones cron de Unix. Permite ejecutar sesiones de Hermes automaticamente en horarios definidos.",
+    "MCP": "Model Context Protocol — estandar abierto para conectar modelos de IA con herramientas y fuentes de datos externas. Hermes y Claude Code lo soportan.",
+    "ACP": "Agent Communication Protocol — protocolo para comunicacion directa entre agentes de IA, permitiendo delegacion y colaboracion entre multiples agentes.",
+    "Profiles": "Sistema de identidades multiples en Hermes. Permite tener configuraciones separadas (personal, trabajo, cliente) con diferentes modelos, tools y permisos."
+  },
+  "prompt_infografia": {
+    "contenido": "Infografia tecnica de la arquitectura de Hermes Agent. Centro: logo de Hermes con icono de navaja suiza. Arriba: 6 bloques de toolsets (terminal, web, vision, browser, file, skills) con iconos minimalistas. Izquierda: columna de 15+ providers con logos pequenos conectados por lineas al centro. Derecha: 9 plataformas de gateway (Telegram, Discord, Slack, etc.) con flechas bidireccionales. Abajo: timeline de cron con 3 tareas programadas y reloj. Esquina inferior: badges de MCP y ACP. Estilo dark mode, glassmorphism en los bloques, gradientes teal-to-purple en las conexiones, iconos amber para highlights.",
+    "plataforma_recomendada": "Figma",
+    "estilo": "dark mode, glassmorphism, teal+purple+amber"
+  },
+  "conexiones": {
+    "prerequisitos": ["que-es-hermes"],
+    "siguiente_recomendado": ["comparativa-cuando-usar"],
+    "conceptos_relacionados": ["scripts-bridge", "mejoras-futuras"]
+  },
+  "metadata_synapis": {
+    "observable_clave": "El alumno comprende la amplitud de toolsets y puede configurar gateway + cron",
+    "instincts_que_aplican": ["config-yaml-patterns", "multi-model-routing", "gateway-setup"],
+    "confidence_pedagogica": 0.82
+  }
+}

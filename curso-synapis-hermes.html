@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synapis + Hermes: Domina tus dos agentes AI</title>
+<style>
+  :root {
+    --teal: #0d9488; --purple: #7c3aed; --amber: #f59e0b; --blue: #4a9eed;
+    --green: #22c55e; --pink: #ec4899; --cyan: #06b6d4; --white: #e4e4e7;
+    --bg: #0a0a14; --surface: rgba(255,255,255,0.03); --border: rgba(255,255,255,0.07);
+    --glass-bg: rgba(12,12,24,0.6); --glass-border: rgba(255,255,255,0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: #d4d4d8; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.7; overflow-x: hidden; }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ===== ANIMATED HERO BG ===== */
+  .hero-bg { position: relative; overflow: hidden; }
+  .hero-bg::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(13,148,136,0.15) 0%, rgba(124,58,237,0.1) 25%, rgba(74,158,237,0.08) 50%, rgba(245,158,11,0.1) 75%, rgba(13,148,136,0.12) 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+  }
+  @keyframes gradientShift {
+    0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%}
+  }
+  .orb { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.25; pointer-events: none; }
+  .orb-1 { width: 300px; height: 300px; background: var(--teal); top: -80px; left: -50px; animation: orbFloat1 20s ease-in-out infinite; }
+  .orb-2 { width: 250px; height: 250px; background: var(--purple); top: 40px; right: -60px; animation: orbFloat2 18s ease-in-out infinite; }
+  .orb-3 { width: 200px; height: 200px; background: var(--amber); bottom: -40px; left: 30%; animation: orbFloat3 22s ease-in-out infinite; }
+  .orb-4 { width: 150px; height: 150px; background: var(--blue); top: 50%; right: 20%; animation: orbFloat1 25s ease-in-out infinite reverse; }
+  @keyframes orbFloat1 { 0%,100%{transform:translate(0,0)} 33%{transform:translate(30px,-40px)} 66%{transform:translate(-20px,30px)} }
+  @keyframes orbFloat2 { 0%,100%{transform:translate(0,0)} 33%{transform:translate(-40px,20px)} 66%{transform:translate(20px,-30px)} }
+  @keyframes orbFloat3 { 0%,100%{transform:translate(0,0)} 33%{transform:translate(20px,30px)} 66%{transform:translate(-30px,-20px)} }
+  .particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+  .particle { position: absolute; width: 3px; height: 3px; background: rgba(255,255,255,0.3); border-radius: 50%; animation: particleFloat linear infinite; }
+  @keyframes particleFloat {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-20vh) scale(1); opacity: 0; }
+  }
+
+  /* ===== NAV ===== */
+  .nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,20,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); padding: 0 24px; }
+  .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-logo { font-weight: 700; color: #fff; font-size: 1.15rem; }
+  .nav-logo .s { background: linear-gradient(135deg, var(--teal), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .nav-logo .h { background: linear-gradient(135deg, var(--purple), var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .nav-links { display: flex; gap: 20px; align-items: center; }
+  .nav-links a { color: #71717a; font-size: 0.88rem; transition: color 0.2s; }
+  .nav-links a:hover { color: #fff; text-decoration: none; }
+  .nav-links a.active { color: var(--teal); }
+  .nav-xp { background: rgba(13,148,136,0.1); color: var(--teal); padding: 5px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid rgba(13,148,136,0.2); }
+  .nav-streak { background: rgba(245,158,11,0.1); color: var(--amber); padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid rgba(245,158,11,0.2); }
+  .sound-toggle { background: none; border: 1px solid var(--glass-border); color: #71717a; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .sound-toggle:hover { border-color: var(--teal); color: var(--teal); }
+  .sound-toggle.on { border-color: var(--green); color: var(--green); }
+
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  /* ===== COURSE HERO ===== */
+  .course-hero { padding: 70px 20px 50px; text-align: center; position: relative; z-index: 1; }
+  .course-hero h1 { font-size: 2.8rem; color: #fff; margin-bottom: 10px; font-weight: 800; letter-spacing: -0.5px; }
+  .course-hero h1 .grad { background: linear-gradient(135deg, var(--teal), var(--purple), var(--blue)); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradientShift 8s ease infinite; }
+  .course-hero .sub { color: #8b8b96; font-size: 1.1rem; max-width: 660px; margin: 0 auto 28px; }
+  .course-meta { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px; }
+  .course-meta .tag { font-size: 0.78rem; padding: 5px 14px; border-radius: 20px; background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); color: #a0a0a8; }
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-wrap { max-width: 520px; margin: 0 auto 10px; }
+  .progress-bar { height: 10px; background: rgba(255,255,255,0.05); border-radius: 5px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--purple), var(--blue)); background-size: 200% 100%; border-radius: 5px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); position: relative; }
+  .progress-fill::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s ease-in-out infinite;
+  }
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+  .progress-text { font-size: 0.78rem; color: #71717a; text-align: center; margin-top: 8px; }
+
+  /* ===== LEVEL PROGRESS ===== */
+  .level-progress { max-width: 320px; margin: 6px auto 0; display: flex; align-items: center; gap: 10px; }
+  .level-bar-wrap { flex: 1; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+  .level-bar-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--purple)); border-radius: 2px; transition: width 0.5s ease; }
+  .level-text { font-size: 0.7rem; color: #52525b; white-space: nowrap; }
+
+  /* ===== STATS BAR ===== */
+  .stats-bar { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin: 24px 0 44px; }
+  .stat-pill { display: flex; align-items: center; gap: 7px; font-size: 0.82rem; padding: 8px 18px; border-radius: 22px; background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); transition: transform 0.2s, border-color 0.2s; }
+  .stat-pill:hover { transform: translateY(-1px); border-color: rgba(255,255,255,0.15); }
+  .stat-pill .icon { font-size: 1.05rem; }
+  .stat-pill .val { color: #fff; font-weight: 700; }
+  .stat-pill .lbl { color: #71717a; }
+
+  /* ===== FLOATING XP COUNTER ===== */
+  .xp-float { position: fixed; z-index: 300; font-size: 1.4rem; font-weight: 800; color: var(--amber); pointer-events: none; animation: xpFloatUp 1.5s ease-out forwards; text-shadow: 0 0 20px rgba(245,158,11,0.6); }
+  @keyframes xpFloatUp {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-80px) scale(1.3); }
+  }
+
+  /* ===== CONFETTI ===== */
+  .confetti-container { position: fixed; inset: 0; pointer-events: none; z-index: 250; overflow: hidden; }
+  .confetti-piece { position: absolute; width: 10px; height: 10px; top: -10px; animation: confettiFall 3s ease-in forwards; }
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg) scale(0.5); opacity: 0; }
+  }
+
+  /* ===== ROUTE SELECTOR ===== */
+  .route-selector { display: flex; gap: 8px; justify-content: center; margin-bottom: 32px; flex-wrap: wrap; }
+  .route-btn { padding: 9px 22px; border-radius: 10px; font-size: 0.85rem; cursor: pointer; border: 1px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: blur(8px); color: #71717a; transition: all 0.25s; }
+  .route-btn:hover { border-color: rgba(13,148,136,0.4); color: #fff; transform: translateY(-1px); }
+  .route-btn.active { background: rgba(13,148,136,0.12); border-color: rgba(13,148,136,0.4); color: var(--teal); }
+  .route-btn .rec { font-size: 0.65rem; background: rgba(34,197,94,0.15); color: var(--green); padding: 2px 7px; border-radius: 4px; margin-left: 6px; }
+
+  /* ===== BREADCRUMB ===== */
+  .breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 0.78rem; color: #52525b; }
+  .breadcrumb span { color: #71717a; }
+  .breadcrumb .current { color: var(--teal); }
+
+  /* ===== ZONES ===== */
+  .zone-label { padding: 14px 0 10px; margin-top: 36px; }
+  .zone-label h3 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 4px; font-weight: 600; }
+  .zone-fundamentos h3 { color: var(--teal); }
+  .zone-synapis-basics h3 { color: #2dd4bf; }
+  .zone-hermes-basics h3 { color: var(--purple); }
+  .zone-deep-dive h3 { color: var(--amber); }
+  .zone-decision h3 { color: var(--pink); }
+  .zone-integracion h3 { color: var(--amber); }
+  .zone-futuro h3 { color: var(--blue); }
+  .zone-proyecto h3 { color: var(--green); }
+
+  /* ===== LESSON CARDS ===== */
+  .lesson-card {
+    margin: 10px 0; border-radius: 14px; overflow: hidden; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    background: var(--glass-bg); backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-left: 3px solid transparent;
+  }
+  .lesson-card:hover { transform: translateY(-2px) scale(1.005); border-color: rgba(255,255,255,0.12); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+  .lesson-card.completed { border-left-color: var(--green) !important; }
+  .lesson-card.completed:hover { box-shadow: 0 8px 32px rgba(34,197,94,0.1); }
+  .lesson-card.locked { opacity: 0.4; pointer-events: none; filter: grayscale(0.3); }
+  .lesson-card[data-zone="fundamentos"] { border-left-color: var(--teal); }
+  .lesson-card[data-zone="synapis-basics"] { border-left-color: #2dd4bf; }
+  .lesson-card[data-zone="hermes-basics"] { border-left-color: var(--purple); }
+  .lesson-card[data-zone="deep-dive"] { border-left-color: var(--amber); }
+  .lesson-card[data-zone="decision"] { border-left-color: var(--pink); }
+  .lesson-card[data-zone="integracion"] { border-left-color: var(--amber); }
+  .lesson-card[data-zone="futuro"] { border-left-color: var(--blue); }
+  .lesson-card[data-zone="proyecto"] { border-left-color: var(--green); }
+  .lesson-card.completed[data-zone] { border-left-color: var(--green) !important; }
+
+  .lesson-header { display: flex; align-items: center; gap: 16px; padding: 18px 22px; cursor: pointer; user-select: none; }
+  .lesson-num { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; flex-shrink: 0; transition: all 0.3s; }
+  .lesson-card:not(.completed) .lesson-num { background: rgba(255,255,255,0.05); color: #71717a; border: 1.5px solid rgba(255,255,255,0.1); }
+  .lesson-card.completed .lesson-num { background: rgba(34,197,94,0.12); color: var(--green); border: 1.5px solid rgba(34,197,94,0.3); }
+  .check-anim { display: inline-block; animation: checkDraw 0.5s ease forwards; }
+  @keyframes checkDraw { 0%{transform:scale(0) rotate(-45deg);opacity:0} 50%{transform:scale(1.3) rotate(0deg);opacity:1} 100%{transform:scale(1) rotate(0deg);opacity:1} }
+  .lesson-info { flex: 1; min-width: 0; }
+  .lesson-info h4 { color: #fff; font-size: 1.05rem; margin-bottom: 3px; font-weight: 600; }
+  .lesson-info p { font-size: 0.82rem; color: #71717a; }
+  .lesson-meta-row { display: flex; gap: 10px; align-items: center; margin-top: 4px; flex-wrap: wrap; }
+  .lesson-time { font-size: 0.7rem; color: #52525b; display: flex; align-items: center; gap: 3px; }
+  .lesson-difficulty { display: flex; gap: 2px; align-items: center; }
+  .diff-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.1); }
+  .diff-dot.active { background: var(--amber); }
+  .lesson-tags { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+  .lesson-type { font-size: 0.68rem; padding: 3px 10px; border-radius: 6px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+  .type-teoria { background: rgba(74,158,237,0.1); color: var(--blue); }
+  .type-practica { background: rgba(34,197,94,0.1); color: var(--green); }
+  .type-reto { background: rgba(245,158,11,0.1); color: var(--amber); }
+  .lesson-xp { font-size: 0.82rem; color: var(--amber); font-weight: 700; }
+  .lesson-chevron { color: #3f3f46; font-size: 1.1rem; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); flex-shrink: 0; }
+  .lesson-card.open .lesson-chevron { transform: rotate(180deg); }
+  .level-tag { font-size: 0.62rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; letter-spacing: 0.5px; }
+  .level-basico { background: rgba(34,197,94,0.12); color: var(--green); }
+  .level-intermedio { background: rgba(245,158,11,0.12); color: var(--amber); }
+  .level-avanzado { background: rgba(239,68,68,0.12); color: #ef4444; }
+  .level-todos { background: linear-gradient(135deg, rgba(13,148,136,0.15), rgba(124,58,237,0.15)); color: #c4b5fd; }
+
+  /* ===== LESSON BODY ===== */
+  .lesson-body { max-height: 0; overflow: hidden; transition: max-height 0.6s cubic-bezier(0.4,0,0.2,1); }
+  .lesson-card.open .lesson-body { max-height: 12000px; }
+  .lesson-content { padding: 0 22px 28px; }
+
+  /* ===== CONTENT SECTIONS ===== */
+  .content-section { margin: 22px 0; }
+  .content-section h5 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 2.5px; color: var(--teal); margin-bottom: 12px; font-weight: 600; }
+  .content-section .text { font-size: 0.94rem; color: #b4b4be; line-height: 1.85; }
+  .content-section .text strong { color: #fff; font-weight: 600; }
+
+  .metaphor-card { background: rgba(124,58,237,0.05); border: 1px solid rgba(124,58,237,0.12); border-radius: 12px; padding: 18px 22px; margin: 14px 0; backdrop-filter: blur(8px); }
+  .metaphor-card .icon { font-size: 1.3rem; margin-bottom: 8px; }
+  .metaphor-card p { font-size: 0.9rem; color: #c4b5fd; font-style: italic; line-height: 1.8; }
+  .metaphor-card.teal { background: rgba(13,148,136,0.05); border-color: rgba(13,148,136,0.12); }
+  .metaphor-card.teal p { color: #5eead4; }
+
+  /* ===== CODE BLOCKS ===== */
+  .code-block { background: #0c0c18; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; overflow: hidden; margin: 14px 0; position: relative; }
+  .code-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(255,255,255,0.02); }
+  .code-title { font-size: 0.74rem; color: #71717a; }
+  .code-copy { background: none; border: 1px solid rgba(255,255,255,0.1); color: #52525b; padding: 4px 12px; border-radius: 6px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 4px; }
+  .code-copy:hover { border-color: var(--teal); color: var(--teal); }
+  .code-copy.copied { border-color: var(--green); color: var(--green); }
+  .code-body { display: flex; overflow-x: auto; }
+  .code-lines { padding: 16px 0; text-align: right; user-select: none; border-right: 1px solid rgba(255,255,255,0.04); min-width: 44px; }
+  .code-lines span { display: block; padding: 0 12px 0 16px; font-size: 0.78rem; line-height: 1.6; color: #3f3f46; font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; }
+  .code-block pre { padding: 16px; overflow-x: auto; font-size: 0.82rem; line-height: 1.6; color: #d4d4d8; font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; flex: 1; margin: 0; }
+
+  /* ===== CHALLENGE CARD ===== */
+  .challenge-card { background: rgba(245,158,11,0.03); border: 1px solid rgba(245,158,11,0.15); border-radius: 14px; padding: 22px; margin: 18px 0; backdrop-filter: blur(8px); }
+  .challenge-card h5 { color: var(--amber); font-size: 0.92rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .challenge-card h5 .xp-badge { font-size: 0.68rem; background: rgba(245,158,11,0.12); padding: 3px 10px; border-radius: 6px; }
+  .challenge-card .desc { font-size: 0.9rem; color: #a0a0a8; margin-bottom: 14px; }
+  .challenge-card .criteria { list-style: none; }
+  .challenge-card .criteria li { font-size: 0.84rem; padding: 6px 0; color: #71717a; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: color 0.2s; }
+  .challenge-card .criteria li::before { content: ""; display: inline-block; width: 18px; height: 18px; border: 1.5px solid #3f3f46; border-radius: 5px; transition: all 0.3s; flex-shrink: 0; }
+  .challenge-card .criteria li.checked { color: var(--green); }
+  .challenge-card .criteria li.checked::before { background: var(--green); border-color: var(--green); }
+  .challenge-textarea { width: 100%; margin-top: 14px; padding: 14px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: #d4d4d8; font-family: inherit; font-size: 0.86rem; resize: vertical; min-height: 80px; transition: border-color 0.3s; }
+  .challenge-textarea:focus { outline: none; border-color: rgba(245,158,11,0.4); }
+
+  /* ===== GLOSSARY ===== */
+  .glossary { display: grid; gap: 8px; margin: 14px 0; }
+  .glossary-item { background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 10px; padding: 14px 18px; transition: border-color 0.2s; }
+  .glossary-item:hover { border-color: rgba(13,148,136,0.2); }
+  .glossary-item dt { font-size: 0.86rem; color: var(--teal); font-weight: 600; margin-bottom: 4px; }
+  .glossary-item dd { font-size: 0.82rem; color: #71717a; }
+
+  /* ===== BUTTONS ===== */
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 26px; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.25s; border: none; }
+  .btn-complete { background: linear-gradient(135deg, var(--green), #16a34a); color: #fff; }
+  .btn-complete:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(34,197,94,0.3); }
+  .btn-complete:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+  .btn-complete.done { background: rgba(34,197,94,0.12); color: var(--green); cursor: default; border: 1px solid rgba(34,197,94,0.2); }
+  .lesson-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.04); flex-wrap: wrap; gap: 12px; }
+  .next-link { font-size: 0.85rem; color: #71717a; display: flex; align-items: center; gap: 6px; transition: color 0.2s; cursor: pointer; }
+  .next-link:hover { color: var(--teal); text-decoration: none; }
+
+  /* ===== BADGES SECTION ===== */
+  .badges-section { margin: 60px 0 40px; }
+  .badges-section h2 { font-size: 1.5rem; color: #fff; margin-bottom: 24px; text-align: center; font-weight: 700; }
+  .badges-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .badge-card { text-align: center; padding: 22px 14px; border-radius: 14px; background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); transition: all 0.3s; }
+  .badge-card.unlocked { border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.04); }
+  .badge-card .badge-icon { font-size: 2.2rem; margin-bottom: 10px; filter: grayscale(1) opacity(0.25); transition: all 0.3s; }
+  .badge-card.unlocked .badge-icon { filter: none; animation: badgePulse 3s ease-in-out infinite; }
+  @keyframes badgePulse {
+    0%,100% { filter: drop-shadow(0 0 0px transparent); }
+    50% { filter: drop-shadow(0 0 12px rgba(245,158,11,0.4)); }
+  }
+  .badge-card h5 { font-size: 0.82rem; color: #52525b; margin-bottom: 4px; }
+  .badge-card.unlocked h5 { color: var(--amber); }
+  .badge-card p { font-size: 0.72rem; color: #3f3f46; }
+  .badge-card.unlocked p { color: #71717a; }
+  .badge-card:hover { transform: translateY(-3px); }
+
+  /* ===== MAP SECTION ===== */
+  .map-section { margin: 40px 0; }
+  .map-section h2 { font-size: 1.5rem; color: #fff; margin-bottom: 24px; text-align: center; font-weight: 700; }
+  .concept-map { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 24px; position: relative; }
+  .map-node { padding: 16px 14px; border-radius: 12px; background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); cursor: pointer; transition: all 0.3s; text-align: center; }
+  .map-node:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.2); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .map-node.completed { border-color: rgba(34,197,94,0.3); }
+  .map-node .node-num { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 700; margin: 0 auto 8px; }
+  .map-node:not(.completed) .node-num { background: rgba(255,255,255,0.06); color: #71717a; }
+  .map-node.completed .node-num { background: rgba(34,197,94,0.15); color: var(--green); }
+  .map-node .node-title { font-size: 0.78rem; color: #a0a0a8; line-height: 1.4; }
+  .map-node.completed .node-title { color: var(--green); }
+  .map-node .node-zone { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 6px; opacity: 0.6; }
+  .map-node[data-zone="fundamentos"] { border-left: 3px solid var(--teal); }
+  .map-node[data-zone="synapis-basics"] { border-left: 3px solid #2dd4bf; }
+  .map-node[data-zone="hermes-basics"] { border-left: 3px solid var(--purple); }
+  .map-node[data-zone="deep-dive"] { border-left: 3px solid var(--amber); }
+  .map-node[data-zone="decision"] { border-left: 3px solid var(--pink); }
+  .map-node[data-zone="integracion"] { border-left: 3px solid var(--amber); }
+  .map-node[data-zone="futuro"] { border-left: 3px solid var(--blue); }
+  .map-node[data-zone="proyecto"] { border-left: 3px solid var(--green); }
+  .map-node.completed[data-zone] { border-left-color: var(--green) !important; }
+  .map-legend { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+  .map-legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: #52525b; }
+  .map-legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+  /* ===== VIEW TABS ===== */
+  .view-tabs { display: flex; gap: 4px; justify-content: center; margin-bottom: 28px; background: var(--glass-bg); backdrop-filter: blur(12px); border-radius: 12px; padding: 5px; max-width: 420px; margin-left: auto; margin-right: auto; border: 1px solid var(--glass-border); }
+  .view-tab { flex: 1; padding: 9px 18px; border-radius: 9px; font-size: 0.85rem; cursor: pointer; border: none; background: transparent; color: #71717a; transition: all 0.25s; text-align: center; }
+  .view-tab:hover { color: #fff; }
+  .view-tab.active { background: rgba(13,148,136,0.12); color: var(--teal); }
+  .view-content { display: none; }
+  .view-content.active { display: block; }
+
+  /* ===== TOAST ===== */
+  .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(100px); padding: 14px 28px; border-radius: 12px; font-size: 0.92rem; font-weight: 600; z-index: 200; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.1); }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.xp-toast { background: rgba(34,197,94,0.85); color: #fff; }
+  .toast.level-up { background: linear-gradient(135deg, var(--teal), var(--purple)); color: #fff; }
+  .toast.badge-toast { background: rgba(245,158,11,0.85); color: #fff; }
+
+  /* ===== BACK TO TOP ===== */
+  .back-to-top { position: fixed; bottom: 28px; right: 28px; width: 44px; height: 44px; border-radius: 50%; background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); color: #71717a; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; opacity: 0; pointer-events: none; z-index: 150; }
+  .back-to-top.visible { opacity: 1; pointer-events: auto; }
+  .back-to-top:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-2px); }
+
+  /* ===== FOOTER ===== */
+  .footer { padding: 44px 20px; text-align: center; color: #3f3f46; font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.04); margin-top: 70px; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .course-hero h1 { font-size: 2rem; }
+    .badges-grid { grid-template-columns: repeat(2, 1fr); }
+    .concept-map { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .lesson-header { padding: 14px 16px; gap: 12px; }
+    .lesson-tags { display: none; }
+    .lesson-info h4 { font-size: 0.95rem; }
+    .stats-bar { gap: 8px; }
+    .stat-pill { padding: 6px 12px; font-size: 0.78rem; }
+    .nav-links a:not(.active) { display: none; }
+    .route-selector { gap: 6px; }
+    .route-btn { padding: 7px 14px; font-size: 0.8rem; }
+    .lesson-content { padding: 0 16px 22px; }
+    .back-to-top { bottom: 16px; right: 16px; width: 38px; height: 38px; }
+  }
+  @media (max-width: 480px) {
+    .course-hero h1 { font-size: 1.6rem; }
+    .concept-map { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .badges-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .nav-inner { height: 52px; }
+    .nav-links { gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo"><span class="s">Synapis</span> + <span class="h">Hermes</span></div>
+    <div class="nav-links">
+      <a href="#" class="active">Curso</a>
+      <span class="nav-streak" id="navStreak">0</span>
+      <span class="nav-xp" id="navXp">0 XP</span>
+      <button class="sound-toggle" id="soundToggle" onclick="toggleSound()" title="Sonido">S</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO BG + COURSE HERO -->
+<div class="hero-bg">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+  <div class="particles" id="particles"></div>
+  <div class="course-hero">
+    <h1>Synapis + <span class="grad">Hermes</span></h1>
+    <p class="sub">El cerebro que aprende + el cuerpo que ejecuta. Cada uno para lo suyo, juntos sin fusionarse. 12 microlecciones gamificadas.</p>
+    <div class="course-meta">
+      <span class="tag">Nivel mixto</span>
+      <span class="tag">~8 horas</span>
+      <span class="tag">485 XP total</span>
+      <span class="tag">12 lecciones</span>
+      <span class="tag">8 badges</span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <div class="progress-text" id="progressText">0 de 12 completadas</div>
+    </div>
+    <div class="level-progress" id="levelProgress">
+      <span class="level-text" id="levelXpText">0 / 100 XP</span>
+      <div class="level-bar-wrap"><div class="level-bar-fill" id="levelBarFill" style="width:0%"></div></div>
+      <span class="level-text" id="nextLevelText">Siguiente: Usuario</span>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-pill"><span class="icon">*</span><span class="val" id="totalXp">0</span><span class="lbl">XP</span></div>
+      <div class="stat-pill"><span class="icon">^</span><span class="val" id="levelName">Novato</span><span class="lbl">Nivel <span id="levelNum">1</span></span></div>
+      <div class="stat-pill"><span class="icon">~</span><span class="val" id="streakCount">0</span><span class="lbl">racha</span></div>
+      <div class="stat-pill"><span class="icon">#</span><span class="val" id="badgeCount">0</span><span class="lbl">/ 8 badges</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW TABS -->
+<div class="wrap">
+  <div class="view-tabs">
+    <button class="view-tab active" onclick="switchView('lessons', this)">Lecciones</button>
+    <button class="view-tab" onclick="switchView('map', this)">Mapa</button>
+    <button class="view-tab" onclick="switchView('badges', this)">Badges</button>
+  </div>
+
+  <div class="breadcrumb" id="breadcrumb">
+    <span>Curso</span> <span>&rsaquo;</span> <span class="current">Todas las zonas</span>
+  </div>
+
+  <!-- LESSONS VIEW -->
+  <div class="view-content active" id="view-lessons">
+    <div class="route-selector">
+      <button class="route-btn active" onclick="setRoute('lineal', this)">Lineal completa <span class="rec">Recomendada</span></button>
+      <button class="route-btn" onclick="setRoute('synapis-first', this)">Solo Synapis primero</button>
+      <button class="route-btn" onclick="setRoute('dev-exp', this)">Dev experimentado</button>
+    </div>
+    <div id="lessonsContainer"></div>
+  </div>
+
+  <!-- MAP VIEW -->
+  <div class="view-content" id="view-map">
+    <div class="map-section">
+      <h2>Mapa de Conceptos</h2>
+      <div class="concept-map" id="conceptMap"></div>
+      <div class="map-legend" id="mapLegend"></div>
+    </div>
+  </div>
+
+  <!-- BADGES VIEW -->
+  <div class="view-content" id="view-badges">
+    <div class="badges-section">
+      <h2>Badges</h2>
+      <div class="badges-grid" id="badgesGrid"></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Synapis + Hermes v1.0 -- Creado con Synapis Course Architect v2.1<br>
+  Alipio / Ecoalternative | Marzo 2026
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Confetti container -->
+<div class="confetti-container" id="confettiContainer"></div>
+
+<!-- Back to top -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+
+<script>
+// ============ COURSE DATA ============
+var course = {
+  nodes: [
+    {id:"que-son-agentes",n:1,title:"Que es un agente AI y por que necesitas dos",desc:"Concepto de agente AI, diferencia cerebro vs cuerpo, por que Synapis y Hermes son complementarios",type:"teoria",xp:25,zone:"fundamentos",level:"basico",prereqs:[],time:"20 min",difficulty:1,
+      content:{
+        explicacion:"Un <strong>agente AI</strong> es un programa que toma decisiones y ejecuta acciones de forma autonoma, usando un modelo de lenguaje como cerebro. No es simplemente un chatbot: un agente puede leer archivos, ejecutar comandos, navegar la web y tomar decisiones encadenadas.\n\nPero hay un problema: un solo agente no puede hacerlo todo bien. <strong>Synapis</strong> esta disenado para vivir dentro de Claude Code. Observa como programas, detecta patrones, crea instincts y gestiona skills. Es tu copiloto de desarrollo, tu cerebro que aprende. <strong>Hermes</strong>, en cambio, es un agente de terminal independiente: chatea con cualquier modelo, ejecuta 40+ herramientas del sistema, programa tareas con cron y se conecta a 15+ proveedores de IA.\n\nLa clave es que no compiten. Synapis necesita Claude Code para funcionar. Hermes funciona fuera de Claude Code, en cualquier terminal. Son complementarios por diseno: el cerebro que aprende y el cuerpo que ejecuta.",
+        metafora:"Piensa en un equipo medico. El neurologo (Synapis) estudia como funciona el cerebro, detecta patrones, recuerda tu historial. El cirujano (Hermes) opera con precision, usa muchos instrumentos, sigue protocolos. Jamas fusionarias al neurologo con el cirujano en una sola persona. Cada uno es experto en lo suyo, y juntos salvan vidas.",
+        code:{lang:"bash",title:"Los dos agentes en tu sistema",code:'# SYNAPIS - Vive dentro de Claude Code\n~/.claude/\n  skills/           # Skills on demand\n  CLAUDE.md         # Entry point\n  settings.json     # Hooks de observacion\n\n# HERMES - Agente independiente en terminal\n~/.hermes/\n  config.yaml       # Providers, tools, profiles\n  sessions/         # Historial de conversaciones\n  tools/            # 40+ herramientas del sistema\n\n# Nunca se tocan. Cada uno en su directorio.'},
+        reto:{title:"Identifica que necesitas de cada agente",desc:"Piensa en 3 tareas que haces con AI. Para cada una, decide si la harias con Synapis (desarrollo en Claude Code) o con Hermes (tareas generales en terminal).",criteria:["Has listado 3 tareas concretas","Has asignado cada tarea a un agente","Has justificado por que cada tarea va con ese agente"],xp:15},
+        glosario:[{t:"Agente AI",d:"Programa que usa un LLM para tomar decisiones y ejecutar acciones de forma autonoma."},{t:"LLM",d:"Large Language Model. Modelo de lenguaje grande como Claude, GPT, Gemini."},{t:"Claude Code",d:"CLI oficial de Anthropic para programar con Claude. Ejecuta herramientas (Read, Edit, Bash, etc)."},{t:"Terminal",d:"Interfaz de linea de comandos (bash, zsh, PowerShell) donde ejecutas programas."}]
+      }},
+    {id:"synapis-instalacion",n:2,title:"Synapis: instalar tu copiloto de desarrollo",desc:"Instalar Synapis en Claude Code, entender operator state y el concepto de skills on demand",type:"practica",xp:40,zone:"synapis-basics",level:"basico",prereqs:["que-son-agentes"],time:"25 min",difficulty:1,
+      content:{
+        explicacion:"Instalar Synapis significa configurar Claude Code para que te reconozca entre sesiones y cargue solo las skills que necesitas. El proceso tiene 3 pasos fundamentales.\n\n<strong>Paso 1: Clonar el repositorio.</strong> Synapis vive en ~/.claude/skills/ como un conjunto de archivos .md (skills) y .json (configuracion). El entry point es CLAUDE.md, que Claude Code lee automaticamente al inicio de cada sesion.\n\n<strong>Paso 2: Onboarding.</strong> La primera vez que abres Claude Code con Synapis instalado, detecta que no tiene operator-state y lanza un cuestionario: tu nombre, rol, stack tecnologico, preferencias. Todo se guarda en _operator-state.json.\n\n<strong>Paso 3: Skills on Demand.</strong> En vez de cargar 50 skills (25,000 tokens desperdiciados), Synapis solo carga 5 skills globales (~2,500 tokens). Las demas duermen en _library/ y se activan solo cuando las necesitas.",
+        metafora:"Es como mudarse a una casa nueva inteligente. Primero la instalas (clonar). Luego le dices quien eres y como te gusta la temperatura (onboarding). Finalmente, la casa solo enciende las luces de la habitacion donde estas, no todas a la vez (skills on demand).",
+        code:{lang:"bash",title:"Instalacion de Synapis",code:'# 1. Clonar en el directorio de Claude Code\ncd ~/.claude\ngit clone https://github.com/Luispitik/synapis.git skills/\n\n# 2. Verificar la estructura\nls ~/.claude/skills/\n# skill-router/  synapis-learning/  synapis-instincts/\n# synapis-researcher/  synapis-optimizer/\n# _library/  _catalog.json  _operator-state.json\n\n# 3. Abrir Claude Code: el onboarding arranca solo\nclaude\n# > Synapis instalado. Bienvenido.\n# > [A] Rapida -- 3 preguntas y empezamos\n# > [B] Completa -- Cuentame todo sobre ti'},
+        reto:{title:"Instala Synapis y completa el onboarding",desc:"Clona el repositorio, abre Claude Code y completa el onboarding. Verifica que _operator-state.json tiene tu nombre.",criteria:["Has clonado el repo en ~/.claude/skills/","Has completado el onboarding","_operator-state.json tiene tu nombre y stack"],xp:25},
+        glosario:[{t:"Operator State",d:"Fichero JSON que guarda tu identidad, stack y decisiones. Persiste entre sesiones y proyectos."},{t:"Skills on Demand",d:"Arquitectura que carga solo las skills necesarias para cada proyecto, ahorrando tokens."},{t:"CLAUDE.md",d:"Archivo que Claude Code lee al inicio de cada sesion. Contiene las instrucciones base de Synapis."}]
+      }},
+    {id:"synapis-primera-sesion",n:3,title:"Tu primera sesion con Synapis",desc:"Usar el skill router, activar tu primer skill, ver como Synapis observa en silencio",type:"practica",xp:45,zone:"synapis-basics",level:"basico-intermedio",prereqs:["synapis-instalacion"],time:"30 min",difficulty:2,
+      content:{
+        explicacion:"Con Synapis instalado, cada sesion de Claude Code empieza con 3 opciones: <strong>Skills on Demand</strong> (el launcher sugiere skills para tu proyecto), <strong>Skill Picker</strong> (tu eliges manualmente del catalogo) o <strong>Freestyle</strong> (Claude vanilla, sin sistema de skills).\n\nEl Skill Router es la pieza central. Cuando escribes \"launcher\", analiza tu proyecto actual (detecta package.json, requirements.txt, etc.), consulta el catalogo de skills, y te recomienda las mas relevantes con un score de confianza y coste en tokens.\n\nMientras trabajas, Synapis Learning observa en silencio cada tool use de Claude Code. No interrumpe. Simplemente registra: \"uso Edit en archivo .tsx\", \"ejecuto npm test 3 veces seguidas\", \"siempre lee el archivo antes de editarlo\". Esas observaciones seran la materia prima de los instincts.",
+        metafora:"Es como tu primer dia con un asistente personal. Te pregunta: necesitas ayuda con el calendario, los emails o los documentos? (Launcher). Tu eliges. Mientras trabajas, el asistente toma notas mentales sobre como te gusta hacer las cosas, sin interrumpirte. Manana, ya sabra tus preferencias.",
+        code:{lang:"bash",title:"Tu primera sesion con Synapis",code:'# Abrir Claude Code en tu proyecto\ncd ~/mi-proyecto\nclaude\n\n# Synapis te saluda:\n# > Hola Alipio. Proyecto: mi-proyecto\n# > [1] Skills on Demand -- Launcher con skills\n# > [2] Skill Picker -- Elige manualmente\n# > [3] Freestyle -- Sin skills\n\n# Opcion 1: El Router recomienda\n# > Skills recomendadas para mi-proyecto:\n# >   course-architect  [1.0]  487 tokens\n# >   gamification      [0.7]  320 tokens\n# > Instalar? (s/n)\n\n# Mientras trabajas, Learning observa:\n# > observations.jsonl += {tool: "Edit", file: "App.tsx"}'},
+        reto:{title:"Lanza tu primera sesion con Synapis",desc:"Abre Claude Code, escribe 'launcher', observa las recomendaciones del Skill Router y activa al menos una skill.",criteria:["Has escrito 'launcher' en Claude Code","Has visto las skills recomendadas","Has activado al menos 1 skill"],xp:25},
+        glosario:[{t:"Skill Router",d:"Skill global que analiza tu proyecto y recomienda skills del catalogo."},{t:"Catalogo",d:"Archivo _catalog.json con todas las skills disponibles, sus tags y coste en tokens."},{t:"Launcher",d:"Menu inicial de Synapis que te da 3 opciones: Skills on Demand, Picker o Freestyle."}]
+      }},
+    {id:"hermes-instalacion",n:4,title:"Hermes: instalar tu agente personal",desc:"Instalar Hermes Agent, configurar Anthropic como provider, primer chat",type:"practica",xp:40,zone:"hermes-basics",level:"basico",prereqs:["que-son-agentes"],time:"25 min",difficulty:1,
+      content:{
+        explicacion:"Hermes Agent es un agente AI de terminal completamente independiente de Claude Code. Se instala como un paquete Python en un entorno virtual y se configura con un archivo YAML.\n\n<strong>Paso 1: Crear entorno virtual.</strong> Hermes necesita su propio venv para no contaminar tu sistema. Se recomienda Python 3.11+.\n\n<strong>Paso 2: Instalar Hermes.</strong> Con pip, en modo editable si quieres contribuir. El paquete incluye 40+ herramientas del sistema (file management, web scraping, git, calendar, etc.) y soporte para 15+ proveedores de IA.\n\n<strong>Paso 3: Configurar provider.</strong> El minimo viable es configurar un provider de IA (Anthropic, OpenAI, Google, Ollama...). Solo necesitas la API key en un archivo .env o como variable de entorno. Hermes detecta el provider y selecciona el modelo automaticamente.",
+        metafora:"Instalar Hermes es como comprar un telefono nuevo. Primero sacas el telefono de la caja (crear venv). Luego instalas el sistema operativo (pip install). Finalmente, introduces tu cuenta de Google/Apple para que funcione (configurar API key). Listo para usar.",
+        code:{lang:"bash",title:"Instalacion de Hermes Agent",code:'# 1. Crear entorno virtual\npython -m venv ~/.hermes-env\nsource ~/.hermes-env/bin/activate  # Linux/Mac\n# .hermes-env\\Scripts\\activate     # Windows\n\n# 2. Instalar Hermes\npip install hermes-agent\n# O en modo desarrollo:\ngit clone https://github.com/tu-repo/hermes.git\ncd hermes && pip install -e .\n\n# 3. Configurar provider\necho "ANTHROPIC_API_KEY=sk-ant-..." > .env\n\n# 4. Verificar instalacion\nhermes doctor\n# > Provider: anthropic (claude-sonnet-4-20250514)\n# > Tools: 42 disponibles\n# > Status: OK\n\n# 5. Primer chat\nhermes chat "Hola, que puedes hacer?"'},
+        reto:{title:"Instala Hermes y haz tu primer chat",desc:"Crea el venv, instala Hermes, configura un provider y ejecuta tu primer 'hermes chat'.",criteria:["Has creado el entorno virtual","hermes doctor muestra status OK","Has ejecutado tu primer hermes chat"],xp:25},
+        glosario:[{t:"venv",d:"Virtual environment de Python. Aislamiento de dependencias para no contaminar el sistema."},{t:"Provider",d:"Servicio de IA (Anthropic, OpenAI, Google, Ollama) que proporciona el modelo de lenguaje."},{t:"API Key",d:"Clave secreta para autenticarte con un proveedor de IA. Nunca la compartas ni la subas a git."},{t:"hermes doctor",d:"Comando de diagnostico que verifica la instalacion, providers y herramientas disponibles."}]
+      }},
+    {id:"hermes-comandos-esenciales",n:5,title:"Hermes: comandos que vas a usar cada dia",desc:"hermes chat, model, status, doctor, sessions, config. Lo esencial para ser productivo",type:"practica",xp:45,zone:"hermes-basics",level:"basico-intermedio",prereqs:["hermes-instalacion"],time:"30 min",difficulty:2,
+      content:{
+        explicacion:"Hermes tiene un CLI con comandos claros y directos. Los que usaras a diario son pocos pero potentes.\n\n<strong>hermes chat</strong> es el comando principal. Puedes pasar un prompt directo (hermes chat \"resume este archivo\") o abrir una sesion interactiva (hermes chat --interactive). Hermes ejecuta herramientas automaticamente: si le pides leer un archivo, usa la tool de filesystem; si le pides buscar en la web, usa web_search.\n\n<strong>hermes model</strong> cambia el modelo activo. Puedes saltar de Claude a GPT a Gemini a un modelo local de Ollama con un solo comando. Esto es imposible en Claude Code, que esta atado a Claude.\n\n<strong>hermes status</strong> y <strong>hermes doctor</strong> te dan el estado del sistema: modelo activo, herramientas disponibles, sesiones recientes. <strong>hermes sessions</strong> lista el historial de conversaciones, util para retomar contexto.",
+        metafora:"Los comandos de Hermes son como los controles de un coche. El volante (chat) es lo que usas siempre. El cambio de marchas (model) te permite adaptarte al terreno. El cuadro de instrumentos (status/doctor) te dice si todo funciona. Y el GPS con historial (sessions) recuerda donde has estado.",
+        code:{lang:"bash",title:"Comandos esenciales de Hermes",code:'# Chat directo con prompt\nhermes chat "Que hora es en Tokyo?"\n\n# Chat interactivo (sesion con historial)\nhermes chat --interactive\n\n# Cambiar modelo\nhermes model claude-sonnet-4-20250514\nhermes model gpt-4o\nhermes model ollama/llama3\n\n# Ver estado del sistema\nhermes status\n# > Model: claude-sonnet-4-20250514\n# > Provider: anthropic\n# > Tools: 42 active\n\n# Diagnostico completo\nhermes doctor\n\n# Listar sesiones recientes\nhermes sessions list\nhermes sessions resume <session-id>\n\n# Configuracion\nhermes config show\nhermes config set default_model gpt-4o'},
+        reto:{title:"Domina los 5 comandos basicos",desc:"Ejecuta cada uno de los 5 comandos principales de Hermes y anota que informacion te da cada uno.",criteria:["Has ejecutado hermes chat con un prompt","Has cambiado de modelo con hermes model","Has revisado el estado con hermes status"],xp:25},
+        glosario:[{t:"Chat interactivo",d:"Modo de conversacion continua donde Hermes mantiene el contexto entre mensajes."},{t:"Session",d:"Registro completo de una conversacion, con prompts, respuestas y tool uses."},{t:"Config",d:"Archivo YAML (~/.hermes/config.yaml) con la configuracion de providers, modelos y preferencias."}]
+      }},
+    {id:"synapis-aprendizaje-profundo",n:6,title:"Synapis a fondo: observacion, scoring y evolucion",desc:"6 tipos de senal, scoring 0-1 con 5 etapas, decay, pipeline /evolve con 6 outputs",type:"teoria",xp:35,zone:"deep-dive",level:"avanzado",prereqs:["synapis-primera-sesion"],time:"30 min",difficulty:3,
+      content:{
+        explicacion:"El sistema de aprendizaje de Synapis tiene 3 capas: observacion, scoring y evolucion.\n\n<strong>Observacion:</strong> Synapis Learning captura 6 tipos de senal de tu trabajo en Claude Code. (1) Correcciones: cuando rehaces algo que Claude hizo mal. (2) Repeticiones: cuando un patron aparece 3+ veces. (3) Preferencias: cuando siempre eliges A sobre B. (4) Workarounds: cuando evitas algo sistematicamente. (5) Tool chains: secuencias como Read->Edit->Bash que repites. (6) Rechazos: cuando dices \"no\" o deshaces algo.\n\n<strong>Scoring:</strong> Cada patron detectado se convierte en un instinct con un score de confianza de 0.0 a 1.0. Pasa por 5 etapas: Observation (0.0-0.3), Hypothesis (0.3-0.5), Pattern (0.5-0.7), Instinct (0.7-0.9), Law (0.9-1.0). El score sube con repeticiones (+0.1), confirmaciones (+0.2) y aparicion cross-project (+0.2). Baja con contradicciones (-0.2) y decay temporal (-0.05/mes sin uso).\n\n<strong>Evolucion:</strong> El comando /evolve toma instincts maduros (>= 0.7), los agrupa por tema en clusters, y propone 6 acciones: [S] crear Skill, [C] crear Command, [A] crear Agent, [R] Regla Pasiva, [E] Enriquecer skill existente, [P] Promover a global.",
+        metafora:"Imagina un cientifico estudiando un ecosistema. Primero observa (6 tipos de senal). Luego clasifica sus observaciones con niveles de certeza (scoring 0-1). Cuando una hipotesis se confirma suficientes veces, se convierte en una ley cientifica y se publica (evolucion a skill/command).",
+        code:{lang:"json",title:"Ciclo completo de aprendizaje",code:'// 1. OBSERVACION: Learning captura senales\n{"type": "repetition", "pattern": "Read before Edit",\n "occurrences": 5, "projects": ["web", "api"]}\n\n// 2. SCORING: Se crea instinct con confidence\n{"id": "inst_p042",\n "trigger": "Before editing any file",\n "action": "Always read the file first",\n "confidence": 0.72,\n "history": [\n   {"date": "2026-02-10", "conf": 0.3, "event": "first-seen"},\n   {"date": "2026-02-20", "conf": 0.5, "event": "repeated"},\n   {"date": "2026-03-05", "conf": 0.72, "event": "cross-project"}\n ]}\n\n// 3. EVOLUCION: /evolve propone accion\n// > Cluster: "File Safety" (2 instincts >= 0.7)\n// > [R] Regla pasiva: "Read before Edit"'},
+        reto:{title:"Analiza un instinct real",desc:"Ejecuta /instinct-status en Claude Code. Elige un instinct y describe su historial de confianza: cuando fue visto, como subio el score, y en que fase esta.",criteria:["Has ejecutado /instinct-status","Has identificado un instinct con historial","Has descrito la trayectoria de su confidence score"],xp:20},
+        glosario:[]
+      }},
+    {id:"hermes-infraestructura",n:7,title:"Hermes a fondo: tools, gateway, cron y multi-modelo",desc:"40+ tools, 15+ providers, gateway a 9 plataformas, cron, profiles, MCP/ACP",type:"teoria",xp:35,zone:"deep-dive",level:"avanzado",prereqs:["hermes-comandos-esenciales"],time:"30 min",difficulty:3,
+      content:{
+        explicacion:"Hermes es mas que un chatbot de terminal. Tiene 4 subsistemas que lo convierten en un agente completo.\n\n<strong>Tools (40+):</strong> Herramientas nativas para filesystem, web scraping, git operations, calendar, email drafting, image analysis, code execution, y mas. Cada tool esta tipada con parametros claros y Hermes decide cual usar segun tu prompt.\n\n<strong>Gateway (9+ plataformas):</strong> Hermes puede conectarse a Slack, Discord, Telegram, WhatsApp, email, webhooks, y mas. Esto significa que puedes mandarle un mensaje por Telegram y Hermes responde con acceso a todas sus tools.\n\n<strong>Cron jobs:</strong> Puedes programar tareas recurrentes. \"Cada lunes a las 9am, resume los commits de la semana\". \"Cada dia a las 7pm, chequea si mis tests pasan\". Hermes ejecuta estas tareas sin intervencion.\n\n<strong>Multi-modelo (15+ providers):</strong> Anthropic, OpenAI, Google, Mistral, Cohere, Ollama, Azure, AWS Bedrock, etc. Puedes cambiar de modelo con un comando. Puedes incluso definir perfiles: \"para codigo usa Claude, para resumen usa GPT-4o, para tareas locales usa Llama\".",
+        metafora:"Hermes es como un mayordomo con muchas habilidades. Sabe cocinar (tools del filesystem), contestar el telefono de varias lineas (gateway a 9 plataformas), programar citas recurrentes (cron), y habla 15 idiomas (multi-modelo). No necesita que le digas como hacer las cosas -- le dices que quieres y el elige la herramienta.",
+        code:{lang:"yaml",title:"Configuracion avanzada de Hermes",code:'# ~/.hermes/config.yaml\nproviders:\n  anthropic:\n    api_key: ${ANTHROPIC_API_KEY}\n    default_model: claude-sonnet-4-20250514\n  openai:\n    api_key: ${OPENAI_API_KEY}\n    default_model: gpt-4o\n  ollama:\n    base_url: http://localhost:11434\n    default_model: llama3\n\nprofiles:\n  coding:\n    provider: anthropic\n    model: claude-sonnet-4-20250514\n    tools: [file_read, file_write, bash, git]\n  research:\n    provider: openai\n    model: gpt-4o\n    tools: [web_search, web_scrape, summarize]\n\ncron:\n  - name: weekly-commits\n    schedule: "0 9 * * 1"\n    prompt: "Resume los commits de la ultima semana"\n  - name: daily-tests\n    schedule: "0 19 * * *"\n    prompt: "Ejecuta npm test y reporta fallos"'},
+        reto:{title:"Configura un perfil y un cron job",desc:"Crea un perfil en config.yaml con un provider y tools especificos. Anade un cron job que se ejecute diariamente.",criteria:["Has creado un perfil con provider y tools","Has anadido un cron job con schedule valido","hermes doctor muestra el perfil y el cron"],xp:20},
+        glosario:[]
+      }},
+    {id:"comparativa-cuando-usar",n:8,title:"La gran comparativa: cuando usar cada uno",desc:"Tabla comparativa, escenarios reales, por que NO fusionar, cuando SI tendria sentido",type:"teoria",xp:30,zone:"decision",level:"intermedio",prereqs:["synapis-aprendizaje-profundo","hermes-infraestructura"],time:"25 min",difficulty:2,
+      content:{
+        explicacion:"Esta es la leccion mas importante del curso. Despues de conocer ambas herramientas en profundidad, necesitas saber <strong>cuando usar cada una</strong> y, sobre todo, <strong>por que NO fusionarlas</strong>.\n\n<strong>Usa Synapis cuando:</strong> estas programando en Claude Code, quieres que el agente aprenda tus patrones, necesitas skills especializadas por proyecto, quieres que los instincts persistan entre sesiones.\n\n<strong>Usa Hermes cuando:</strong> necesitas ejecutar tareas fuera de Claude Code, quieres usar otro modelo (GPT, Gemini, Llama), necesitas programar tareas con cron, quieres interactuar via Telegram/Slack/Discord, necesitas 40+ herramientas del sistema.\n\n<strong>5 razones para NO fusionarlos:</strong>\n\n1. <strong>Acoplamiento de dependencias.</strong> Synapis depende de Claude Code (hooks, CLAUDE.md, settings.json). Hermes es standalone. Fusionarlos significa que Hermes dependeria de Claude Code, perdiendo su independencia.\n\n2. <strong>Modelos incompatibles.</strong> Synapis solo funciona con Claude (esta dentro de Claude Code). Hermes funciona con 15+ modelos. Fusionar significaria o limitar Hermes a Claude, o complicar Synapis para soportar multi-modelo.\n\n3. <strong>Ciclos de vida diferentes.</strong> Synapis evoluciona cuando tu programas (observacion pasiva). Hermes ejecuta cuando tu le pides (ejecucion activa). Son ritmos opuestos que no se benefician de estar en el mismo proceso.\n\n4. <strong>Superficie de fallo.</strong> Si se fusionan, un bug en el gateway de Hermes podria romper tus instincts de Synapis. Separados, cada uno falla independientemente.\n\n5. <strong>Filosofia Unix.</strong> Cada programa hace una cosa bien. Synapis aprende. Hermes ejecuta. Punto.\n\n<strong>Cuando SI tendria sentido fusionar:</strong> Solo si ambos fueran del mismo autor, compartieran el mismo runtime, y el usuario siempre usara Claude Code. Hoy, ninguna de esas condiciones se cumple.",
+        metafora:"Piensa en un smartphone y un portatil. Ambos son ordenadores. Ambos tienen pantalla, teclado virtual, conectividad. Pero nadie fusiona un movil con un portatil porque son mejores siendo cosas separadas. El movil cabe en tu bolsillo. El portatil tiene teclado real. Si los fusionas, obtienes algo mediocre que no es ni buen movil ni buen portatil.",
+        code:{lang:"bash",title:"Tabla comparativa: Synapis vs Hermes",code:'# +---------------------------+----------------+----------------+\n# | Caracteristica            | Synapis        | Hermes         |\n# +---------------------------+----------------+----------------+\n# | Donde vive                | Claude Code    | Terminal       |\n# | Modelos soportados        | Solo Claude    | 15+ providers  |\n# | Aprende patrones          | SI (instincts) | NO             |\n# | Tools del sistema         | Via Claude     | 40+ nativas    |\n# | Cron jobs                 | NO             | SI             |\n# | Gateway (Telegram, etc)   | NO             | SI (9+)        |\n# | Skills on demand          | SI             | NO             |\n# | Funciona sin internet     | NO             | SI (Ollama)    |\n# | Observacion pasiva        | SI             | NO             |\n# | Multi-modelo por tarea    | NO             | SI (profiles)  |\n# +---------------------------+----------------+----------------+\n#\n# CONCLUSION: Son complementarios, no competidores.\n# Fusionarlos seria como fusionar git con Docker.'},
+        reto:{title:"Escribe tu argumento de por que NO fusionar",desc:"Redacta en 3-5 frases tu propio argumento de por que Synapis y Hermes deben permanecer separados. Usa al menos 2 de las 5 razones explicadas.",criteria:["Tu argumento tiene 3-5 frases","Mencionas al menos 2 de las 5 razones","La conclusion es clara y bien razonada"],xp:20},
+        glosario:[{t:"Acoplamiento",d:"Grado de dependencia entre dos sistemas. Mas acoplamiento = mas riesgo de que un cambio en uno rompa el otro."},{t:"Filosofia Unix",d:"Principio de diseno: cada programa hace una cosa bien. Los programas se comunican via stdin/stdout."},{t:"Runtime",d:"Entorno de ejecucion de un programa. Claude Code y terminal son runtimes diferentes."},{t:"Gateway",d:"Puerta de entrada que conecta un sistema con plataformas externas (Telegram, Slack, etc)."}]
+      }},
+    {id:"scripts-bridge",n:9,title:"Scripts bridge: conectarlos sin fusionarlos",desc:"hermes-personal, synapis-project, llamadas cruzadas, estrategia de .env compartido",type:"practica",xp:50,zone:"integracion",level:"avanzado",prereqs:["comparativa-cuando-usar"],time:"35 min",difficulty:3,
+      content:{
+        explicacion:"Los scripts bridge son la clave para que Synapis y Hermes trabajen juntos sin fusionarse. Son scripts de shell simples que <strong>llaman a un agente desde el contexto del otro</strong>.\n\n<strong>Bridge 1: hermes-personal.</strong> Un script que puedes ejecutar desde Claude Code (via Bash tool) para pedir algo a Hermes. Ejemplo: estas programando y necesitas que Hermes busque documentacion en la web con GPT-4o. Claude Code ejecuta el script, Hermes hace la busqueda, y el resultado vuelve a Claude Code.\n\n<strong>Bridge 2: synapis-project.</strong> Un script que Hermes ejecuta para consultar el operator-state de Synapis. Ejemplo: Hermes necesita saber tu stack tecnologico para generar codigo apropiado. Lee _operator-state.json y tiene tu contexto.\n\n<strong>Estrategia de .env compartido:</strong> Ambos pueden compartir el mismo archivo .env.local con API keys. Synapis lo lee via Claude Code. Hermes lo lee directamente. Sin duplicar secretos.",
+        metafora:"Los scripts bridge son como el servicio de mensajeria entre dos oficinas en edificios diferentes. El neurologo (Synapis) necesita unos resultados de laboratorio? Manda un mensajero al laboratorio (Hermes). El cirujano (Hermes) necesita el historial del paciente? Manda un mensajero al neurologo. Nunca se mudan a la misma oficina, pero se comunican eficientemente.",
+        code:{lang:"bash",title:"Scripts bridge completos",code:'#!/bin/bash\n# hermes-personal.sh -- Llamar a Hermes desde Claude Code\n# Uso: ./hermes-personal.sh "busca documentacion de React 19"\n\nSOURCE_ENV="$HOME/.env.local"\n[ -f "$SOURCE_ENV" ] && source "$SOURCE_ENV"\n\n# Activar entorno de Hermes\nsource "$HOME/.hermes-env/bin/activate"\n\n# Ejecutar Hermes con el prompt recibido\nhermes chat "$1" --output-only 2>/dev/null\n\ndeactivate\n\n# --------------------------------------------------\n#!/bin/bash\n# synapis-context.sh -- Leer contexto de Synapis desde Hermes\n# Uso: ./synapis-context.sh\n\nOPSTATE="$HOME/.claude/skills/_operator-state.json"\n\nif [ -f "$OPSTATE" ]; then\n  echo "=== Synapis Operator State ==="\n  cat "$OPSTATE" | python -m json.tool 2>/dev/null || cat "$OPSTATE"\nelse\n  echo "Synapis no instalado o sin operator-state"\nfi\n\n# --------------------------------------------------\n#!/bin/bash\n# shared-env.sh -- Variables compartidas\n# Ambos leen de .env.local\n\necho "ANTHROPIC_API_KEY=sk-ant-xxx" > ~/.env.local\necho "OPENAI_API_KEY=sk-xxx" >> ~/.env.local\n# Synapis: CLAUDE.md lee .env.local\n# Hermes: config.yaml usa ${ANTHROPIC_API_KEY}'},
+        reto:{title:"Crea tu primer bridge script",desc:"Crea el script hermes-personal.sh y ejecutalo desde Claude Code via Bash tool. Verifica que Hermes responde correctamente.",criteria:["Has creado hermes-personal.sh con el contenido correcto","Has dado permisos de ejecucion (chmod +x)","Has ejecutado el script desde Claude Code y obtenido respuesta"],xp:30},
+        glosario:[]
+      }},
+    {id:"workflow-diario",n:10,title:"Un dia con los dos agentes",desc:"Manana: Hermes personal. Dia: Claude Code + Synapis. Tarde: Hermes cron. Noche: gateway",type:"teoria",xp:30,zone:"integracion",level:"intermedio",prereqs:["scripts-bridge"],time:"20 min",difficulty:2,
+      content:{
+        explicacion:"Veamos como seria un dia productivo usando ambos agentes en sus momentos optimos.\n\n<strong>07:30 - Manana (Hermes):</strong> Antes de abrir el IDE, le pides a Hermes un resumen de los emails importantes, el clima, y las noticias tech del dia. Hermes usa GPT-4o para resumir y te da un briefing de 30 segundos via terminal.\n\n<strong>09:00-13:00 - Trabajo (Synapis + Claude Code):</strong> Abres Claude Code en tu proyecto. Synapis carga tu operator-state, te sugiere skills relevantes. Programas durante 4 horas. Learning observa 150+ tool uses en silencio. Al final de la sesion, ejecutas /analyze y ves 3 nuevos instincts detectados.\n\n<strong>14:00-17:00 - Trabajo externo (Hermes):</strong> Necesitas investigar una API nueva. Usas Hermes con web_search y web_scrape para leer documentacion. Cambias a Ollama/Llama3 para analisis local de datos sensibles que no quieres enviar a la nube. Todo desde terminal, sin necesidad de Claude Code.\n\n<strong>19:00 - Cron (Hermes automatico):</strong> El cron job de Hermes ejecuta los tests del proyecto y te manda un resumen por Telegram. Si algo falla, recibes una alerta.\n\n<strong>21:00 - Gateway (Hermes via Telegram):</strong> Desde el sofa, le mandas un mensaje a Hermes por Telegram: \"Resume los commits de hoy\". Hermes responde con el resumen sin que toques el ordenador.",
+        metafora:"Es como tener dos empleados con horarios complementarios. El investigador (Hermes) trabaja temprano y tarde, haciendo tareas generales. El ingeniero (Synapis) trabaja en jornada central, enfocado en el proyecto. Por la noche, el investigador hace guardia automatica (cron). Nunca se pisan, siempre se complementan.",
+        code:{lang:"bash",title:"Un dia tipico con ambos agentes",code:'# 07:30 -- HERMES: briefing matutino\nhermes chat "Resume mis emails importantes de hoy"\nhermes chat "Noticias tech relevantes para desarrollo web"\n\n# 09:00 -- SYNAPIS: sesion de desarrollo\ncd ~/mi-proyecto && claude\n# > Synapis: Skills cargadas para mi-proyecto\n# > (4 horas de desarrollo, 150+ observaciones)\n/analyze  # 3 instincts nuevos detectados\n\n# 14:00 -- HERMES: investigacion\nhermes model gpt-4o\nhermes chat "Busca la documentacion de la API de Stripe v2025"\nhermes model ollama/llama3\nhermes chat "Analiza este CSV local: ~/data/ventas.csv"\n\n# 19:00 -- HERMES CRON: test automatico\n# (ejecuta automaticamente segun config.yaml)\n# > Tests: 47/48 passed, 1 failed\n# > Telegram: "1 test fallido en mi-proyecto"\n\n# 21:00 -- HERMES GATEWAY: desde el sofa\n# Telegram -> Hermes: "Resume los commits de hoy"\n# Hermes -> Telegram: "3 commits: fix auth, add tests, update deps"'},
+        reto:{title:"Planifica tu dia ideal con ambos agentes",desc:"Describe tu dia ideal dividido en 4 momentos: manana (Hermes), trabajo (Synapis), tarde (Hermes), noche (cron/gateway).",criteria:["Has definido 4 momentos del dia","Cada momento usa el agente correcto","Has incluido al menos 1 uso de cron o gateway"],xp:20},
+        glosario:[{t:"Briefing",d:"Resumen rapido de informacion relevante para empezar el dia."},{t:"Cron job",d:"Tarea programada que se ejecuta automaticamente segun un horario definido."},{t:"Gateway",d:"Conexion que permite interactuar con Hermes desde plataformas externas como Telegram."}]
+      }},
+    {id:"mejoras-futuras",n:11,title:"Extensiones avanzadas y futuro",desc:"MCP compartido, sincronizacion de memorias, pipelines cross-tool, contribuir a ambos proyectos",type:"teoria",xp:30,zone:"futuro",level:"avanzado",prereqs:["workflow-diario"],time:"20 min",difficulty:3,
+      content:{
+        explicacion:"El sistema dual Synapis + Hermes tiene varias extensiones posibles que mantengan la separacion pero mejoren la colaboracion.\n\n<strong>MCP compartido:</strong> Model Context Protocol permite que herramientas externas se conecten como plugins. Si ambos soportan MCP, podrian compartir herramientas sin fusionarse. Synapis podria usar una tool de Hermes via MCP, y viceversa. Cada uno mantiene su runtime, pero las herramientas son intercambiables.\n\n<strong>Sincronizacion de memorias:</strong> Hoy, Synapis guarda instincts en ~/.claude/ y Hermes guarda sesiones en ~/.hermes/. Un script bridge podria sincronizar contextos clave: \"Synapis detecto que siempre usas TypeScript\" -> Hermes lo sabe sin que se lo repitas. Sin fusionar, solo compartiendo un JSON de preferencias.\n\n<strong>Pipelines cross-tool:</strong> Encadenar acciones entre ambos agentes: Hermes scrappea una web -> el resultado llega a Claude Code como contexto -> Synapis lo procesa con un skill especializado. Todo via scripts, sin acoplamiento directo.\n\n<strong>Contribuir:</strong> Ambos son proyectos abiertos. Puedes crear tools para Hermes, skills para Synapis, o bridge scripts que beneficien a la comunidad.",
+        metafora:"Es como el futuro de la domotica. Hoy tienes el termostato y las luces por separado. Manana, ambos hablan el mismo protocolo (MCP) y se coordinan: si detecta que no hay nadie (Synapis observa), apaga las luces (Hermes ejecuta). Pero siguen siendo dispositivos separados, conectados por un protocolo comun.",
+        code:{lang:"yaml",title:"Vision futura: MCP compartido",code:'# Hermes como MCP server para Synapis\n# ~/.claude/settings.json\n{\n  "mcpServers": {\n    "hermes-tools": {\n      "command": "hermes",\n      "args": ["mcp-serve"],\n      "tools": ["web_search", "calendar", "email_draft"]\n    }\n  }\n}\n\n# Synapis instincts compartidos con Hermes\n# ~/.shared/preferences.json\n{\n  "language": "TypeScript",\n  "framework": "React 19",\n  "test_runner": "vitest",\n  "source": "synapis-instincts",\n  "synced_at": "2026-03-30T10:00:00Z"\n}\n\n# Pipeline cross-tool\n# hermes scrape -> claude code skill -> hermes report\nhermes chat "Scrape https://api.example.com/docs" \\\n  | claude --pipe "Analiza esta API y genera tipos TypeScript" \\\n  | hermes chat "Envia este resumen por Telegram"'},
+        reto:{title:"Disena una extension para el sistema dual",desc:"Elige una de las 3 extensiones (MCP compartido, sincronizacion de memorias, pipelines cross-tool) y describe como la implementarias en tu setup.",criteria:["Has elegido una extension","Has descrito la implementacion paso a paso","Has identificado que archivos/scripts necesitas"],xp:20},
+        glosario:[]
+      }},
+    {id:"proyecto-final",n:12,title:"Proyecto final: tu setup personalizado",desc:"Configurar ambos para tu stack, crear scripts bridge, cron job, skill custom, documentarlo todo",type:"reto",xp:80,zone:"proyecto",level:"todos",prereqs:["mejoras-futuras"],time:"60 min",difficulty:3,
+      content:{
+        explicacion:"El proyecto final es configurar tu sistema dual completo y funcional. No es un ejercicio teorico: al terminar, tendras ambos agentes trabajando juntos en tu stack real.\n\n<strong>5 Entregables:</strong>\n\n<strong>1. Synapis configurado para tu proyecto.</strong> Operator-state con tu nombre, stack real y al menos 1 decision estrategica. Al menos 2 skills instaladas desde el catalogo. Minimo 1 instinct creado (manual o detectado).\n\n<strong>2. Hermes configurado con tu provider.</strong> Config.yaml con al menos 1 provider configurado. Al menos 1 perfil creado (coding, research, etc). hermes doctor pasa sin errores.\n\n<strong>3. Scripts bridge funcionales.</strong> hermes-personal.sh funciona desde Claude Code. synapis-context.sh funciona desde terminal. .env.local compartido sin duplicar secretos.\n\n<strong>4. Un cron job activo.</strong> Al menos 1 tarea programada en Hermes que se ejecute automaticamente. Puede ser: tests diarios, resumen de commits semanal, backup de instincts, etc.\n\n<strong>5. Documentacion de tu setup.</strong> Un archivo README.md en tu directorio de proyecto que explique: que hace cada agente en tu workflow, que scripts bridge tienes, que cron jobs estan activos, y como replicar tu setup en otra maquina.",
+        metafora:"El proyecto final es como el examen practico de conducir. No basta con saber la teoria: tienes que arrancar el coche (instalar), conducir por la ciudad (usar ambos agentes), aparcar en linea (bridge scripts), y demostrar que sabes las normas (documentacion). Al terminar, tienes carnet para conducir tu propio sistema dual.",
+        code:{lang:"bash",title:"Checklist del proyecto final",code:'# === ENTREGABLE 1: Synapis configurado ===\ncat ~/.claude/skills/_operator-state.json\n# Debe tener: name, role, stack, decisions[]\n/instinct-status  # Al menos 1 instinct\n\n# === ENTREGABLE 2: Hermes configurado ===\nhermes doctor\n# Provider: OK, Tools: OK, Model: configurado\nhermes config show\n# Al menos 1 profile definido\n\n# === ENTREGABLE 3: Bridge scripts ===\nchmod +x ~/scripts/hermes-personal.sh\nchmod +x ~/scripts/synapis-context.sh\n# Probar desde Claude Code:\n# > bash ~/scripts/hermes-personal.sh "Hola Hermes"\n# Probar desde terminal:\n# > bash ~/scripts/synapis-context.sh\n\n# === ENTREGABLE 4: Cron job activo ===\nhermes cron list\n# Al menos 1 job con schedule valido\n\n# === ENTREGABLE 5: Documentacion ===\ncat ~/mi-proyecto/DUAL-AGENT-SETUP.md\n# Debe explicar: workflow, bridges, crons, replicacion'},
+        reto:{title:"Completa los 5 entregables",desc:"Configura ambos agentes, crea los bridge scripts, activa un cron job y documenta tu setup en un README.",criteria:["Synapis tiene operator-state completo y al menos 1 instinct","Hermes pasa doctor y tiene al menos 1 perfil","Bridge scripts funcionan en ambas direcciones","Al menos 1 cron job activo en Hermes","README documenta el setup completo"],xp:50},
+        glosario:[]
+      }}
+  ],
+  routes: {
+    lineal: ["que-son-agentes","synapis-instalacion","synapis-primera-sesion","hermes-instalacion","hermes-comandos-esenciales","synapis-aprendizaje-profundo","hermes-infraestructura","comparativa-cuando-usar","scripts-bridge","workflow-diario","mejoras-futuras","proyecto-final"],
+    "synapis-first": ["que-son-agentes","synapis-instalacion","synapis-primera-sesion","synapis-aprendizaje-profundo","hermes-instalacion","hermes-comandos-esenciales","hermes-infraestructura","comparativa-cuando-usar","scripts-bridge","workflow-diario","mejoras-futuras","proyecto-final"],
+    "dev-exp": ["synapis-aprendizaje-profundo","hermes-infraestructura","comparativa-cuando-usar","scripts-bridge","workflow-diario","mejoras-futuras","proyecto-final"]
+  },
+  levels: [
+    {n:1,name:"Novato",xp:0},
+    {n:2,name:"Usuario",xp:100},
+    {n:3,name:"Operador",xp:250},
+    {n:4,name:"Arquitecto",xp:400},
+    {n:5,name:"Maestro Dual",xp:500}
+  ],
+  badges: [
+    {id:"primera-leccion",name:"Primer Contacto",desc:"Completa tu primera leccion",icon:"\u{1F680}",cond:function(s){return s.completed.length>=1;}},
+    {id:"mitad-curso",name:"Punto Medio",desc:"Completa la mitad del curso (6 lecciones)",icon:"\u26A1",cond:function(s){return s.completed.length>=6;}},
+    {id:"primer-reto",name:"Manos a la Obra",desc:"Completa tu primer mini-reto",icon:"\u{1F527}",cond:function(s){return s.retos>=1;}},
+    {id:"todos-retos",name:"Retador Imparable",desc:"Completa todos los mini-retos del curso",icon:"\u{1F3C6}",cond:function(s){return s.retos>=12;}},
+    {id:"glosario-curioso",name:"Curioso Incansable",desc:"Consulta el glosario 10+ veces",icon:"\u{1F4D6}",cond:function(s){return s.glossaryViews>=10;}},
+    {id:"explorador-rutas",name:"Explorador de Rutas",desc:"Prueba las 3 rutas pedagogicas",icon:"\u{1F5FA}",cond:function(s){return s.routesUsed && s.routesUsed.length>=3;}},
+    {id:"decision-argumentada",name:"Arquitecto de Decisiones",desc:"Completa el reto de la leccion comparativa",icon:"\u{1F9E0}",cond:function(s){return s.completed.includes("comparativa-cuando-usar") && s.retos>=1;}},
+    {id:"proyecto-final",name:"Maestro Dual",desc:"Completa el proyecto final con todos los entregables",icon:"\u{1F451}",cond:function(s){return s.completed.includes("proyecto-final");}}
+  ],
+  zoneOrder:["fundamentos","synapis-basics","hermes-basics","deep-dive","decision","integracion","futuro","proyecto"],
+  zoneNames:{fundamentos:"Fundamentos","synapis-basics":"Synapis Basics","hermes-basics":"Hermes Basics","deep-dive":"Deep Dive",decision:"Decision",integracion:"Integracion",futuro:"Futuro",proyecto:"Proyecto Final"},
+  zoneColors:{fundamentos:"#0d9488","synapis-basics":"#2dd4bf","hermes-basics":"#7c3aed","deep-dive":"#f59e0b",decision:"#ec4899",integracion:"#f59e0b",futuro:"#4a9eed",proyecto:"#22c55e"}
+};
+
+// ============ LEVEL LABELS ============
+var levelLabels = {
+  "basico": "level-basico",
+  "basico-intermedio": "level-basico",
+  "intermedio": "level-intermedio",
+  "avanzado": "level-avanzado",
+  "todos": "level-todos"
+};
+var levelText = {
+  "basico": "Basico",
+  "basico-intermedio": "Basico+",
+  "intermedio": "Intermedio",
+  "avanzado": "Avanzado",
+  "todos": "Todos"
+};
+
+// ============ STATE ============
+var state = JSON.parse(localStorage.getItem('synapis-hermes-course-state') || 'null') || {
+  completed: [],
+  xp: 0,
+  retos: 0,
+  perfectRetos: 0,
+  glossaryViews: 0,
+  badges: [],
+  route: 'lineal',
+  routesUsed: ['lineal'],
+  openLesson: null,
+  streak: 0,
+  lastCompletedDate: null,
+  soundOn: false
+};
+
+function save() { localStorage.setItem('synapis-hermes-course-state', JSON.stringify(state)); }
+
+// ============ PARTICLES ============
+function initParticles() {
+  var container = document.getElementById('particles');
+  for (var i = 0; i < 20; i++) {
+    var p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = Math.random() * 10 + 's';
+    p.style.width = p.style.height = (2 + Math.random() * 3) + 'px';
+    container.appendChild(p);
+  }
+}
+
+// ============ RENDER ============
+function getLevel() {
+  var lvl = course.levels[0];
+  for (var i = 0; i < course.levels.length; i++) {
+    if (state.xp >= course.levels[i].xp) lvl = course.levels[i];
+  }
+  return lvl;
+}
+
+function getNextLevel() {
+  var current = getLevel();
+  var idx = -1;
+  for (var i = 0; i < course.levels.length; i++) {
+    if (course.levels[i].n === current.n) { idx = i; break; }
+  }
+  return idx < course.levels.length - 1 ? course.levels[idx + 1] : null;
+}
+
+function isUnlocked(node) {
+  if (node.prereqs.length === 0) return true;
+  for (var i = 0; i < node.prereqs.length; i++) {
+    if (state.completed.indexOf(node.prereqs[i]) === -1) return false;
+  }
+  return true;
+}
+
+function updateUI() {
+  var lvl = getLevel();
+  var nextLvl = getNextLevel();
+  document.getElementById('navXp').textContent = state.xp + ' XP';
+  document.getElementById('navStreak').textContent = state.streak;
+  document.getElementById('totalXp').textContent = state.xp;
+  document.getElementById('levelName').textContent = lvl.name;
+  document.getElementById('levelNum').textContent = lvl.n;
+  document.getElementById('streakCount').textContent = state.streak;
+  document.getElementById('progressFill').style.width = (state.completed.length / 12 * 100) + '%';
+  document.getElementById('progressText').textContent = state.completed.length + ' de 12 completadas';
+
+  if (nextLvl) {
+    var progress = ((state.xp - lvl.xp) / (nextLvl.xp - lvl.xp)) * 100;
+    document.getElementById('levelBarFill').style.width = Math.min(100, progress) + '%';
+    document.getElementById('levelXpText').textContent = state.xp + ' / ' + nextLvl.xp + ' XP';
+    document.getElementById('nextLevelText').textContent = 'Siguiente: ' + nextLvl.name;
+  } else {
+    document.getElementById('levelBarFill').style.width = '100%';
+    document.getElementById('levelXpText').textContent = state.xp + ' XP';
+    document.getElementById('nextLevelText').textContent = 'Nivel maximo';
+  }
+
+  document.getElementById('soundToggle').textContent = state.soundOn ? 'ON' : 'S';
+  document.getElementById('soundToggle').classList.toggle('on', state.soundOn);
+
+  var newBadges = 0;
+  course.badges.forEach(function(b) {
+    if (state.badges.indexOf(b.id) === -1 && b.cond(state)) {
+      state.badges.push(b.id);
+      newBadges++;
+      showToast('badge-toast', b.icon + ' Badge desbloqueado: ' + b.name);
+      showConfetti();
+    }
+  });
+  document.getElementById('badgeCount').textContent = state.badges.length;
+  if (newBadges > 0) save();
+  renderBadges();
+}
+
+function renderLessons() {
+  var container = document.getElementById('lessonsContainer');
+  var routeNodes = course.routes[state.route];
+  var filtered = course.nodes.filter(function(n) { return routeNodes.indexOf(n.id) !== -1; });
+  var html = '';
+  var currentZone = '';
+
+  filtered.forEach(function(node, idx) {
+    if (node.zone !== currentZone) {
+      currentZone = node.zone;
+      html += '<div class="zone-label zone-' + currentZone + '"><h3>' + (course.zoneNames[currentZone] || currentZone) + '</h3></div>';
+    }
+    var done = state.completed.indexOf(node.id) !== -1;
+    var unlocked = isUnlocked(node);
+    var open = state.openLesson === node.id;
+    var cls = 'lesson-card' + (done ? ' completed' : '') + (!unlocked ? ' locked' : '') + (open ? ' open' : '');
+    var nextNode = idx < filtered.length - 1 ? filtered[idx + 1] : null;
+
+    html += '<div class="' + cls + '" id="lesson-' + node.id + '" data-zone="' + node.zone + '">' +
+      '<div class="lesson-header" onclick="toggleLesson(\'' + node.id + '\')">' +
+        '<div class="lesson-num">' + (done ? '<span class="check-anim">&#10003;</span>' : node.n) + '</div>' +
+        '<div class="lesson-info">' +
+          '<h4>' + node.title + '</h4>' +
+          '<p>' + node.desc + '</p>' +
+          '<div class="lesson-meta-row">' +
+            '<span class="lesson-time">&#128338; ' + node.time + '</span>' +
+            '<span class="lesson-difficulty">' + renderDifficulty(node.difficulty) + '</span>' +
+            '<span class="level-tag ' + (levelLabels[node.level] || 'level-basico') + '">' + (levelText[node.level] || node.level) + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="lesson-tags">' +
+          '<span class="lesson-type type-' + node.type + '">' + node.type + '</span>' +
+          '<span class="lesson-xp">+' + node.xp + ' XP</span>' +
+        '</div>' +
+        '<span class="lesson-chevron">&#9660;</span>' +
+      '</div>' +
+      '<div class="lesson-body">' +
+        '<div class="lesson-content">' +
+          renderLessonContent(node, nextNode) +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  });
+
+  container.innerHTML = html;
+}
+
+function renderDifficulty(level) {
+  var dots = '';
+  for (var i = 1; i <= 3; i++) {
+    dots += '<span class="diff-dot' + (i <= level ? ' active' : '') + '"></span>';
+  }
+  return dots;
+}
+
+function renderLessonContent(node, nextNode) {
+  var c = node.content;
+  var html = '';
+
+  // Explicacion
+  html += '<div class="content-section">' +
+    '<h5>Explicacion</h5>' +
+    '<div class="text">' + c.explicacion.replace(/\n\n/g, '<br><br>') + '</div>' +
+  '</div>';
+
+  // Metafora
+  var metaClass = (node.zone === 'synapis-basics' || node.zone === 'fundamentos') ? 'metaphor-card teal' : 'metaphor-card';
+  html += '<div class="content-section">' +
+    '<div class="' + metaClass + '">' +
+      '<div class="icon">*</div>' +
+      '<p>' + c.metafora + '</p>' +
+    '</div>' +
+  '</div>';
+
+  // Codigo
+  var codeLines = c.code.code.split('\n');
+  var lineNums = codeLines.map(function(_, i) { return '<span>' + (i + 1) + '</span>'; }).join('');
+  html += '<div class="content-section">' +
+    '<h5>Ejemplo</h5>' +
+    '<div class="code-block">' +
+      '<div class="code-header">' +
+        '<span class="code-title">' + c.code.title + ' -- ' + c.code.lang + '</span>' +
+        '<button class="code-copy" onclick="copyCode(this, \'' + node.id + '\')"><span>&#128203;</span> Copiar</button>' +
+      '</div>' +
+      '<div class="code-body">' +
+        '<div class="code-lines">' + lineNums + '</div>' +
+        '<pre id="code-' + node.id + '">' + escapeHtml(c.code.code) + '</pre>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+
+  // Reto
+  var r = c.reto;
+  html += '<div class="content-section">' +
+    '<div class="challenge-card">' +
+      '<h5>&#127919; Mini-Reto: ' + r.title + ' <span class="xp-badge">+' + r.xp + ' XP</span></h5>' +
+      '<div class="desc">' + r.desc + '</div>' +
+      '<ul class="criteria">' +
+        r.criteria.map(function(cr, i) { return '<li onclick="toggleCriteria(this)" id="cr-' + node.id + '-' + i + '">' + cr + '</li>'; }).join('') +
+      '</ul>' +
+      '<textarea class="challenge-textarea" placeholder="Escribe tu respuesta aqui..."></textarea>' +
+    '</div>' +
+  '</div>';
+
+  // Glosario (only if it has entries)
+  if (c.glosario && c.glosario.length > 0) {
+    html += '<div class="content-section">' +
+      '<h5>Glosario</h5>' +
+      '<div class="glossary" onclick="countGlossary()">' +
+        c.glosario.map(function(g) { return '<div class="glossary-item"><dt>' + g.t + '</dt><dd>' + g.d + '</dd></div>'; }).join('') +
+      '</div>' +
+    '</div>';
+  }
+
+  // Actions
+  var done = state.completed.indexOf(node.id) !== -1;
+  html += '<div class="lesson-actions">' +
+    '<button class="btn btn-complete' + (done ? ' done' : '') + '" onclick="completeLesson(\'' + node.id + '\', ' + node.xp + ')" ' + (done ? 'disabled' : '') + '>' +
+      (done ? '&#10003; Completada' : 'Marcar como completada') +
+    '</button>';
+
+  if (nextNode) {
+    html += '<span class="next-link" onclick="goToLesson(\'' + nextNode.id + '\')">Siguiente: ' + nextNode.title + ' &#8594;</span>';
+  }
+  html += '</div>';
+
+  return html;
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderMap() {
+  var map = document.getElementById('conceptMap');
+  var html = '';
+
+  course.nodes.forEach(function(node) {
+    var done = state.completed.indexOf(node.id) !== -1;
+    var zoneColor = course.zoneColors[node.zone] || '#71717a';
+    html += '<div class="map-node' + (done ? ' completed' : '') + '" data-zone="' + node.zone + '" data-id="' + node.id + '" onclick="goToLesson(\'' + node.id + '\'); switchView(\'lessons\', document.querySelector(\'.view-tab\'));">' +
+      '<div class="node-num">' + (done ? '&#10003;' : node.n) + '</div>' +
+      '<div class="node-title">' + node.title + '</div>' +
+      '<div class="node-zone" style="color:' + zoneColor + '">' + (course.zoneNames[node.zone] || node.zone) + '</div>' +
+    '</div>';
+  });
+  map.innerHTML = html;
+
+  var legend = document.getElementById('mapLegend');
+  legend.innerHTML = course.zoneOrder.map(function(z) {
+    return '<div class="map-legend-item"><div class="map-legend-dot" style="background:' + course.zoneColors[z] + '"></div>' + course.zoneNames[z] + '</div>';
+  }).join('');
+}
+
+function renderBadges() {
+  var grid = document.getElementById('badgesGrid');
+  grid.innerHTML = course.badges.map(function(b) {
+    var unlocked = state.badges.indexOf(b.id) !== -1;
+    return '<div class="badge-card' + (unlocked ? ' unlocked' : '') + '">' +
+      '<div class="badge-icon">' + b.icon + '</div>' +
+      '<h5>' + b.name + '</h5>' +
+      '<p>' + b.desc + '</p>' +
+    '</div>';
+  }).join('');
+}
+
+// ============ ACTIONS ============
+function toggleLesson(id) {
+  state.openLesson = state.openLesson === id ? null : id;
+  renderLessons();
+  if (state.openLesson) {
+    var node = null;
+    for (var i = 0; i < course.nodes.length; i++) {
+      if (course.nodes[i].id === id) { node = course.nodes[i]; break; }
+    }
+    if (node) {
+      document.getElementById('breadcrumb').innerHTML =
+        '<span>Curso</span> <span>&rsaquo;</span> <span style="color:' + (course.zoneColors[node.zone] || '#71717a') + '">' +
+        (course.zoneNames[node.zone] || node.zone) + '</span> <span>&rsaquo;</span> <span class="current">' + node.title + '</span>';
+    }
+  } else {
+    document.getElementById('breadcrumb').innerHTML = '<span>Curso</span> <span>&rsaquo;</span> <span class="current">Todas las zonas</span>';
+  }
+  if (state.openLesson) {
+    setTimeout(function() {
+      var el = document.getElementById('lesson-' + id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+}
+
+function goToLesson(id) {
+  var node = null;
+  for (var i = 0; i < course.nodes.length; i++) {
+    if (course.nodes[i].id === id) { node = course.nodes[i]; break; }
+  }
+  if (node && isUnlocked(node)) {
+    state.openLesson = id;
+    renderLessons();
+    setTimeout(function() {
+      var el = document.getElementById('lesson-' + id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 150);
+  }
+}
+
+function completeLesson(id, xp) {
+  if (state.completed.indexOf(id) !== -1) return;
+  state.completed.push(id);
+  state.xp += xp;
+  state.retos++;
+
+  var today = new Date().toDateString();
+  if (state.lastCompletedDate === today) {
+    // same day
+  } else if (state.lastCompletedDate) {
+    var last = new Date(state.lastCompletedDate);
+    var now = new Date();
+    var diffDays = Math.floor((now - last) / (1000 * 60 * 60 * 24));
+    if (diffDays <= 1) { state.streak++; } else { state.streak = 1; }
+  } else {
+    state.streak = 1;
+  }
+  state.lastCompletedDate = today;
+  save();
+
+  var lvlBefore = getLevel();
+  updateUI();
+  var lvlAfter = getLevel();
+
+  showFloatingXp(xp);
+  showToast('xp-toast', '+' + xp + ' XP -- Leccion completada');
+
+  if (lvlAfter.n > lvlBefore.n) {
+    setTimeout(function() {
+      showToast('level-up', 'Nivel ' + lvlAfter.n + ': ' + lvlAfter.name);
+      showConfetti();
+    }, 1500);
+  }
+
+  renderLessons();
+  renderMap();
+
+  var routeNodes = course.routes[state.route];
+  var filtered = course.nodes.filter(function(n) { return routeNodes.indexOf(n.id) !== -1; });
+  var currentIdx = -1;
+  for (var i = 0; i < filtered.length; i++) {
+    if (filtered[i].id === id) { currentIdx = i; break; }
+  }
+  if (currentIdx >= 0 && currentIdx < filtered.length - 1) {
+    var next = filtered[currentIdx + 1];
+    if (isUnlocked(next) && state.completed.indexOf(next.id) === -1) {
+      setTimeout(function() {
+        showToast('', 'Siguiente: ' + next.title);
+      }, 3500);
+    }
+  }
+}
+
+function showFloatingXp(xp) {
+  var el = document.createElement('div');
+  el.className = 'xp-float';
+  el.textContent = '+' + xp + ' XP';
+  el.style.left = (window.innerWidth / 2 - 40) + 'px';
+  el.style.top = (window.innerHeight / 2) + 'px';
+  document.body.appendChild(el);
+  setTimeout(function() { el.remove(); }, 1500);
+}
+
+function showConfetti() {
+  var container = document.getElementById('confettiContainer');
+  var colors = ['#0d9488', '#7c3aed', '#4a9eed', '#f59e0b', '#ec4899', '#22c55e'];
+  for (var i = 0; i < 50; i++) {
+    var piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDelay = Math.random() * 1 + 's';
+    piece.style.animationDuration = (2 + Math.random() * 2) + 's';
+    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    piece.style.width = (6 + Math.random() * 8) + 'px';
+    piece.style.height = (6 + Math.random() * 8) + 'px';
+    container.appendChild(piece);
+  }
+  setTimeout(function() { container.innerHTML = ''; }, 4000);
+}
+
+function toggleCriteria(el) {
+  el.classList.toggle('checked');
+}
+
+function countGlossary() {
+  state.glossaryViews++;
+  save();
+  updateUI();
+}
+
+function copyCode(btn, nodeId) {
+  var pre = document.getElementById('code-' + nodeId);
+  if (pre) {
+    var text = pre.textContent;
+    navigator.clipboard.writeText(text).then(function() {
+      btn.classList.add('copied');
+      btn.innerHTML = '<span>&#10003;</span> Copiado';
+      setTimeout(function() {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<span>&#128203;</span> Copiar';
+      }, 2000);
+    });
+  }
+}
+
+function setRoute(route, el) {
+  state.route = route;
+  state.openLesson = null;
+  if (!state.routesUsed) state.routesUsed = [];
+  if (state.routesUsed.indexOf(route) === -1) state.routesUsed.push(route);
+  save();
+  document.querySelectorAll('.route-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  renderLessons();
+  updateUI();
+}
+
+function switchView(view, el) {
+  document.querySelectorAll('.view-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.view-content').forEach(function(c) { c.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  document.getElementById('view-' + view).classList.add('active');
+}
+
+function toggleSound() {
+  state.soundOn = !state.soundOn;
+  save();
+  updateUI();
+}
+
+function showToast(cls, msg) {
+  var t = document.getElementById('toast');
+  t.className = 'toast ' + (cls || 'xp-toast');
+  t.textContent = msg;
+  setTimeout(function() { t.classList.add('show'); }, 50);
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+// ============ BACK TO TOP ============
+window.addEventListener('scroll', function() {
+  var btn = document.getElementById('backToTop');
+  if (window.scrollY > 400) {
+    btn.classList.add('visible');
+  } else {
+    btn.classList.remove('visible');
+  }
+});
+
+// ============ KEYBOARD NAVIGATION ============
+document.addEventListener('keydown', function(e) {
+  if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+
+  var routeNodes = course.routes[state.route];
+  var filtered = course.nodes.filter(function(n) { return routeNodes.indexOf(n.id) !== -1; });
+
+  if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+    e.preventDefault();
+    if (!state.openLesson) {
+      if (filtered.length > 0) toggleLesson(filtered[0].id);
+    } else {
+      var idx = -1;
+      for (var i = 0; i < filtered.length; i++) {
+        if (filtered[i].id === state.openLesson) { idx = i; break; }
+      }
+      if (idx >= 0 && idx < filtered.length - 1) {
+        var next = filtered[idx + 1];
+        if (isUnlocked(next)) toggleLesson(next.id);
+      }
+    }
+  } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+    e.preventDefault();
+    if (state.openLesson) {
+      var idx2 = -1;
+      for (var j = 0; j < filtered.length; j++) {
+        if (filtered[j].id === state.openLesson) { idx2 = j; break; }
+      }
+      if (idx2 > 0) {
+        toggleLesson(filtered[idx2 - 1].id);
+      } else {
+        state.openLesson = null;
+        renderLessons();
+      }
+    }
+  } else if (e.key === 'Escape') {
+    if (state.openLesson) {
+      state.openLesson = null;
+      renderLessons();
+      document.getElementById('breadcrumb').innerHTML = '<span>Curso</span> <span>&rsaquo;</span> <span class="current">Todas las zonas</span>';
+    }
+  }
+});
+
+// ============ INIT ============
+initParticles();
+renderLessons();
+renderMap();
+updateUI();
+</script>
+</body>
+</html>

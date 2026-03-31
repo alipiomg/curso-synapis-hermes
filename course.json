@@ -1,0 +1,213 @@
+{
+  "id": "synapis-hermes-dual-agent",
+  "version": "1.0.0",
+  "title": "Synapis + Hermes: Domina tus dos agentes AI",
+  "subtitle": "El cerebro que aprende + el cuerpo que ejecuta. Cada uno para lo suyo, juntos sin fusionarse.",
+  "dominio": "ai-agents-tooling",
+  "descripcion_corta": "Curso completo para usar Synapis v3.2 y Hermes Agent v0.6 como sistema dual: Synapis para desarrollo con Claude Code, Hermes como agente personal en terminal. Incluye scripts bridge, comparativa, y por que NO fusionarlos.",
+  "duracion_estimada_horas": 8,
+  "nivel_dificultad": "mixto",
+  "niveles_explicados": {
+    "basico": "Explica conceptos desde cero: skill, MCP, terminal, CLI, venv, API key, etc.",
+    "intermedio": "Asume conocimiento basico, se centra en uso practico y decisiones",
+    "avanzado": "Va directo al grano: arquitectura, config, trade-offs, sin explicar lo obvio"
+  },
+
+  "objetivos_pedagogicos": [
+    "Entender que son Synapis y Hermes, y por que son complementarios y no competidores",
+    "Instalar y configurar ambas herramientas en el mismo sistema sin conflictos",
+    "Usar Synapis como copiloto de desarrollo dentro de Claude Code (skills, instincts, evolve)",
+    "Usar Hermes como agente personal autonomo (chat, cron, gateway, multi-modelo)",
+    "Conectar ambos via scripts bridge sin fusionarlos, entendiendo por que la separacion es la arquitectura correcta"
+  ],
+
+  "nodos": [
+    {
+      "id": "que-son-agentes",
+      "numero": 1,
+      "titulo": "Que es un agente AI y por que necesitas dos",
+      "descripcion_corta": "Concepto de agente AI, diferencia cerebro vs cuerpo, por que Synapis y Hermes son complementarios",
+      "tipo": "teoria",
+      "nivel": "basico",
+      "prerequisitos": [],
+      "conecta_a": ["synapis-instalacion", "hermes-instalacion"],
+      "xp": 25,
+      "confidence_pedagogica": 0.90,
+      "zona": "fundamentos"
+    },
+    {
+      "id": "synapis-instalacion",
+      "numero": 2,
+      "titulo": "Synapis: instalar tu copiloto de desarrollo",
+      "descripcion_corta": "Instalar Synapis en Claude Code, entender operator state y el concepto de skills on demand",
+      "tipo": "practica",
+      "nivel": "basico",
+      "prerequisitos": ["que-son-agentes"],
+      "conecta_a": ["synapis-primera-sesion"],
+      "xp": 40,
+      "confidence_pedagogica": 0.90,
+      "zona": "synapis-basics"
+    },
+    {
+      "id": "synapis-primera-sesion",
+      "numero": 3,
+      "titulo": "Tu primera sesion con Synapis",
+      "descripcion_corta": "Usar el skill router, activar tu primer skill, ver como Synapis observa en silencio",
+      "tipo": "practica",
+      "nivel": "basico-intermedio",
+      "prerequisitos": ["synapis-instalacion"],
+      "conecta_a": ["synapis-aprendizaje-profundo"],
+      "xp": 45,
+      "confidence_pedagogica": 0.85,
+      "zona": "synapis-basics"
+    },
+    {
+      "id": "hermes-instalacion",
+      "numero": 4,
+      "titulo": "Hermes: instalar tu agente personal",
+      "descripcion_corta": "Instalar Hermes Agent, configurar Anthropic como provider, primer chat",
+      "tipo": "practica",
+      "nivel": "basico",
+      "prerequisitos": ["que-son-agentes"],
+      "conecta_a": ["hermes-comandos-esenciales"],
+      "xp": 40,
+      "confidence_pedagogica": 0.90,
+      "zona": "hermes-basics"
+    },
+    {
+      "id": "hermes-comandos-esenciales",
+      "numero": 5,
+      "titulo": "Hermes: comandos que vas a usar cada dia",
+      "descripcion_corta": "hermes chat, model, status, doctor, sessions, config. Lo esencial para ser productivo",
+      "tipo": "practica",
+      "nivel": "basico-intermedio",
+      "prerequisitos": ["hermes-instalacion"],
+      "conecta_a": ["hermes-infraestructura"],
+      "xp": 45,
+      "confidence_pedagogica": 0.85,
+      "zona": "hermes-basics"
+    },
+    {
+      "id": "synapis-aprendizaje-profundo",
+      "numero": 6,
+      "titulo": "Synapis a fondo: observacion, scoring y evolucion",
+      "descripcion_corta": "6 tipos de senal, scoring 0-1 con 5 etapas, decay, pipeline /evolve con 6 outputs",
+      "tipo": "teoria",
+      "nivel": "avanzado",
+      "prerequisitos": ["synapis-primera-sesion"],
+      "conecta_a": ["comparativa-cuando-usar"],
+      "xp": 35,
+      "confidence_pedagogica": 0.80,
+      "zona": "deep-dive"
+    },
+    {
+      "id": "hermes-infraestructura",
+      "numero": 7,
+      "titulo": "Hermes a fondo: tools, gateway, cron y multi-modelo",
+      "descripcion_corta": "40+ tools, 15+ providers, gateway a 9 plataformas, cron, profiles, MCP/ACP",
+      "tipo": "teoria",
+      "nivel": "avanzado",
+      "prerequisitos": ["hermes-comandos-esenciales"],
+      "conecta_a": ["comparativa-cuando-usar"],
+      "xp": 35,
+      "confidence_pedagogica": 0.80,
+      "zona": "deep-dive"
+    },
+    {
+      "id": "comparativa-cuando-usar",
+      "numero": 8,
+      "titulo": "La gran comparativa: cuando usar cada uno",
+      "descripcion_corta": "Tabla comparativa, escenarios reales, por que NO fusionar, cuando SI tendria sentido",
+      "tipo": "teoria",
+      "nivel": "intermedio",
+      "prerequisitos": ["synapis-aprendizaje-profundo", "hermes-infraestructura"],
+      "conecta_a": ["scripts-bridge"],
+      "xp": 30,
+      "confidence_pedagogica": 0.95,
+      "zona": "decision"
+    },
+    {
+      "id": "scripts-bridge",
+      "numero": 9,
+      "titulo": "Scripts bridge: conectarlos sin fusionarlos",
+      "descripcion_corta": "hermes-personal, synapis-project, llamadas cruzadas, estrategia de .env compartido",
+      "tipo": "practica",
+      "nivel": "avanzado",
+      "prerequisitos": ["comparativa-cuando-usar"],
+      "conecta_a": ["workflow-diario"],
+      "xp": 50,
+      "confidence_pedagogica": 0.85,
+      "zona": "integracion"
+    },
+    {
+      "id": "workflow-diario",
+      "numero": 10,
+      "titulo": "Un dia con los dos agentes",
+      "descripcion_corta": "Manana: Hermes personal. Dia: Claude Code + Synapis. Tarde: Hermes cron. Noche: gateway",
+      "tipo": "teoria",
+      "nivel": "intermedio",
+      "prerequisitos": ["scripts-bridge"],
+      "conecta_a": ["mejoras-futuras"],
+      "xp": 30,
+      "confidence_pedagogica": 0.85,
+      "zona": "integracion"
+    },
+    {
+      "id": "mejoras-futuras",
+      "numero": 11,
+      "titulo": "Extensiones avanzadas y futuro",
+      "descripcion_corta": "MCP compartido, sincronizacion de memorias, pipelines cross-tool, contribuir a ambos proyectos",
+      "tipo": "teoria",
+      "nivel": "avanzado",
+      "prerequisitos": ["workflow-diario"],
+      "conecta_a": ["proyecto-final"],
+      "xp": 30,
+      "confidence_pedagogica": 0.75,
+      "zona": "futuro"
+    },
+    {
+      "id": "proyecto-final",
+      "numero": 12,
+      "titulo": "Proyecto final: tu setup personalizado",
+      "descripcion_corta": "Configurar ambos para tu stack, crear scripts bridge, cron job, skill custom, documentarlo todo",
+      "tipo": "reto",
+      "nivel": "todos",
+      "prerequisitos": ["mejoras-futuras"],
+      "conecta_a": [],
+      "xp": 80,
+      "confidence_pedagogica": 0.90,
+      "zona": "proyecto"
+    }
+  ],
+
+  "rutas_pedagogicas": [
+    {
+      "nombre": "Lineal completa",
+      "descripcion": "Recorre todo el curso en orden, alternando niveles. Recomendada para quien empieza desde cero.",
+      "nodos_orden": ["que-son-agentes", "synapis-instalacion", "synapis-primera-sesion", "hermes-instalacion", "hermes-comandos-esenciales", "synapis-aprendizaje-profundo", "hermes-infraestructura", "comparativa-cuando-usar", "scripts-bridge", "workflow-diario", "mejoras-futuras", "proyecto-final"],
+      "recomendada": true
+    },
+    {
+      "nombre": "Solo Synapis primero",
+      "descripcion": "Domina Synapis antes de tocar Hermes. Para quien ya usa Claude Code y quiere profundizar.",
+      "nodos_orden": ["que-son-agentes", "synapis-instalacion", "synapis-primera-sesion", "synapis-aprendizaje-profundo", "hermes-instalacion", "hermes-comandos-esenciales", "hermes-infraestructura", "comparativa-cuando-usar", "scripts-bridge", "workflow-diario", "mejoras-futuras", "proyecto-final"],
+      "recomendada": false
+    },
+    {
+      "nombre": "Dev experimentado (skip basics)",
+      "descripcion": "Salta directamente a los deep-dives. Para quien ya tiene ambos instalados.",
+      "nodos_orden": ["synapis-aprendizaje-profundo", "hermes-infraestructura", "comparativa-cuando-usar", "scripts-bridge", "workflow-diario", "mejoras-futuras", "proyecto-final"],
+      "recomendada": false
+    }
+  ],
+
+  "metadata": {
+    "autor": "Alipio / Ecoalternative",
+    "fecha_creacion": "2026-03-30",
+    "fecha_actualizacion": "2026-03-30",
+    "tags": ["synapis", "hermes", "ai-agents", "claude-code", "dual-agent", "bridge", "comparativa"],
+    "curso_origen": null,
+    "instincts_aplicados": ["inst_g001", "inst_g003", "inst_g004", "inst_g006"],
+    "synapis_version": "3.2"
+  }
+}
