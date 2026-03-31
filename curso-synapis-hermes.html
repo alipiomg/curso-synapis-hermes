@@ -505,7 +505,7 @@
 <!-- NAV -->
 <nav class="nav">
   <div class="nav-inner">
-    <div class="nav-logo"><span class="s">Synapis</span> + <span class="h">Hermes</span></div>
+    <a href="landing-synapis-hermes.html" class="nav-logo" style="text-decoration:none"><span class="s">Synapis</span> + <span class="h">Hermes</span></a>
     <div class="nav-links">
       <a href="#" class="active">Curso</a>
       <span class="nav-streak" id="navStreak">0</span>
@@ -734,7 +734,7 @@
       </div>
     </div>
     <!-- QUICK INSTALL -->
-    <div class="quick-install open" id="quickInstall">
+    <div class="quick-install" id="quickInstall">
       <div class="qi-header" onclick="document.getElementById('quickInstall').classList.toggle('open')">
         <h3><span class="qi-icon">&#9881;</span> Instalacion rapida</h3>
         <span class="qi-chevron">&#9660;</span>
@@ -752,86 +752,94 @@
           <div class="qi-panel active" id="qi-synapis">
             <div class="qi-reqs">
               <div class="qi-req"><h5>Requisitos</h5><p>Claude Code instalado y funcionando. Git disponible en terminal.</p></div>
-              <div class="qi-req"><h5>Donde se instala</h5><p>~/.claude/skills/ (se integra dentro de Claude Code, no es un proceso aparte)</p></div>
+              <div class="qi-req"><h5>Donde se instala</h5><p>~/.claude/skills/ — se integra dentro de Claude Code, no es un proceso aparte.</p></div>
             </div>
+            <p style="color:#d0d0d8;font-size:0.84rem;margin:12px 0 6px;">Abre Claude Code y pegale este prompt directamente:</p>
             <div class="qi-code">
               <button class="qi-copy" onclick="copyQi(this,'qiSynCode')">Copiar</button>
-              <pre id="qiSynCode"><span class="comment"># 1. Clonar el repositorio</span>
-<span class="cmd">git clone</span> https://github.com/Luispitik/synapis.git
+              <pre id="qiSynCode">Instalame Synapis v3.2 desde este repo:
+https://github.com/Luispitik/synapis
 
-<span class="comment"># 2. Ejecutar el instalador</span>
-<span class="cmd">cd</span> synapis
-<span class="cmd">./install.sh</span>          <span class="comment"># Linux/Mac</span>
-<span class="cmd">install.bat</span>           <span class="comment"># Windows</span>
-
-<span class="comment"># 3. Verificar (abre Claude Code en cualquier proyecto)</span>
-<span class="comment"># Synapis se cargara automaticamente y mostrara el launcher</span></pre>
+Clona el repo, ejecuta el instalador (install.sh
+en Linux/Mac o install.bat en Windows), y verifica
+que Synapis carga correctamente al reiniciar
+Claude Code. Quiero ver el launcher con las
+opciones [1] Skills on Demand [2] Skill Picker
+[3] Freestyle.</pre>
             </div>
             <div class="qi-tip">
               <span class="tip-icon">!</span>
-              <p>Synapis se carga <strong>automaticamente</strong> al iniciar Claude Code. No necesitas ejecutar nada extra. Si ves el launcher con opciones [1] Skills on Demand [2] Skill Picker [3] Freestyle, esta funcionando.</p>
+              <p>Synapis se carga <strong>automaticamente</strong> al iniciar Claude Code. No necesitas ejecutar nada extra. Si ves el launcher al arrancar, esta funcionando.</p>
             </div>
           </div>
 
           <!-- HERMES TAB -->
           <div class="qi-panel" id="qi-hermes">
             <div class="qi-reqs">
-              <div class="qi-req"><h5>Requisitos</h5><p>Python 3.10+ y Git. Node.js recomendado para browser tools.</p></div>
-              <div class="qi-req"><h5>Donde se instala</h5><p>Windows: %LOCALAPPDATA%\hermes\ | Linux/Mac: ~/.hermes/</p></div>
+              <div class="qi-req"><h5>Requisitos</h5><p>Python 3.10+, Git, Node.js. En Windows recomendamos <a href="https://wsl2.base44.app/" target="_blank" style="color:var(--amber)">instalar WSL2</a> para mejor compatibilidad.</p></div>
+              <div class="qi-req"><h5>Donde se instala</h5><p>Linux/Mac: ~/.hermes/ | Windows: %LOCALAPPDATA%\hermes\ o dentro de WSL2.</p></div>
             </div>
+            <p style="color:#d0d0d8;font-size:0.84rem;margin:12px 0 6px;">Abre Claude Code y pegale este prompt:</p>
             <div class="qi-code">
               <button class="qi-copy" onclick="copyQi(this,'qiHerCode')">Copiar</button>
-              <pre id="qiHerCode"><span class="comment"># LINUX / MAC (instalador oficial)</span>
-<span class="cmd">curl</span> <span class="flag">-fsSL</span> https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | <span class="cmd">bash</span>
+              <pre id="qiHerCode">Quiero que actues como un DevOps experto en Linux
+y AI agents y me instales Hermes Agent de Nous
+Research usando esta repo:
+https://github.com/nousresearch/hermes-agent
 
-<span class="comment"># WINDOWS PowerShell</span>
-<span class="cmd2">irm</span> https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.ps1 | <span class="cmd2">iex</span>
+Contexto:
+- Sistema: detecta si estoy en Linux, macOS o
+  Windows/WSL2 y ajusta los comandos.
+- Objetivo: tener "hermes" instalado, probado y
+  configurado para usar Anthropic (Claude) como
+  proveedor principal.
+- Docs: hermes-agent.nousresearch.com/docs/
 
-<span class="comment"># WINDOWS Git Bash (manual)</span>
-<span class="cmd">cd</span> $LOCALAPPDATA && <span class="cmd">mkdir</span> hermes && <span class="cmd">cd</span> hermes
-<span class="cmd">git clone</span> <span class="flag">--depth 1</span> https://github.com/NousResearch/hermes-agent.git
-<span class="cmd">cd</span> hermes-agent && <span class="cmd">python</span> <span class="flag">-m</span> venv venv
-<span class="cmd">source</span> venv/Scripts/activate   <span class="comment"># o venv/bin/activate en Linux</span>
-<span class="cmd">pip install</span> <span class="flag">-e</span> ".[cron,cli,pty,mcp,messaging]"
-
-<span class="comment"># Configurar provider Anthropic</span>
-<span class="comment"># Edita config.yaml: provider: "anthropic"</span>
-<span class="comment"># Edita .env: ANTHROPIC_API_KEY=tu-clave-aqui</span>
-
-<span class="comment"># Verificar</span>
-<span class="cmd">hermes</span> doctor</pre>
+Tareas:
+1. Ejecuta el instalador oficial del repo
+2. Configura Anthropic como provider por defecto
+3. Pon claude-sonnet-4 como modelo
+4. Ejecuta hermes doctor y resuelve errores
+5. Haz una prueba con hermes chat</pre>
             </div>
             <div class="qi-tip">
               <span class="tip-icon">!</span>
-              <p>Necesitas una <strong>ANTHROPIC_API_KEY</strong> para usar Hermes con Claude. Consiguela en <strong>console.anthropic.com/settings/keys</strong>. Hermes funciona independiente de Claude Code — son procesos separados.</p>
+              <p>Necesitas una <strong>ANTHROPIC_API_KEY</strong>. Consiguela en <a href="https://console.anthropic.com/settings/keys" target="_blank" style="color:var(--amber)">console.anthropic.com</a>. Si estas en Windows sin WSL2, el prompt detectara tu OS y ajustara la instalacion automaticamente.</p>
             </div>
           </div>
 
           <!-- AMBOS TAB -->
           <div class="qi-panel" id="qi-ambos">
             <div class="qi-reqs">
-              <div class="qi-req"><h5>Conflictos?</h5><p>Cero. Synapis vive en ~/.claude/, Hermes en su propio directorio. No comparten puertos, procesos ni configuracion.</p></div>
+              <div class="qi-req"><h5>Conflictos?</h5><p>Cero. Synapis vive en ~/.claude/, Hermes en su directorio. No comparten puertos, procesos ni config.</p></div>
               <div class="qi-req"><h5>API Keys</h5><p>Synapis hereda la key de Claude Code. Hermes usa su propio .env. Misma key, dos sitios.</p></div>
             </div>
+            <p style="color:#d0d0d8;font-size:0.84rem;margin:12px 0 6px;">Pega este prompt en Claude Code para instalar ambos de golpe:</p>
             <div class="qi-code">
               <button class="qi-copy" onclick="copyQi(this,'qiBothCode')">Copiar</button>
-              <pre id="qiBothCode"><span class="comment"># === PASO 1: Instalar Synapis ===</span>
-<span class="cmd">git clone</span> https://github.com/Luispitik/synapis.git && <span class="cmd">cd</span> synapis && <span class="cmd">./install.sh</span>
+              <pre id="qiBothCode">Instala estas dos herramientas AI en mi sistema:
 
-<span class="comment"># === PASO 2: Instalar Hermes ===</span>
-<span class="cmd">curl</span> <span class="flag">-fsSL</span> https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | <span class="cmd">bash</span>
+1. SYNAPIS v3.2 (copiloto para Claude Code):
+   Repo: https://github.com/Luispitik/synapis
+   Clona, ejecuta install.sh/bat y verifica.
 
-<span class="comment"># === PASO 3: Verificar ambos ===</span>
-<span class="cmd">hermes</span> doctor                    <span class="comment"># Hermes OK?</span>
-<span class="comment"># Abre Claude Code → Synapis carga solo</span>
+2. HERMES AGENT (agente personal en terminal):
+   Repo: https://github.com/nousresearch/hermes-agent
+   Instala con el instalador oficial, configura
+   Anthropic como provider, claude-sonnet-4 como
+   modelo, ejecuta hermes doctor.
 
-<span class="comment"># === PASO 4: Scripts bridge (opcional) ===</span>
-<span class="comment"># ~/bin/hermes-personal  → chat con Hermes</span>
-<span class="comment"># ~/bin/synapis-project  → Claude Code + Synapis</span></pre>
+Importante:
+- Detecta mi OS y ajusta comandos.
+- No deben interferir entre si.
+- Synapis en ~/.claude/skills/
+- Hermes en su propio directorio.
+- Crea scripts ~/bin/hermes-personal y
+  ~/bin/synapis-project para lanzar cada uno.</pre>
             </div>
             <div class="qi-tip">
               <span class="tip-icon">!</span>
-              <p><strong>Orden recomendado:</strong> Instala Synapis primero (mas rapido, no necesita API key propia). Luego Hermes. Luego conectalos con bridge scripts si quieres (leccion 9 del curso).</p>
+              <p><strong>Orden recomendado:</strong> Synapis primero (mas rapido, sin API key extra). Luego Hermes. Son completamente independientes.</p>
             </div>
           </div>
 
